@@ -895,7 +895,22 @@ function sortT(col){if(_sc===col)_sd*=-1;else{_sc=col;_sd=-1;}applyF();}
 function resetF(){CF.rcu=null;CF.dcu=null;CF.event=null;['fRCU','fDCU','fUr','fPt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});const si=document.getElementById('srch');if(si)si.value='';updCF();refilter();}
 
 let _r26=null,_r25=null,_d26=null,_d25=null;
-async function csvFetch(url){return new Promise((res,rej)=>Papa.parse(url,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:e=>rej(new Error(e.message||'CSV fetch failed'))}));}
+async function csvFetch(url){
+  // Use fetch() instead of PapaParse download:true to avoid CORS hang on GitHub Pages
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000); // 15s timeout
+  try{
+    const resp=await fetch(url,{signal:controller.signal});
+    clearTimeout(timer);
+    if(!resp.ok)throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+    const text=await resp.text();
+    return new Promise((res,rej)=>Papa.parse(text,{header:true,skipEmptyLines:true,complete:r=>res(r.data),error:e=>rej(new Error(e.message||'CSV parse failed'))}));
+  }catch(e){
+    clearTimeout(timer);
+    if(e.name==='AbortError')throw new Error('Request timed out after 15s. Check your URL and sheet publish settings.');
+    throw e;
+  }
+}
 async function loadSheets(){const u26=document.getElementById('url26').value.trim(),u25=document.getElementById('url25').value.trim();if(!u26||!u25){alert('Enter both URLs.');return;}CFG.url26=u26;CFG.url25=u25;document.getElementById('setupModal').style.display='none';await loadData(u26,u25);}
 async function loadData(u26,u25){
   document.getElementById('loader').style.display='flex';document.getElementById('app').style.display='none';
@@ -911,15 +926,23 @@ async function loadData(u26,u25){
     document.getElementById('fetchErr').innerHTML=`<div style="background:#fef2f2;color:#c0392b;border:1px solid var(--smh-m);border-radius:8px;padding:10px 14px;font-size:12px;margin-top:1rem;line-height:1.6"><strong>Could not load data.</strong><br>${e.message}<br><small>File → Share → Publish to web → CSV → Copy URL</small></div>`;
   }
 }
-function loadDemo(){document.getElementById('setupModal').style.display='none';document.getElementById('loader').style.display='flex';setL('Loading demo…',50);_r26=null;_d26=D26;_d25=D25;setTimeout(()=>rendAll(D26,D25),300);}
+function loadDemo(){document.getElementById('setupModal').style.display='none';document.getElementById('loader').style.display='flex';setL('Loading demo…',50);_r26=null;_d26=D26;_d25=D25;setTimeout(()=>rendAll(D26,D25),400);}
 function rendAll(d26,d25){
   setL('Rendering…',90);
-  setTimeout(()=>{
-    rend26(d26);rendSum(d26);rendCmp(d26,d25);
-    popF();applyF();
-    document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
-    document.getElementById('loader').style.display='none';document.getElementById('app').style.display='block';
-  },150);
+  // Show app FIRST so canvas elements have layout/dimensions before Chart.js initialises
+  document.getElementById('loader').style.display='none';
+  document.getElementById('app').style.display='block';
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      try{
+        rend26(d26);rendSum(d26);rendCmp(d26,d25);
+        popF();applyF();
+        document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
+      }catch(err){
+        console.error('Render error:',err);
+      }
+    },80);
+  });
 }
 async function refreshData(){if(CFG.url26&&CFG.url25)await loadData(CFG.url26,CFG.url25);else showSetup();}
 function showSetup(){document.getElementById('url26').value=CFG.url26||'';document.getElementById('url25').value=CFG.url25||'';document.getElementById('fetchErr').innerHTML='';document.getElementById('setupModal').style.display='flex';}
