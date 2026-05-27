@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Central Zone · MS-CIT 2026 — MKCL Dashboard</title>
-<!-- Fonts loaded with display=swap so page never hangs -->
+<!-- Fonts: non-blocking -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+<!-- Libraries with defer: parse HTML first, scripts run just before DOMContentLoaded -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
 <style>
 /* ─── RESET & ROOT ─────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -542,8 +545,6 @@ tbody tr:hover td{background:var(--sf2)}
 </div><!-- /app -->
 
 <script>
-// ─── Chart.js is bundled inline — no extra CDN ─────────────────────
-// Load CDN scripts but make the page functional even without Google Fonts
 // ─── CONFIG ──────────────────────────────────────────────────────────
 const CFG={url26:'',url25:''};
 
@@ -650,7 +651,7 @@ const dlPlugin={id:'datalabels',afterDatasetsDraw(chart,_,opts){
     });
   });
 }};
-Chart.register(dlPlugin);
+// dlPlugin registered in waitAndInit() after Chart.js loads
 
 // ─── PARSE ────────────────────────────────────────────────────────────
 function parse26(rows){
@@ -1045,15 +1046,21 @@ const D26={total:87340,alcs:1820,part:1698,np:122,apr:10820,jun:51240,jul:25280,
 const D25={total:312400,alcs:2010,part:1978,rcu:{'South Maharashtra':{total:67031},'Pune':{total:98420},'North Maharashtra':{total:84300},'Solapur':{total:62649}},events:EL25.map((l,i)=>({label:l,total:[28400,18200,42100,38600,52800,38000,94300][i]}))};
 
 // ─── INIT ─────────────────────────────────────────────────────────────
-window.addEventListener('load',()=>{
+// Poll until Chart.js + PapaParse are available (handles defer timing edge cases)
+function waitAndInit(){
   setL('Starting…',10);
-  if(CFG.url26&&CFG.url25)loadData(CFG.url26,CFG.url25);
-  else{document.getElementById('loader').style.display='none';document.getElementById('setupModal').style.display='flex';}
-});
+  const check=()=>{
+    if(typeof Chart!=='undefined'&&typeof Papa!=='undefined'){
+      try{Chart.register(dlPlugin);}catch(e){}
+      if(CFG.url26&&CFG.url25)loadData(CFG.url26,CFG.url25);
+      else{document.getElementById('loader').style.display='none';document.getElementById('setupModal').style.display='flex';}
+    } else {
+      setTimeout(check,50);
+    }
+  };
+  check();
+}
+document.addEventListener('DOMContentLoaded',waitAndInit);
 </script>
-
-<!-- Load Chart.js and PapaParse AFTER page content — prevents render blocking -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </body>
 </html>
