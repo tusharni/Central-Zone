@@ -3,490 +3,578 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Central Zone MS-CIT 2026 — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<title>Central Zone · MS-CIT 2026 — MKCL Dashboard</title>
+<!-- Fonts loaded with display=swap so page never hangs -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 <style>
+/* ─── RESET & ROOT ─────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f0f2f7;--sf:#fff;--sf2:#f6f7fb;--bd:#e3e7f0;--bd2:#c4cce6;
-  --ink:#0f172a;--ink2:#334155;--mu:#64748b;--fa:#94a3b8;--li:#e2e8f0;
-  --smh:#c0392b;--smh-l:#fdf2f2;--smh-m:#f5a7a0;
-  --pune:#1a56c4;--pune-l:#eef3ff;--pune-m:#93b4f5;
-  --nmh:#157a3c;--nmh-l:#f0fdf5;--nmh-m:#7ed6a0;
-  --sol:#a0590a;--sol-l:#fffbf0;--sol-m:#f9cc6a;
-  --ok:#157a3c;--warn:#a0590a;--danger:#c0392b;--accent:#1a56c4;
-  --r:8px;--r2:12px;
-  --sh:0 1px 3px rgba(0,0,0,.05),0 4px 18px rgba(0,0,0,.05);
-  --sh2:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.06);
+  /* Background / surface */
+  --bg:      #f0f2f7;
+  --sf:      #ffffff;
+  --sf2:     #f7f8fc;
+  --sf3:     #eef0f7;
+  /* Borders */
+  --bd:      #e2e5f0;
+  --bd2:     #cdd2e8;
+  /* Text */
+  --ink:     #0d1117;
+  --ink2:    #1e2535;
+  --mu:      #5a6480;
+  --fa:      #9aa3c0;
+  --li:      #edf0f8;
+  /* RCU colours */
+  --smh:     #c0392b; --smh-m:#e88074; --smh-l:#fdf0ef; --smh-b:#fbeae8;
+  --pune:    #1a5cb5; --pune-m:#7aaae0; --pune-l:#eef5fd; --pune-b:#ddeaf9;
+  --nmh:     #1a7a42; --nmh-m:#6dc48e; --nmh-l:#edf8f1; --nmh-b:#d8f0e2;
+  --sol:     #b85c00; --sol-m:#f0a44a; --sol-l:#fdf5eb; --sol-b:#fde8c5;
+  /* Semantic */
+  --ok:      #1a7a42; --danger:#c0392b; --warn:#b85c00; --accent:#1a5cb5;
+  /* Event colours */
+  --ec0:#6254c4; --ec1:#1a5cb5; --ec2:#c0392b; --ec3:#b85c00;
+  /* Sizing */
+  --r:8px; --r2:12px; --r3:18px;
+  --sh: 0 1px 3px rgba(13,17,23,.06), 0 4px 16px rgba(13,17,23,.05);
+  --sh2:0 2px 8px rgba(13,17,23,.08), 0 12px 32px rgba(13,17,23,.07);
 }
+
+/* ─── BASE ─────────────────────────────────────────────────────────── */
 html{font-size:14px;scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
-/* loader */
-#loader{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px}
-.ld-logo{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;color:var(--ink)}
-.ld-logo span{color:var(--accent)}
-.ld-sub{font-size:10px;letter-spacing:.17em;color:var(--fa);font-weight:600}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+
+/* ─── LOADER ───────────────────────────────────────────────────────── */
+#loader{position:fixed;inset:0;background:var(--sf);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px}
+.ld-logo{font-size:1.6rem;font-weight:800;letter-spacing:-.04em;color:var(--ink)}
+.ld-logo em{color:var(--accent);font-style:normal}
+.ld-sub{font-size:10px;letter-spacing:.18em;color:var(--fa);font-weight:700;text-transform:uppercase}
 .ld-track{width:200px;height:3px;background:var(--bd);border-radius:3px;overflow:hidden}
-.ld-fill{height:100%;border-radius:3px;background:var(--accent);width:0%;transition:width .4s}
+.ld-fill{height:100%;border-radius:3px;background:var(--accent);width:0%;transition:width .4s ease}
 #ldMsg{font-size:11px;color:var(--fa);font-family:'JetBrains Mono',monospace}
-/* modal */
-#setupModal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(6px)}
-.mbox{background:#fff;border:1px solid var(--bd2);border-radius:16px;padding:2.2rem;max-width:560px;width:92%;box-shadow:var(--sh2)}
-.meye{font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--fa);margin-bottom:.45rem}
-.mbox h2{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.3rem}
-.mbox p{font-size:12.5px;color:var(--mu);margin-bottom:1.3rem;line-height:1.7}
-.mbox label{font-size:10.5px;font-weight:700;color:var(--mu);display:block;margin-bottom:4px;letter-spacing:.06em}
+
+/* ─── MODAL ────────────────────────────────────────────────────────── */
+#setupModal{position:fixed;inset:0;background:rgba(13,17,23,.4);display:flex;align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(6px)}
+.mbox{background:var(--sf);border:1px solid var(--bd2);border-radius:var(--r3);padding:2.2rem;max-width:560px;width:92%;box-shadow:var(--sh2)}
+.meye{font-size:10px;letter-spacing:.15em;font-weight:700;color:var(--fa);margin-bottom:.4rem;text-transform:uppercase}
+.mbox h2{font-size:1.25rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.3rem}
+.mbox p{font-size:12.5px;color:var(--mu);margin-bottom:1.2rem;line-height:1.7}
+.mbox label{font-size:10.5px;font-weight:700;color:var(--mu);display:block;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
 .minp{width:100%;border:1.5px solid var(--bd);border-radius:var(--r);padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--sf2);outline:none;margin-bottom:.85rem;transition:border-color .2s}
-.minp:focus{border-color:var(--accent)}.minp::placeholder{color:var(--fa)}
+.minp:focus{border-color:var(--accent)} .minp::placeholder{color:var(--fa)}
 .rhint{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1rem;font-size:11.5px;color:var(--mu);line-height:1.7}
-.rhint strong{color:var(--ink)}
-.rtags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rhint strong{color:var(--ink)} .rtags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .rtag{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700}
-.t-smh{background:var(--smh-l);color:var(--smh)}.t-pune{background:var(--pune-l);color:var(--pune)}
-.t-nmh{background:var(--nmh-l);color:var(--nmh)}.t-sol{background:var(--sol-l);color:var(--sol)}
+.t-smh{background:var(--smh-b);color:var(--smh)} .t-pune{background:var(--pune-b);color:var(--pune)}
+.t-nmh{background:var(--nmh-b);color:var(--nmh)} .t-sol{background:var(--sol-b);color:var(--sol)}
 .brow{display:flex;gap:10px}
-.bpri{flex:1;padding:11px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s}
-.bpri:hover{opacity:.82}
-.bghost{padding:11px 16px;background:transparent;color:var(--mu);border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.bpri{flex:1;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.bpri:hover{opacity:.88}
+.bghost{padding:11px 16px;background:transparent;color:var(--mu);border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
 .bghost:hover{border-color:var(--ink);color:var(--ink)}
-/* header */
+
+/* ─── HEADER ───────────────────────────────────────────────────────── */
 #app{display:none}
-header{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:300}
+header{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:400}
 .hbrand{font-size:15px;font-weight:800;letter-spacing:-.03em;color:#fff}
-.hbrand span{color:#93c5fd}
-.hzone{font-size:9px;letter-spacing:.13em;color:rgba(255,255,255,.35);margin-top:1px;font-weight:600}
+.hbrand em{color:#7aaae0;font-style:normal}
+.hzone{font-size:9px;letter-spacing:.13em;color:rgba(255,255,255,.3);font-weight:600;margin-top:1px;text-transform:uppercase}
 .hr{display:flex;align-items:center;gap:12px}
-.hdots{display:flex;gap:5px}
+.hdots{display:flex;gap:4px;align-items:center}
 .hdot{width:8px;height:8px;border-radius:50%}
-.hbtn{font-size:11px;padding:5px 13px;border:1px solid rgba(255,255,255,.18);border-radius:20px;background:transparent;color:rgba(255,255,255,.6);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.hbtn{font-size:11px;padding:5px 13px;border:1px solid rgba(255,255,255,.18);border-radius:20px;background:transparent;color:rgba(255,255,255,.6);cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:600;transition:all .2s}
 .hbtn:hover{background:rgba(255,255,255,.1);color:#fff}
 #lastUp{font-size:10px;color:rgba(255,255,255,.25);font-family:'JetBrains Mono',monospace}
-/* cf bar */
-#cfBar{background:#fff;border-bottom:2px solid var(--accent);padding:7px 2rem;display:none;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* ─── CROSS-FILTER BAR ─────────────────────────────────────────────── */
+#cfBar{background:var(--pune-b);border-bottom:2px solid var(--accent);padding:7px 2rem;display:none;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px}
 #cfBar.vis{display:flex}
-.cfl{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--accent)}
+.cfl{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
 .cfpills{display:flex;gap:6px;flex-wrap:wrap}
-.cfpill{background:var(--pune-l);border:1px solid var(--pune-m);border-radius:20px;padding:3px 10px;display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--accent);font-weight:600}
-.cfx{cursor:pointer;opacity:.5;font-size:14px;line-height:1;transition:opacity .15s}.cfx:hover{opacity:1}
+.cfpill{background:var(--sf);border:1.5px solid var(--pune-m);border-radius:20px;padding:3px 12px;display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--accent);font-weight:600}
+.cfx{cursor:pointer;opacity:.45;font-size:14px;line-height:1;transition:opacity .15s}.cfx:hover{opacity:1}
 .cfcnt{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--mu);margin-left:4px}
-.cfclr{margin-left:auto;cursor:pointer;color:var(--danger);font-size:11.5px;padding:3px 10px;border:1px solid var(--smh-m);border-radius:12px;background:var(--smh-l);font-weight:600;transition:all .2s}
-.cfclr:hover{background:var(--danger);color:#fff}
-/* nav */
-.nav{background:#fff;border-bottom:1px solid var(--bd);padding:0 2rem;display:flex;position:sticky;top:54px;z-index:290}
-.navt{font-size:12.5px;font-weight:600;padding:13px 20px;border:none;background:transparent;color:var(--mu);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;margin-bottom:-1px;font-family:'Plus Jakarta Sans',sans-serif}
+.cfclr{margin-left:auto;cursor:pointer;color:var(--danger);font-size:11.5px;padding:3px 12px;border:1.5px solid var(--smh-m);border-radius:12px;background:var(--smh-l);font-weight:600;transition:all .2s}
+.cfclr:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+
+/* ─── NAV ──────────────────────────────────────────────────────────── */
+.nav{background:var(--sf);border-bottom:1px solid var(--bd);padding:0 2rem;display:flex;position:sticky;top:54px;z-index:390;box-shadow:0 1px 0 var(--bd)}
+.navt{font-size:12.5px;font-weight:600;padding:13px 22px;border:none;background:transparent;color:var(--mu);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .18s;margin-bottom:-1px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.01em}
 .navt.on{color:var(--ink);border-bottom-color:var(--accent)}
 .navt:hover:not(.on){color:var(--ink2)}
-/* pages */
-.page{display:none;padding:1.6rem 2rem 3rem;max-width:1380px;margin:0 auto}
-.page.on{display:block}
-.pgh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;padding-bottom:.9rem;border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:.4rem}
-.pgt{font-size:1.2rem;font-weight:800;letter-spacing:-.03em}
+
+/* ─── PAGES ────────────────────────────────────────────────────────── */
+.page{display:none;padding:1.75rem 2rem 4rem;max-width:1400px;margin:0 auto}
+.page.active{display:block}
+.pgh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.5rem}
+.pgt{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
 .pgm{font-size:11px;color:var(--fa);font-family:'JetBrains Mono',monospace}
-/* grids */
-.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.2rem}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.2rem}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.2rem}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.2rem}
-/* kpi */
-.kpi{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:.95rem 1.15rem;display:flex;flex-direction:column;gap:4px;box-shadow:var(--sh)}
+
+/* ─── GRIDS ────────────────────────────────────────────────────────── */
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.25rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.25rem}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:1.25rem}
+.gnb{margin-bottom:0!important}
+
+/* ─── SECTION HEADER ───────────────────────────────────────────────── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:6px}
+.st{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.sm{font-size:11px;color:var(--mu)}
+
+/* ─── KPI CARDS ─────────────────────────────────────────────────────  */
+.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r2);padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:5px;box-shadow:var(--sh)}
 .kpi.hero{background:var(--ink);border-color:var(--ink)}
-.kpi.hero .klab{color:rgba(255,255,255,.42)}.kpi.hero .kval{color:#fff}.kpi.hero .ksub{color:rgba(255,255,255,.45)}
-.kpi.cfa{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(26,86,196,.1),var(--sh)!important}
-.klab{font-size:10px;font-weight:700;letter-spacing:.09em;color:var(--mu)}
-.kval{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:600;color:var(--ink);line-height:1.05;letter-spacing:-.02em}
-.ksub{font-size:11.5px;color:var(--mu);margin-top:1px}
-.ksub.ok{color:var(--ok)}.ksub.wa{color:var(--warn)}.ksub.da{color:var(--danger)}
-/* rcu cards */
-.rcug{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.2rem}
-.rcuc{border-radius:var(--r2);padding:1.1rem 1.2rem;border:1.5px solid;display:flex;flex-direction:column;gap:5px;cursor:pointer;transition:all .22s}
-.rcuc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
-.rcuc.cfa{transform:translateY(-3px);box-shadow:var(--sh2)}
-.rc-smh{background:var(--smh-l);border-color:var(--smh-m);color:var(--smh)}.rc-smh.cfa{border-color:var(--smh);box-shadow:0 4px 20px rgba(192,57,43,.2)!important}
-.rc-pune{background:var(--pune-l);border-color:var(--pune-m);color:var(--pune)}.rc-pune.cfa{border-color:var(--pune);box-shadow:0 4px 20px rgba(26,86,196,.2)!important}
-.rc-nmh{background:var(--nmh-l);border-color:var(--nmh-m);color:var(--nmh)}.rc-nmh.cfa{border-color:var(--nmh);box-shadow:0 4px 20px rgba(21,122,60,.2)!important}
-.rc-sol{background:var(--sol-l);border-color:var(--sol-m);color:var(--sol)}.rc-sol.cfa{border-color:var(--sol);box-shadow:0 4px 20px rgba(160,89,10,.2)!important}
-.rclbl{font-size:9.5px;font-weight:800;letter-spacing:.1em;opacity:.62}
-.rcval{font-family:'JetBrains Mono',monospace;font-size:1.85rem;font-weight:600;line-height:1;letter-spacing:-.03em}
-.rcalc{font-size:11px;font-weight:600;opacity:.62}
-.rcpg{height:3px;border-radius:2px;margin-top:4px;overflow:hidden;background:rgba(0,0,0,.07)}
-.rcf{height:100%;border-radius:2px;transition:width .7s}
-.rch{font-size:9px;font-weight:700;letter-spacing:.05em;opacity:0;transition:opacity .2s;text-align:right;margin-top:1px}
-.rcuc:hover .rch,.rcuc.cfa .rch{opacity:.48}
-/* panel */
-.pan{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:1.25rem;margin-bottom:1.2rem;box-shadow:var(--sh)}
-.ph{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.9rem;flex-wrap:wrap;gap:6px}
-.pt{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
-.ptn{font-size:11px;color:var(--fa);font-family:'JetBrains Mono',monospace}
-.pnote{font-size:11px;color:var(--mu);background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;margin-bottom:.85rem}
+.kpi.hero .ke{color:rgba(255,255,255,.4)} .kpi.hero .kv{color:#fff} .kpi.hero .ks{color:rgba(255,255,255,.55)}
+.ke{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mu);text-transform:uppercase}
+.kv{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:600;line-height:1;letter-spacing:-.03em;color:var(--ink)}
+.kv.sm{font-size:1.65rem}
+.ks{font-size:11.5px;color:var(--mu);margin-top:2px}
+.ks.ok{color:var(--ok);font-weight:600} .ks.dn{color:var(--danger);font-weight:600} .ks.wn{color:var(--warn);font-weight:600}
+
+/* ─── RCU CARDS ─────────────────────────────────────────────────────  */
+.rg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.rc{border-radius:var(--r2);padding:1.15rem 1.25rem;border:1.5px solid;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:all .2s;position:relative}
+.rc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.rc.cfa{transform:translateY(-2px)}
+.rc-smh{background:var(--smh-b);border-color:var(--smh-m)}.rc-smh.cfa{border-color:var(--smh);box-shadow:0 0 0 3px rgba(192,57,43,.18),var(--sh2)}
+.rc-pune{background:var(--pune-b);border-color:var(--pune-m)}.rc-pune.cfa{border-color:var(--pune);box-shadow:0 0 0 3px rgba(26,92,181,.18),var(--sh2)}
+.rc-nmh{background:var(--nmh-b);border-color:var(--nmh-m)}.rc-nmh.cfa{border-color:var(--nmh);box-shadow:0 0 0 3px rgba(26,122,66,.18),var(--sh2)}
+.rc-sol{background:var(--sol-b);border-color:var(--sol-m)}.rc-sol.cfa{border-color:var(--sol);box-shadow:0 0 0 3px rgba(184,92,0,.18),var(--sh2)}
+.rl{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.rv{font-family:'JetBrains Mono',monospace;font-size:1.85rem;font-weight:700;line-height:1;letter-spacing:-.04em}
+.rs{font-size:11.5px;font-weight:500;opacity:.72}
+.rpg{height:4px;border-radius:2px;margin-top:6px;overflow:hidden;background:rgba(0,0,0,.07)}
+.rpgf{height:100%;border-radius:2px;transition:width .7s ease}
+.rhi{font-size:9.5px;font-weight:700;letter-spacing:.06em;opacity:0;transition:opacity .15s;margin-top:2px;text-transform:uppercase}
+.rc:hover .rhi,.rc.cfa .rhi{opacity:.55}
+
+/* ─── PANEL ────────────────────────────────────────────────────────── */
+.pan{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r2);padding:1.25rem 1.4rem;box-shadow:var(--sh);margin-bottom:1.25rem}
+.pan:last-child{margin-bottom:0}
+
+/* ─── CANVAS ───────────────────────────────────────────────────────── */
 .cw{position:relative;width:100%}
-.h180{height:180px}.h240{height:240px}.h270{height:270px}.h300{height:300px}.h340{height:340px}
-/* event mini cards */
-.evg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
-.evc{border:1.5px solid var(--bd);border-radius:var(--r2);padding:.85rem 1rem;background:var(--sf2);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:3px}
-.evc:hover{border-color:var(--bd2);background:#fff;box-shadow:var(--sh)}
-.evc.cfa{border-color:var(--accent);background:var(--pune-l);box-shadow:0 0 0 3px rgba(26,86,196,.08)}
-.evlb{font-size:9.5px;font-weight:700;letter-spacing:.09em;color:var(--mu)}
-.evvl{font-family:'JetBrains Mono',monospace;font-size:1.45rem;font-weight:600;line-height:1;letter-spacing:-.02em}
-.evpt{font-size:10.5px;color:var(--mu)}
-.evbg{height:3px;border-radius:2px;background:var(--bd);overflow:hidden;margin-top:4px}
-.evbf{height:100%;border-radius:2px;transition:width .6s}
-/* progress bars */
-.pbr{display:flex;align-items:center;gap:8px;margin-bottom:5px;padding:4px 5px;border-radius:6px;cursor:pointer;transition:background .15s}
-.pbr:hover{background:var(--sf2)}.pbr.cfa{background:var(--pune-l);outline:1.5px solid var(--pune-m)}
-.pbl{font-size:12px;color:var(--ink2);flex-shrink:0;min-width:130px;max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:5px}
-.pbb{flex:1;height:8px;background:var(--sf2);border-radius:4px;overflow:hidden;border:1px solid var(--bd)}
-.pbf{height:100%;border-radius:3px;transition:width .65s}
-.pbn{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ink);text-align:right;flex-shrink:0;min-width:55px}
-.pbp{font-size:10px;color:var(--mu);flex-shrink:0;min-width:40px;text-align:right}
-/* legend */
-.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mu)}
+.h140{height:140px} .h180{height:180px} .h210{height:210px} .h240{height:240px}
+.h270{height:270px} .h310{height:310px} .h350{height:350px}
+
+/* ─── LEGEND ────────────────────────────────────────────────────────  */
+.leg{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--mu)}
 .ld{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
-/* badge */
-.bdg{font-size:9.5px;padding:2px 8px;border-radius:20px;display:inline-block;font-weight:700;white-space:nowrap;letter-spacing:.02em}
-.b-smh{background:var(--smh-l);color:var(--smh)}.b-pune{background:var(--pune-l);color:var(--pune)}
-.b-nmh{background:var(--nmh-l);color:var(--nmh)}.b-sol{background:var(--sol-l);color:var(--sol)}
-.b-urb{background:#f5f3ff;color:#5b21b6}.b-rul{background:var(--nmh-l);color:var(--nmh)}
-.b-ok{background:var(--nmh-l);color:var(--ok)}.b-np{background:var(--smh-l);color:var(--danger)}
-/* tables */
+
+/* ─── PROGRESS BARS ────────────────────────────────────────────────── */
+.pr{display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;border-radius:6px;padding:4px 5px;transition:background .15s}
+.pr:hover,.pr.cfa{background:var(--sf2)}
+.pr.cfa{outline:1px solid var(--bd2)}
+.prl{font-size:12px;color:var(--ink2);flex-shrink:0;min-width:140px;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px}
+.prb{flex:1;height:7px;background:var(--li);border-radius:4px;overflow:hidden}
+.prf{height:100%;border-radius:4px;transition:width .65s ease}
+.prn{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ink);min-width:60px;text-align:right;flex-shrink:0}
+.prp{font-size:10.5px;color:var(--mu);flex-shrink:0;min-width:38px;text-align:right}
+
+/* ─── BADGES ───────────────────────────────────────────────────────── */
+.bdg{font-size:9.5px;padding:2px 9px;border-radius:12px;font-weight:700;white-space:nowrap;letter-spacing:.02em;display:inline-block}
+.b-smh{background:var(--smh-b);color:var(--smh)} .b-pune{background:var(--pune-b);color:var(--pune)}
+.b-nmh{background:var(--nmh-b);color:var(--nmh)} .b-sol{background:var(--sol-b);color:var(--sol)}
+.b-urb{background:#eef0ff;color:#3730a3} .b-rul{background:#edfdf4;color:var(--ok)}
+.b-ok{background:#edfdf4;color:var(--ok)} .b-np{background:#fdf0ef;color:var(--danger)}
+
+/* ─── SUB TABS ─────────────────────────────────────────────────────── */
+.stabs{display:flex;gap:6px;margin-bottom:1.1rem}
+.stab{font-size:12px;padding:5px 16px;border:1.5px solid var(--bd);border-radius:20px;background:transparent;color:var(--mu);cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;transition:all .15s;font-weight:600}
+.stab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ─── EVENT MINI CARDS ─────────────────────────────────────────────── */
+.emg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.1rem}
+.em{border:1.5px solid var(--bd);border-radius:var(--r2);padding:.85rem 1rem;background:var(--sf2);cursor:pointer;transition:all .2s}
+.em:hover{border-color:var(--bd2);background:var(--sf);box-shadow:var(--sh)}
+.em.cfa{border-color:var(--accent);background:var(--pune-l);box-shadow:0 0 0 2px rgba(26,92,181,.2)}
+.eml{font-size:10px;font-weight:700;letter-spacing:.09em;color:var(--mu);text-transform:uppercase}
+.emv{font-family:'JetBrains Mono',monospace;font-size:1.45rem;font-weight:700;line-height:1;margin-top:3px}
+.emp{font-size:10.5px;color:var(--mu);margin-top:2px}
+.embar{height:3px;border-radius:2px;background:var(--bd);overflow:hidden;margin-top:8px}
+.embf{height:100%;border-radius:2px;transition:width .6s}
+
+/* ─── TABLE ────────────────────────────────────────────────────────── */
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{text-align:left;font-size:10px;font-weight:700;color:var(--mu);padding:7px 10px;border-bottom:1.5px solid var(--bd);letter-spacing:.07em;white-space:nowrap;background:var(--sf2);position:sticky;top:0}
+thead th{text-align:left;font-size:10.5px;font-weight:700;color:var(--mu);padding:8px 10px;border-bottom:1.5px solid var(--bd);letter-spacing:.06em;white-space:nowrap;position:sticky;top:0;background:var(--sf);text-transform:uppercase}
 tbody td{padding:7px 10px;border-bottom:1px solid var(--li);color:var(--ink2);white-space:nowrap}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--sf2)}
 .tr{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11.5px}
-td.bld{font-weight:700;color:var(--ink)}
-.sc{cursor:pointer;user-select:none}.sc:hover{color:var(--accent)}
-.stbl{max-height:500px;overflow-y:auto}
-/* filter bar */
-.fb{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:.8rem 1.2rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:1rem;box-shadow:var(--sh)}
-.fl{font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.09em}
-.fsel{font-size:12px;padding:6px 10px;border:1.5px solid var(--bd);border-radius:var(--r);background:var(--sf2);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;cursor:pointer;transition:border-color .2s}
+.bld{font-weight:700;color:var(--ink)}
+.srt{cursor:pointer;user-select:none}.srt:hover{color:var(--accent)}
+.sth{max-height:500px;overflow-y:auto}
+
+/* ─── FILTER BAR ───────────────────────────────────────────────────── */
+.fb{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r2);padding:.85rem 1.2rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:1rem;box-shadow:var(--sh)}
+.fbl{font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.09em;text-transform:uppercase}
+.fsel{font-size:12px;padding:6px 10px;border:1.5px solid var(--bd);border-radius:var(--r);background:var(--sf2);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;outline:none;cursor:pointer;transition:border-color .2s}
 .fsel:focus{border-color:var(--accent)}
-.frst{font-size:11.5px;padding:6px 12px;border:1.5px solid var(--bd);border-radius:var(--r);background:transparent;color:var(--mu);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.frst{font-size:12px;padding:6px 12px;border:1.5px solid var(--bd);border-radius:var(--r);background:transparent;color:var(--mu);cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:600;transition:all .2s}
 .frst:hover{border-color:var(--danger);color:var(--danger)}
 .fcnt{font-size:11px;color:var(--mu);margin-left:auto;font-family:'JetBrains Mono',monospace}
-.si{width:100%;border:1.5px solid var(--bd);border-radius:var(--r);padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--ink);background:#fff;outline:none;margin-bottom:1rem;transition:border-color .2s;box-shadow:var(--sh)}
-.si:focus{border-color:var(--accent)}.si::placeholder{color:var(--fa)}
-/* subtabs */
-.stabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
-.stab{font-size:11.5px;padding:5px 15px;border:1.5px solid var(--bd);border-radius:20px;background:transparent;color:var(--mu);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
-.stab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-/* season cards */
-.sc-wrap{border-radius:var(--r2);border:1.5px solid;overflow:hidden;box-shadow:var(--sh)}
-.sc-sum{border-color:var(--sol-m)}.sc-mon{border-color:var(--pune-m)}.sc-win{border-color:var(--nmh-m)}
-.sc-hdr{padding:.65rem 1rem;display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:700}
-.sc-sum .sc-hdr{background:var(--sol-l);color:var(--sol)}.sc-mon .sc-hdr{background:var(--pune-l);color:var(--pune)}.sc-win .sc-hdr{background:var(--nmh-l);color:var(--nmh)}
-.sc-tag{font-size:9px;font-weight:700;padding:2px 9px;border-radius:12px}
-.sc-sum .sc-tag{background:var(--sol-m);color:var(--sol)}.sc-mon .sc-tag{background:var(--pune-m);color:var(--pune)}.sc-win .sc-tag{background:var(--nmh-m);color:var(--nmh)}
-.sc-body{background:#fff;padding:.9rem}
-.sc-num{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:600;line-height:1;letter-spacing:-.03em}
-.yg{color:var(--ok);font-weight:700}.yb{color:var(--danger);font-weight:700}
-/* summer hero */
-.sher{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid var(--sol-m);border-radius:var(--r2);padding:1.4rem 1.6rem;margin-bottom:1.2rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:var(--sh)}
-.sht{font-size:1.55rem;font-weight:800;color:var(--sol);letter-spacing:-.04em;line-height:1}
-.shs{font-size:12px;color:#92400e;margin-top:4px}
-.shns{display:flex;gap:1.75rem;flex-wrap:wrap}
-.shnl{font-size:9px;font-weight:700;letter-spacing:.1em;color:#92400e;opacity:.65}
-.shnv{font-family:'JetBrains Mono',monospace;font-size:1.85rem;font-weight:600;color:var(--sol);letter-spacing:-.04em;line-height:1}
-@media(max-width:1000px){
-  .rcug,.g4,.g5{grid-template-columns:repeat(2,1fr)}
+.srch{width:100%;border:1.5px solid var(--bd);border-radius:var(--r2);padding:9px 14px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;color:var(--ink);background:var(--sf);outline:none;margin-bottom:1rem;box-shadow:var(--sh);transition:border-color .2s}
+.srch:focus{border-color:var(--accent)} .srch::placeholder{color:var(--fa)}
+
+/* ─── SUMMER HERO ──────────────────────────────────────────────────── */
+.shero{background:linear-gradient(135deg,var(--sol-b) 0%,var(--sf) 100%);border:1.5px solid var(--sol-m);border-radius:var(--r3);padding:1.5rem 1.75rem;margin-bottom:1.25rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.shtitle{font-size:1.65rem;font-weight:800;color:var(--sol);letter-spacing:-.04em;line-height:1.1}
+.shsub{font-size:12.5px;color:var(--sol);opacity:.7;margin-top:4px}
+.shnums{display:flex;gap:2.5rem;flex-wrap:wrap}
+.shnl{font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--mu);text-transform:uppercase}
+.shnv{font-family:'JetBrains Mono',monospace;font-size:1.75rem;font-weight:700;color:var(--sol);letter-spacing:-.03em;line-height:1}
+
+/* ─── YoY colours ──────────────────────────────────────────────────── */
+.yg{color:var(--ok);font-weight:700} .yr{color:var(--danger);font-weight:700} .yf{color:var(--mu)}
+
+/* ─── SEASON CARDS ─────────────────────────────────────────────────── */
+.scard{border-radius:var(--r2);border:1.5px solid;overflow:hidden;margin-bottom:0}
+.scs{border-color:var(--sol-m)} .scm{border-color:var(--pune-m)} .scw{border-color:var(--nmh-m)}
+.schd{padding:.7rem 1.1rem;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700}
+.scs .schd{background:var(--sol-b);color:var(--sol);border-bottom:1px solid var(--sol-m)}
+.scm .schd{background:var(--pune-b);color:var(--pune);border-bottom:1px solid var(--pune-m)}
+.scw .schd{background:var(--nmh-b);color:var(--nmh);border-bottom:1px solid var(--nmh-m)}
+.sctag{font-size:9.5px;font-weight:700;padding:2px 9px;border-radius:12px}
+.scs .sctag{background:rgba(184,92,0,.1);color:var(--sol)}
+.scm .sctag{background:rgba(26,92,181,.1);color:var(--pune)}
+.scw .sctag{background:rgba(26,122,66,.1);color:var(--nmh)}
+.scbd{background:var(--sf);padding:1rem 1.2rem}
+.scn{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1}
+
+@media(max-width:920px){
+  .rg,.g4,.g5,.emg{grid-template-columns:1fr 1fr}
   .g3{grid-template-columns:1fr 1fr}
-  header,.nav{padding:0 1rem}
-  .page{padding:1.2rem 1rem 2rem}
-  .evg{grid-template-columns:repeat(2,1fr)}
+  .g21{grid-template-columns:1fr}
+  header,.nav,.page{padding-left:1rem;padding-right:1rem}
   #cfBar{padding:7px 1rem}
+  .shero{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
 <body>
 
+<!-- LOADER -->
 <div id="loader">
-  <div class="ld-logo">Central Zone <span>·</span> MS-CIT</div>
-  <div class="ld-sub">MKCL · 4 RCUs · 2026 DASHBOARD</div>
+  <div class="ld-logo">Central Zone <em>·</em> MS-CIT</div>
+  <div class="ld-sub">MKCL · 4 RCUs · 2026 Dashboard</div>
   <div class="ld-track"><div class="ld-fill" id="ldBar"></div></div>
   <div id="ldMsg">Initialising…</div>
 </div>
 
+<!-- SETUP MODAL -->
 <div id="setupModal" style="display:none">
-  <div class="mbox">
-    <div class="meye">CENTRAL ZONE · MS-CIT · MKCL</div>
-    <h2>Connect Google Sheets</h2>
-    <p>Paste your published CSV URLs for 2026 (live) and 2025 (frozen). The dashboard auto-filters all four Central Zone RCUs.</p>
-    <div class="rhint"><strong>Central Zone RCUs:</strong>
-      <div class="rtags">
-        <span class="rtag t-smh">South Maharashtra</span><span class="rtag t-pune">Pune</span>
-        <span class="rtag t-nmh">North Maharashtra</span><span class="rtag t-sol">Solapur</span>
-      </div>
+<div class="mbox">
+  <div class="meye">Central Zone · MS-CIT · MKCL</div>
+  <h2>Connect Google Sheets</h2>
+  <p>Paste your published CSV URLs for 2026 (live) and 2025 (frozen). The dashboard auto-filters all four Central Zone RCUs.</p>
+  <div class="rhint"><strong>Central Zone RCUs</strong>
+    <div class="rtags">
+      <span class="rtag t-smh">South Maharashtra</span>
+      <span class="rtag t-pune">Pune</span>
+      <span class="rtag t-nmh">North Maharashtra</span>
+      <span class="rtag t-sol">Solapur</span>
     </div>
-    <label>2026 CSV URL — live data</label>
-    <input class="minp" id="url26" placeholder="https://docs.google.com/spreadsheets/d/e/…&output=csv">
-    <label>2025 CSV URL — frozen data</label>
-    <input class="minp" id="url25" placeholder="https://docs.google.com/spreadsheets/d/e/…&output=csv">
-    <div class="rhint" style="font-size:11px;margin-bottom:1rem"><strong>How to publish:</strong> File → Share → Publish to web → Sheet → CSV → Copy URL</div>
-    <div class="brow">
-      <button class="bpri" onclick="loadSheets()">Load Live Data</button>
-      <button class="bghost" onclick="loadDemo()">Demo Mode</button>
-    </div>
-    <div id="fetchErr"></div>
   </div>
+  <label>2026 CSV URL — live data</label>
+  <input class="minp" id="url26" placeholder="https://docs.google.com/spreadsheets/d/e/…&output=csv">
+  <label>2025 CSV URL — frozen data</label>
+  <input class="minp" id="url25" placeholder="https://docs.google.com/spreadsheets/d/e/…&output=csv">
+  <div class="rhint" style="font-size:11px;margin-bottom:1.1rem"><strong>Tip:</strong> File → Share → Publish to web → Select sheet → CSV → Publish → Copy URL</div>
+  <div class="brow">
+    <button class="bpri" onclick="loadSheets()">Load Live Data</button>
+    <button class="bghost" onclick="loadDemo()">Demo Mode</button>
+  </div>
+  <div id="fetchErr" style="margin-top:.75rem"></div>
+</div>
 </div>
 
+<!-- APP -->
 <div id="app">
-  <header>
-    <div><div class="hbrand">Central Zone <span>·</span> MS-CIT</div><div class="hzone">MKCL · 4 RCUs · MAHARASHTRA</div></div>
-    <div class="hr">
-      <div class="hdots">
-        <div class="hdot" style="background:#fca5a5" title="South Maharashtra"></div>
-        <div class="hdot" style="background:#93b4f5" title="Pune"></div>
-        <div class="hdot" style="background:#7ed6a0" title="North Maharashtra"></div>
-        <div class="hdot" style="background:#f9cc6a" title="Solapur"></div>
-      </div>
-      <span id="lastUp"></span>
-      <button class="hbtn" onclick="refreshData()">↺ Refresh</button>
-      <button class="hbtn" onclick="showSetup()">⚙ Config</button>
+<header>
+  <div>
+    <div class="hbrand">Central Zone <em>·</em> MS-CIT</div>
+    <div class="hzone">MKCL · Maharashtra · 4 RCUs · 15 DCUs</div>
+  </div>
+  <div class="hr">
+    <div class="hdots">
+      <div class="hdot" style="background:var(--smh)" title="South Maharashtra"></div>
+      <div class="hdot" style="background:var(--pune)" title="Pune"></div>
+      <div class="hdot" style="background:var(--nmh)" title="North Maharashtra"></div>
+      <div class="hdot" style="background:var(--sol)" title="Solapur"></div>
     </div>
-  </header>
+    <span id="lastUp"></span>
+    <button class="hbtn" onclick="refreshData()">↺ Refresh</button>
+    <button class="hbtn" onclick="showSetup()">⚙ Config</button>
+  </div>
+</header>
 
-  <div id="cfBar">
-    <span class="cfl">FILTERED BY</span>
-    <div class="cfpills" id="cfPills"></div>
-    <span class="cfcnt" id="cfCnt"></span>
-    <span class="cfclr" onclick="clearCF()">✕ Clear all</span>
+<!-- CF BAR -->
+<div id="cfBar">
+  <span class="cfl">Filtered by</span>
+  <div class="cfpills" id="cfPills"></div>
+  <span class="cfcnt" id="cfCnt"></span>
+  <span class="cfclr" onclick="clrCF()">✕ Clear all</span>
+</div>
+
+<nav class="nav">
+  <button class="navt on"  onclick="goPage('p26',this)">2026 Overview</button>
+  <button class="navt"     onclick="goPage('pSum',this)">Summer Season</button>
+  <button class="navt"     onclick="goPage('pCmp',this)">2025 / 26</button>
+  <button class="navt"     onclick="goPage('pCtr',this)">All Centres</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: 2026 OVERVIEW
+══════════════════════════════════════════════════════════ -->
+<div class="page active" id="p26">
+  <div class="pgh">
+    <div class="pgt">2026 Overview — Central Zone</div>
+    <div class="pgm" id="p26m">Click any card, event or DCU bar to cross-filter</div>
   </div>
 
-  <nav class="nav">
-    <button class="navt on" onclick="switchPg('p26',this)">2026 Overview</button>
-    <button class="navt" onclick="switchPg('pSum',this)">Summer Season</button>
-    <button class="navt" onclick="switchPg('pCmp',this)">2025 / 26</button>
-    <button class="navt" onclick="switchPg('pCtr',this)">All Centres</button>
-  </nav>
+  <!-- 1. ZONE TOTAL KPI STRIP (5 cards) -->
+  <div class="g5" id="kpiZone"></div>
 
-  <!-- ═══════════ 2026 OVERVIEW ═══════════ -->
-  <div class="page on" id="p26">
-    <div class="pgh"><div class="pgt">2026 Overview — Central Zone</div><div class="pgm" id="p26m">Click RCU card · event · DCU bar to cross-filter</div></div>
+  <!-- 2. ZONE → RCU → DCU CONTRIBUTION TABLE -->
+  <div class="pan">
+    <div class="sh"><div class="st">Zone → RCU → DCU Contribution</div><div class="pgm" id="dcuTblM"></div></div>
+    <div class="tw"><table>
+      <thead><tr>
+        <th>RCU / DCU</th><th class="tr">ALCs</th><th class="tr">Participated</th><th class="tr">Not Part.</th>
+        <th class="tr">April</th><th class="tr">June</th><th class="tr">July</th><th class="tr">August</th>
+        <th class="tr">Total</th><th class="tr">Avg / ALC</th><th class="tr">Share %</th>
+      </tr></thead>
+      <tbody id="dcuTbl"></tbody>
+    </table></div>
+  </div>
 
-    <!-- 1. ZONE TOTALS (top) -->
-    <div class="g5" id="kpiZone"></div>
+  <!-- 3. RCU CARDS (clickable cross-filter) -->
+  <div class="sh"><div class="st">RCU Performance</div><div class="sm">Click to cross-filter all panels</div></div>
+  <div class="rg" id="rcuCards"></div>
 
-    <!-- 2. RCU CARDS -->
-    <div class="rcug" id="rcuCards"></div>
+  <!-- 4. DCU PROGRESS BARS -->
+  <div class="pan">
+    <div class="sh"><div class="st">DCU Admissions — Ranked</div><div class="sm">Click DCU to cross-filter</div></div>
+    <div id="dcuBars"></div>
+  </div>
 
-    <!-- 3. RCU / DCU CONTRIBUTION TABLE -->
-    <div class="pan">
-      <div class="ph"><div class="pt">RCU &amp; DCU Contribution — 2026</div><div class="ptn" id="dcuMeta"></div></div>
-      <div class="tw">
-        <table>
-          <thead><tr>
-            <th>RCU / DCU</th><th class="tr">ALCs</th><th class="tr">Participated</th>
-            <th class="tr">Not Part.</th><th class="tr">April</th><th class="tr">June</th>
-            <th class="tr">July</th><th class="tr">August</th><th class="tr">Total</th>
-            <th class="tr">% Zone</th><th class="tr">Avg/ALC</th>
-          </tr></thead>
-          <tbody id="dcuTbl"></tbody>
-        </table>
+  <!-- 5. EXAM EVENT BREAKDOWN -->
+  <div class="pan">
+    <div class="sh">
+      <div class="st">Exam Event Breakdown — 2026</div>
+      <div class="leg">
+        <span><span class="ld" style="background:var(--ec0)"></span>April</span>
+        <span><span class="ld" style="background:var(--ec1)"></span>June</span>
+        <span><span class="ld" style="background:var(--ec2)"></span>July</span>
+        <span><span class="ld" style="background:var(--ec3)"></span>August</span>
       </div>
     </div>
+    <div class="emg" id="evCards"></div>
+    <div class="cw h270"><canvas id="cEvBar"></canvas></div>
+  </div>
 
-    <!-- 4. DCU PERFORMANCE BARS -->
-    <div class="pan">
-      <div class="ph"><div class="pt">DCU Performance — Ranked by Total Admissions</div><div class="ptn">Click a bar to cross-filter</div></div>
-      <div id="dcuBars"></div>
+  <!-- 6. RCU SHARE + RCU×EVENT -->
+  <div class="g2">
+    <div class="pan gnb">
+      <div class="sh"><div class="st">RCU Share of Zone Total</div></div>
+      <div class="cw h240"><canvas id="cRCUpie"></canvas></div>
     </div>
-
-    <!-- 5. EXAM EVENTS -->
-    <div class="pan">
-      <div class="ph">
-        <div class="pt">Exam Event Breakdown — 2026</div>
+    <div class="pan gnb">
+      <div class="sh">
+        <div class="st">RCU × Event Breakdown</div>
         <div class="leg">
-          <span><span class="ld" style="background:#7c3aed"></span>April</span>
-          <span><span class="ld" style="background:#1a56c4"></span>June</span>
-          <span><span class="ld" style="background:#c0392b"></span>July</span>
-          <span><span class="ld" style="background:#d97706"></span>August</span>
+          <span><span class="ld" style="background:var(--ec0)"></span>Apr</span>
+          <span><span class="ld" style="background:var(--ec1)"></span>Jun</span>
+          <span><span class="ld" style="background:var(--ec2)"></span>Jul</span>
         </div>
       </div>
-      <div class="evg" id="evCards"></div>
-      <div class="cw h300"><canvas id="cEvBar"></canvas></div>
-    </div>
-
-    <!-- 6. RCU SHARE + RCU×EVENT -->
-    <div class="g2">
-      <div class="pan"><div class="ph"><div class="pt">RCU Share of Admissions</div></div><div class="cw h270"><canvas id="cRpie"></canvas></div></div>
-      <div class="pan"><div class="ph"><div class="pt">RCU × Event Contribution</div></div><div class="cw h270"><canvas id="cRev"></canvas></div></div>
-    </div>
-
-    <!-- 7. URBAN/RURAL + PARTICIPATION -->
-    <div class="g2">
-      <div class="pan">
-        <div class="ph"><div class="pt">Urban vs Rural Split</div></div>
-        <div class="g2" style="gap:10px;margin-bottom:.8rem">
-          <div class="kpi"><div class="klab">URBAN</div><div class="kval" id="urbV">—</div><div class="ksub" id="urbS"></div></div>
-          <div class="kpi"><div class="klab">RURAL</div><div class="kval" id="rurV">—</div><div class="ksub" id="rurS"></div></div>
-        </div>
-        <div class="cw h180"><canvas id="cUrRu"></canvas></div>
-      </div>
-      <div class="pan">
-        <div class="ph"><div class="pt">Participation Status</div></div>
-        <div class="cw h180"><canvas id="cPart"></canvas></div>
-        <div id="partD" style="margin-top:.8rem;font-size:12px;color:var(--mu);line-height:1.8"></div>
-      </div>
-    </div>
-
-    <!-- 8. TOP 20 -->
-    <div class="pan">
-      <div class="ph"><div class="pt">Top 20 Centres — 2026</div><div class="ptn" id="top20m"></div></div>
-      <div class="tw stbl">
-        <table><thead><tr>
-          <th>#</th><th>Centre</th><th>RCU</th><th>DCU</th><th>Taluka</th><th>Type</th>
-          <th class="tr">April</th><th class="tr">June</th><th class="tr">July</th><th class="tr">August</th><th class="tr">Total</th>
-        </tr></thead><tbody id="top20b"></tbody></table>
-      </div>
+      <div class="cw h240"><canvas id="cRCUev"></canvas></div>
     </div>
   </div>
 
-  <!-- ═══════════ SUMMER ═══════════ -->
-  <div class="page" id="pSum">
-    <div class="sher">
-      <div><div class="sht">☀️ Summer Season 2026</div><div class="shs">June + July · Central Zone · click RCU card to filter</div></div>
-      <div class="shns">
-        <div><div class="shnl">TOTAL ADMISSIONS</div><div class="shnv" id="shT">—</div></div>
-        <div><div class="shnl">ACTIVE CENTRES</div><div class="shnv" id="shA">—</div></div>
-        <div><div class="shnl">PARTICIPATED</div><div class="shnv" id="shP">—</div></div>
+  <!-- 7. URBAN/RURAL + PARTICIPATION -->
+  <div class="g2">
+    <div class="pan gnb">
+      <div class="sh"><div class="st">Urban vs Rural</div></div>
+      <div class="g2 gnb" style="gap:8px;margin-bottom:.9rem">
+        <div class="kpi"><div class="ke">Urban</div><div class="kv sm" id="uvU">—</div><div class="ks" id="uvUs"></div></div>
+        <div class="kpi"><div class="ke">Rural</div><div class="kv sm" id="uvR">—</div><div class="ks" id="uvRs"></div></div>
       </div>
+      <div class="cw h140"><canvas id="cUrRu"></canvas></div>
     </div>
-    <div class="rcug" id="sumRC"></div>
-    <div class="g2">
-      <div class="pan"><div class="ph"><div class="pt">June vs July — by RCU</div></div><div class="cw h270"><canvas id="cSumRCU"></canvas></div></div>
-      <div class="pan"><div class="ph"><div class="pt">Summer Share — RCU</div></div><div class="cw h270"><canvas id="cSumPie"></canvas></div></div>
-    </div>
-    <div class="pan"><div class="ph"><div class="pt">DCU Performance — Summer 2026</div><div class="ptn">Click to filter</div></div><div id="sumBars"></div></div>
-    <div class="pan">
-      <div class="ph"><div class="pt">Top 20 Centres — Summer 2026</div><div class="ptn" id="sTop20m"></div></div>
-      <div class="tw stbl">
-        <table><thead><tr><th>#</th><th>Centre</th><th>RCU</th><th>DCU</th><th>Taluka</th>
-          <th class="tr">June</th><th class="tr">July</th><th class="tr">Summer Total</th>
-        </tr></thead><tbody id="sTop20b"></tbody></table>
-      </div>
+    <div class="pan gnb">
+      <div class="sh"><div class="st">Participation Status</div></div>
+      <div class="cw h185"><canvas id="cPart"></canvas></div>
+      <div id="partDet" style="margin-top:.75rem;font-size:12.5px;color:var(--mu);text-align:center"></div>
     </div>
   </div>
 
-  <!-- ═══════════ 2025/26 ═══════════ -->
-  <div class="page" id="pCmp">
-    <div class="pgh"><div class="pgt">Year-on-Year — 2025 vs 2026</div><div class="pgm">2025 frozen · 2026 ongoing</div></div>
-    <div class="g4" id="yoyKpi"></div>
-    <div class="stabs">
-      <button class="stab on" onclick="showCT('cSeason',this)">Season-wise</button>
-      <button class="stab" onclick="showCT('cRCUy',this)">RCU Year-on-Year</button>
-      <button class="stab" onclick="showCT('cEvY',this)">All Events</button>
-    </div>
-    <div id="cSeason">
-      <div class="g3">
-        <div class="sc-wrap sc-sum">
-          <div class="sc-hdr"><span>☀️ Summer</span><span class="sc-tag">Jun·Jul vs May·Jun·Jul</span></div>
-          <div class="sc-body">
-            <div class="g2" style="gap:8px;margin-bottom:.7rem">
-              <div><div style="font-size:9px;font-weight:800;color:var(--sol);opacity:.6;letter-spacing:.07em;margin-bottom:4px">2025</div><div class="sc-num" id="s25s">—</div><div style="font-size:11px;color:var(--mu)">May+Jun+Jul</div></div>
-              <div><div style="font-size:9px;font-weight:800;color:var(--sol);letter-spacing:.07em;margin-bottom:4px">2026</div><div class="sc-num" id="s26s">—</div><div style="font-size:11px;color:var(--mu)">Jun+Jul</div></div>
-            </div>
-            <div id="ssc" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div>
-          </div>
-        </div>
-        <div class="sc-wrap sc-mon">
-          <div class="sc-hdr"><span>🌧️ Monsoon</span><span class="sc-tag">Oct · Dec</span></div>
-          <div class="sc-body">
-            <div class="g2" style="gap:8px;margin-bottom:.7rem">
-              <div><div style="font-size:9px;font-weight:800;color:var(--pune);opacity:.6;letter-spacing:.07em;margin-bottom:4px">2025</div><div class="sc-num" id="s25m">—</div><div style="font-size:11px;color:var(--mu)">Oct+Dec</div></div>
-              <div><div style="font-size:9px;font-weight:800;color:var(--pune);letter-spacing:.07em;margin-bottom:4px">2026</div><div class="sc-num" style="color:var(--fa)">Pending</div></div>
-            </div>
-            <div style="font-size:11px;color:var(--mu)">2026 Monsoon not yet started</div>
-          </div>
-        </div>
-        <div class="sc-wrap sc-win">
-          <div class="sc-hdr"><span>❄️ Winter</span><span class="sc-tag">Feb · Apr</span></div>
-          <div class="sc-body">
-            <div class="g2" style="gap:8px;margin-bottom:.7rem">
-              <div><div style="font-size:9px;font-weight:800;color:var(--nmh);opacity:.6;letter-spacing:.07em;margin-bottom:4px">2025</div><div class="sc-num" id="s25w">—</div><div style="font-size:11px;color:var(--mu)">Feb+Apr</div></div>
-              <div><div style="font-size:9px;font-weight:800;color:var(--nmh);letter-spacing:.07em;margin-bottom:4px">2026</div><div class="sc-num" id="s26w">—</div><div style="font-size:11px;color:var(--mu)">Apr only</div></div>
-            </div>
-            <div id="swc" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pan"><div class="ph"><div class="pt">Season Totals — 2025 vs 2026</div><div class="leg"><span><span class="ld" style="background:#94a3b8"></span>2025</span><span><span class="ld" style="background:var(--sol)"></span>2026 (partial)</span></div></div><div class="pnote">2026 Summer = Jun+Jul only. Monsoon &amp; Winter pending.</div><div class="cw h270"><canvas id="cSCmp"></canvas></div></div>
-    </div>
-    <div id="cRCUy" style="display:none">
-      <div class="pan"><div class="ph"><div class="pt">Total Admissions by RCU — 2025 vs 2026</div></div><div class="cw h300"><canvas id="cRyoy"></canvas></div></div>
-      <div class="pan"><div class="ph"><div class="pt">RCU Year-on-Year Table</div></div>
-        <div class="tw"><table><thead><tr><th>RCU</th><th class="tr">2025</th><th class="tr">2026 (so far)</th><th class="tr">Change</th><th class="tr">% Change</th><th>Trend</th></tr></thead><tbody id="yoyTbl"></tbody></table></div>
-      </div>
-    </div>
-    <div id="cEvY" style="display:none">
-      <div class="pan"><div class="ph"><div class="pt">Event Admissions — 2025 &amp; 2026</div></div><div class="cw h300"><canvas id="cEvC"></canvas></div></div>
-      <div class="pan"><div class="ph"><div class="pt">Event Detail Table</div></div>
-        <div class="tw"><table><thead><tr><th>Event</th><th>Year</th><th class="tr">Admissions</th><th class="tr">% of Year</th></tr></thead><tbody id="evCTbl"></tbody></table></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════ ALL CENTRES ═══════════ -->
-  <div class="page" id="pCtr">
-    <div class="pgh"><div class="pgt">All Centres — 2026</div><div class="pgm">Cross-filters from other pages carry here</div></div>
-    <div class="fb">
-      <span class="fl">FILTER</span>
-      <select class="fsel" id="fRCU" onchange="applyF()"><option value="">All RCUs</option></select>
-      <select class="fsel" id="fDCU" onchange="applyF()"><option value="">All DCUs</option></select>
-      <select class="fsel" id="fUr" onchange="applyF()"><option value="">Urban &amp; Rural</option><option>Urban</option><option>Rural</option></select>
-      <select class="fsel" id="fPt" onchange="applyF()"><option value="">All Status</option><option value="Participated">Participated</option><option value="Not Participated">Not Participated</option></select>
-      <button class="frst" onclick="resetF()">Reset</button>
-      <span class="fcnt" id="fCnt"></span>
-    </div>
-    <input class="si" id="srch" placeholder="Search centre name, taluka or DCU…" oninput="applyF()">
-    <div class="pan">
-      <div class="tw stbl">
-        <table><thead><tr>
-          <th class="sc" onclick="sortT('Center Name')">Centre ↕</th>
-          <th>RCU</th><th class="sc" onclick="sortT('DCU')">DCU ↕</th>
-          <th>Taluka</th><th>Type</th><th>Status</th>
-          <th class="tr sc" onclick="sortT('MS-CIT April 2026 Exam Event')">April ↕</th>
-          <th class="tr sc" onclick="sortT('MS-CIT June 2026 Exam Event')">June ↕</th>
-          <th class="tr sc" onclick="sortT('MS-CIT July 2026 Exam Event')">July ↕</th>
-          <th class="tr sc" onclick="sortT('MS-CIT August 2026 Exam Event')">August ↕</th>
-          <th class="tr sc" onclick="sortT('Total Admissions')">Total ↕</th>
-        </tr></thead><tbody id="ctrTbl"></tbody></table>
-      </div>
-    </div>
+  <!-- 8. TOP 20 CENTRES -->
+  <div class="pan" style="margin-top:1.25rem">
+    <div class="sh"><div class="st">Top 20 Centres — 2026</div><div class="pgm" id="t20m"></div></div>
+    <div class="tw sth"><table>
+      <thead><tr><th>#</th><th>Centre</th><th>RCU</th><th>DCU</th><th>Taluka</th><th>Type</th>
+        <th class="tr">Apr</th><th class="tr">Jun</th><th class="tr">Jul</th><th class="tr">Aug</th><th class="tr">Total</th></tr></thead>
+      <tbody id="t20b"></tbody>
+    </table></div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: SUMMER
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="pSum">
+  <div class="shero">
+    <div>
+      <div class="shtitle">Summer Season 2026</div>
+      <div class="shsub">June + July exam events · Central Zone</div>
+    </div>
+    <div class="shnums">
+      <div><div class="shnl">Total Admissions</div><div class="shnv" id="shT">—</div></div>
+      <div><div class="shnl">Active Centres</div><div class="shnv" id="shA">—</div></div>
+      <div><div class="shnl">Participated</div><div class="shnv" id="shP">—</div></div>
+    </div>
+  </div>
+  <div class="sh"><div class="st">RCU — Summer 2026</div><div class="sm">Click to cross-filter</div></div>
+  <div class="rg" id="sumRC"></div>
+  <div class="g2">
+    <div class="pan gnb"><div class="sh"><div class="st">June vs July by RCU</div></div><div class="cw h270"><canvas id="cSumBar"></canvas></div></div>
+    <div class="pan gnb"><div class="sh"><div class="st">Summer Share by RCU</div></div><div class="cw h270"><canvas id="cSumPie"></canvas></div></div>
+  </div>
+  <div class="pan" style="margin-top:1.25rem">
+    <div class="sh"><div class="st">DCU — Summer Performance</div><div class="sm">Click to cross-filter</div></div>
+    <div id="sumBars"></div>
+  </div>
+  <div class="pan">
+    <div class="sh"><div class="st">Top 20 Centres — Summer 2026</div><div class="pgm" id="sT20m"></div></div>
+    <div class="tw sth"><table>
+      <thead><tr><th>#</th><th>Centre</th><th>RCU</th><th>DCU</th><th>Taluka</th>
+        <th class="tr">June</th><th class="tr">July</th><th class="tr">Summer Total</th></tr></thead>
+      <tbody id="sT20b"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: COMPARE
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="pCmp">
+  <div class="pgh"><div class="pgt">Year-on-Year — 2025 vs 2026</div><div class="pgm">2025 frozen · 2026 ongoing</div></div>
+  <div class="g4" id="yoyKPI"></div>
+  <div class="stabs">
+    <button class="stab on" onclick="cmpTab('cS',this)">Season-wise</button>
+    <button class="stab" onclick="cmpTab('cR',this)">RCU Year-on-Year</button>
+    <button class="stab" onclick="cmpTab('cE',this)">All Events</button>
+  </div>
+  <div id="cS">
+    <div class="g3">
+      <div class="scard scs"><div class="schd"><span>Summer</span><span class="sctag">Jun+Jul / May+Jun+Jul</span></div>
+        <div class="scbd"><div class="g2 gnb" style="gap:8px;margin-bottom:.6rem">
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25s">—</div><div style="font-size:11px;color:var(--mu)">May+Jun+Jul</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--sol);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26s">—</div><div style="font-size:11px;color:var(--mu)">Jun+Jul</div></div>
+        </div><div id="ssSchg" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div></div>
+      </div>
+      <div class="scard scm"><div class="schd"><span>Monsoon</span><span class="sctag">Oct · Dec</span></div>
+        <div class="scbd"><div class="g2 gnb" style="gap:8px;margin-bottom:.6rem">
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25m">—</div><div style="font-size:11px;color:var(--mu)">Oct+Dec</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--pune);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" style="color:var(--fa);font-size:1.2rem">Pending</div></div>
+        </div><div style="font-size:11px;color:var(--mu)">2026 Monsoon events not yet started</div></div>
+      </div>
+      <div class="scard scw"><div class="schd"><span>Winter</span><span class="sctag">Feb · Apr</span></div>
+        <div class="scbd"><div class="g2 gnb" style="gap:8px;margin-bottom:.6rem">
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25w">—</div><div style="font-size:11px;color:var(--mu)">Feb+Apr</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--nmh);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26w">—</div><div style="font-size:11px;color:var(--mu)">Apr only</div></div>
+        </div><div id="ssWchg" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div></div>
+      </div>
+    </div>
+    <div class="pan"><div class="sh"><div class="st">Season Totals — 2025 vs 2026</div>
+      <div class="leg"><span><span class="ld" style="background:#94a3b8"></span>2025</span><span><span class="ld" style="background:var(--sol)"></span>2026 (partial)</span></div>
+    </div><div class="cw h270"><canvas id="cScmp"></canvas></div></div>
+  </div>
+  <div id="cR" style="display:none">
+    <div class="pan"><div class="sh"><div class="st">Total Admissions by RCU — 2025 vs 2026</div>
+      <div class="leg"><span><span class="ld" style="background:#94a3b8"></span>2025</span><span><span class="ld" style="background:var(--accent)"></span>2026</span></div>
+    </div><div class="cw h310"><canvas id="cRyoy"></canvas></div></div>
+    <div class="pan"><div class="sh"><div class="st">RCU Year-on-Year Table</div></div>
+    <div class="tw"><table><thead><tr><th>RCU</th><th class="tr">2025 Total</th><th class="tr">2026 Total</th><th class="tr">Change</th><th class="tr">% Change</th><th>Trend</th></tr></thead>
+    <tbody id="ryoyTbl"></tbody></table></div></div>
+  </div>
+  <div id="cE" style="display:none">
+    <div class="pan"><div class="sh"><div class="st">Event Admissions — 2025 &amp; 2026</div></div><div class="cw h310"><canvas id="cEcmp"></canvas></div></div>
+    <div class="pan"><div class="sh"><div class="st">Event Detail Table</div></div>
+    <div class="tw"><table><thead><tr><th>Event</th><th>Year</th><th class="tr">Admissions</th><th class="tr">% of Year Total</th></tr></thead>
+    <tbody id="eTbl"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE: ALL CENTRES
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="pCtr">
+  <div class="pgh"><div class="pgt">All Centres — 2026</div><div class="pgm">Cross-filters from other pages are applied here</div></div>
+  <div class="fb">
+    <span class="fbl">Filter</span>
+    <select class="fsel" id="fRCU" onchange="applyF()"><option value="">All RCUs</option></select>
+    <select class="fsel" id="fDCU" onchange="applyF()"><option value="">All DCUs</option></select>
+    <select class="fsel" id="fUr"  onchange="applyF()"><option value="">Urban &amp; Rural</option><option>Urban</option><option>Rural</option></select>
+    <select class="fsel" id="fPt"  onchange="applyF()"><option value="">All Status</option><option value="Participated">Participated</option><option value="Not Participated">Not Participated</option></select>
+    <button class="frst" onclick="resetF()">Reset</button>
+    <span class="fcnt" id="fCnt"></span>
+  </div>
+  <input class="srch" id="srch" placeholder="Search centre name, taluka, DCU…" oninput="applyF()">
+  <div class="pan"><div class="tw sth"><table>
+    <thead><tr>
+      <th class="srt" onclick="sortT('Center Name')">Centre ↕</th><th>RCU</th>
+      <th class="srt" onclick="sortT('DCU')">DCU ↕</th><th>Taluka</th><th>Type</th><th>Status</th>
+      <th class="tr srt" onclick="sortT('MS-CIT April 2026 Exam Event')">Apr ↕</th>
+      <th class="tr srt" onclick="sortT('MS-CIT June 2026 Exam Event')">Jun ↕</th>
+      <th class="tr srt" onclick="sortT('MS-CIT July 2026 Exam Event')">Jul ↕</th>
+      <th class="tr srt" onclick="sortT('MS-CIT August 2026 Exam Event')">Aug ↕</th>
+      <th class="tr srt" onclick="sortT('Total Admissions')">Total ↕</th>
+    </tr></thead>
+    <tbody id="ctrTbl"></tbody>
+  </table></div></div>
+</div>
+</div><!-- /app -->
+
 <script>
+// ─── Chart.js is bundled inline — no extra CDN ─────────────────────
+// Load CDN scripts but make the page functional even without Google Fonts
+// ─── CONFIG ──────────────────────────────────────────────────────────
 const CFG={url26:'',url25:''};
+
+// ─── CONSTANTS ───────────────────────────────────────────────────────
 const RD={'South Maharashtra':['Satara','Kolhapur','Sangli'],'Pune':['Pune','Baramati','Maval','Haveli'],'North Maharashtra':['Nashik','Dhule','Jalgaon','Nandurbar'],'Solapur':['Solapur','Latur','Osmanabad','Bidar']};
 const D2R={};Object.entries(RD).forEach(([r,ds])=>ds.forEach(d=>D2R[d]=r));
 const CDCU=new Set(Object.values(RD).flat());
-const RO=['South Maharashtra','Pune','North Maharashtra','Solapur'];
-const RCOL={'South Maharashtra':'#c0392b','Pune':'#1a56c4','North Maharashtra':'#157a3c','Solapur':'#a0590a'};
-const RBGA={'South Maharashtra':'rgba(192,57,43,.13)','Pune':'rgba(26,86,196,.13)','North Maharashtra':'rgba(21,122,60,.13)','Solapur':'rgba(160,89,10,.13)'};
+const RCOL={'South Maharashtra':'#c0392b','Pune':'#1a5cb5','North Maharashtra':'#1a7a42','Solapur':'#b85c00'};
+const RBG={'South Maharashtra':'rgba(192,57,43,.12)','Pune':'rgba(26,92,181,.12)','North Maharashtra':'rgba(26,122,66,.12)','Solapur':'rgba(184,92,0,.12)'};
 const RCLS={'South Maharashtra':'smh','Pune':'pune','North Maharashtra':'nmh','Solapur':'sol'};
+const RO=['South Maharashtra','Pune','North Maharashtra','Solapur'];
 const EV26=['MS-CIT April 2026 Exam Event','MS-CIT June 2026 Exam Event','MS-CIT July 2026 Exam Event','MS-CIT August 2026 Exam Event'];
 const EL=['April','June','July','August'];
-const EC=['#7c3aed','#1a56c4','#c0392b','#d97706'];
-const EV25=['March Exam Event','May Exam Event','June Exam Event','July Exam Event','October Exam Event','December Exam Event','February Exam Event'];
+const EC=['#6254c4','#1a5cb5','#c0392b','#b85c00'];
 const EL25=['March','May','June','July','October','December','February'];
+const EV25=['March Exam Event','May Exam Event','June Exam Event','July Exam Event','October Exam Event','December Exam Event','February Exam Event'];
 
-// ── CF ──
+// ─── CROSS-FILTER STATE ───────────────────────────────────────────────
 const CF={rcu:null,dcu:null,event:null};
-function setCF(t,v){CF[t]=CF[t]===v?null:v;if(t==='rcu')CF.dcu=null;updCF();refilter();}
-function clearCF(){CF.rcu=null;CF.dcu=null;CF.event=null;document.querySelectorAll('.fsel').forEach(s=>s.value='');const si=document.getElementById('srch');if(si)si.value='';updCF();refilter();}
+function setCF(k,v){CF[k]=(CF[k]===v)?null:v;if(k==='rcu')CF.dcu=null;updCF();refilter();}
+function clrCF(){CF.rcu=null;CF.dcu=null;CF.event=null;['fRCU','fDCU','fUr','fPt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});const s=document.getElementById('srch');if(s)s.value='';updCF();refilter();}
 function updCF(){
   const bar=document.getElementById('cfBar'),pills=document.getElementById('cfPills');
   const act=Object.entries(CF).filter(([,v])=>v);
   if(!act.length){bar.classList.remove('vis');return;}
   bar.classList.add('vis');
   pills.innerHTML=act.map(([k,v])=>`<div class="cfpill">${k.toUpperCase()}: <strong>${v}</strong><span class="cfx" onclick="setCF('${k}',null)">×</span></div>`).join('');
-  if(_r26)document.getElementById('cfCnt').textContent=`${cfR().length} centres`;
+  const cnt=document.getElementById('cfCnt');
+  if(_r26)cnt.textContent=`${fRows().length} centres`;
 }
-function cfR(rows=_r26){
+function fRows(rows=_r26){
   if(!rows)return[];
   return rows.filter(r=>{
     const rc=D2R[r['DCU']]||r['RCU']||'';
@@ -496,360 +584,371 @@ function cfR(rows=_r26){
     return true;
   });
 }
-function refilter(){if(!_d26||!_d25)return;const fd=CF.rcu||CF.dcu||CF.event?parse26(cfR()):_d26;rend26(fd);rendSum(fd);applyF();hilite();}
-function hilite(){
-  document.querySelectorAll('.rcuc').forEach(c=>c.classList.toggle('cfa',CF.rcu===c.dataset.rcu));
-  document.querySelectorAll('.evc').forEach(c=>c.classList.toggle('cfa',CF.event===c.dataset.ev));
-  document.querySelectorAll('[data-dcu]').forEach(c=>c.classList.toggle('cfa',CF.dcu===c.dataset.dcu));
+function refilter(){
+  if(!_d26||!_d25)return;
+  const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;
+  rend26(fd);rendSum(fd);applyF();hiUI();
+}
+function hiUI(){
+  document.querySelectorAll('.rc').forEach(c=>c.classList.toggle('cfa',CF.rcu===c.dataset.rcu));
+  document.querySelectorAll('.em').forEach(c=>c.classList.toggle('cfa',CF.event===c.dataset.ev));
+  document.querySelectorAll('.pr[data-dcu]').forEach(c=>c.classList.toggle('cfa',CF.dcu===c.dataset.dcu));
 }
 
-// ── UTILS ──
+// ─── UTILS ───────────────────────────────────────────────────────────
 const n=v=>parseFloat(v)||0;
-const F=v=>v===0?'0':v?v.toLocaleString('en-IN'):'—';
+const F=v=>v===0?'—':v.toLocaleString('en-IN');
 const P=(a,b)=>b?((a/b)*100).toFixed(1)+'%':'—';
-const Pn=(a,b)=>b?+((a/b)*100).toFixed(1):0;
-const _C={};
-function mkC(id,cfg){if(_C[id])_C[id].destroy();_C[id]=new Chart(document.getElementById(id),cfg);return _C[id];}
-const FONT={family:"'Plus Jakarta Sans',sans-serif",size:11};
-const MONO={family:"'JetBrains Mono',monospace",size:11};
-const GC='rgba(0,0,0,.05)',TC='#64748b';
-const TTOPTS={titleFont:FONT,bodyFont:MONO,padding:10,cornerRadius:6,backgroundColor:'#1e293b',titleColor:'#f8fafc',bodyColor:'#e2e8f0'};
-const BASE={responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{labels:{font:FONT,color:TC,boxWidth:10,padding:14}},tooltip:TTOPTS},
-  scales:{x:{grid:{color:GC},ticks:{font:FONT,color:TC}},y:{grid:{color:GC},ticks:{font:MONO,color:TC}}}};
+const pN=(a,b)=>b?+((a/b)*100).toFixed(1):0;
+function setL(m,p=null){document.getElementById('ldMsg').textContent=m;if(p!==null)document.getElementById('ldBar').style.width=p+'%';}
+function goPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.navt').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('active');btn.classList.add('on');}
+function cmpTab(id,btn){['cS','cR','cE'].forEach(t=>{const e=document.getElementById(t);if(e)e.style.display=t===id?'':'none';});document.querySelectorAll('#pCmp .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 
-// ── DATA LABEL PLUGIN ──
-// Draws value labels directly on bar and pie/doughnut chart segments
-const DLP={id:'czDL',afterDatasetsDraw(chart){
-  const {ctx}=chart;
+// ─── CHART DEFAULTS ───────────────────────────────────────────────────
+const _ch={};
+function mk(id,cfg){if(_ch[id])_ch[id].destroy();_ch[id]=new Chart(document.getElementById(id),cfg);return _ch[id];}
+const FONT='Plus Jakarta Sans,system-ui,sans-serif';
+const MONO='JetBrains Mono,monospace';
+const TX={color:'#5a6480',font:{family:FONT,size:11}};
+const TXm={color:'#5a6480',font:{family:MONO,size:10.5}};
+const GRID={color:'rgba(13,17,23,.05)',lineWidth:1};
+const BASE={responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{labels:{font:{family:FONT,size:11},color:'#5a6480',boxWidth:9,padding:14}}},
+  scales:{x:{grid:GRID,ticks:TX,border:{color:'#e2e5f0'}},
+          y:{grid:GRID,ticks:{...TXm,callback:v=>v>=1000?(v/1000).toFixed(0)+'k':v},border:{color:'#e2e5f0'}}}};
+
+// ─── DATA LABEL PLUGIN (no CDN dependency) ────────────────────────────
+const dlPlugin={id:'datalabels',afterDatasetsDraw(chart,_,opts){
+  const{ctx}=chart;
+  const minV=opts.minVal??0;
+  const fSize=opts.fontSize??10;
+  const fColor=opts.color??'#0d1117';
   chart.data.datasets.forEach((ds,di)=>{
-    const meta=chart.getDatasetMeta(di);if(meta.hidden)return;
-    const pl=(chart.options.plugins||{}).czDL;if(!pl||!pl.on)return;
-    meta.data.forEach((el,idx)=>{
-      const v=ds.data[idx];
-      if(v===null||v===undefined||v===0)return;
-      if(pl.min&&v<pl.min)return;
-      const txt=pl.fmt?pl.fmt(v,idx,di):F(v);
-      if(!txt)return;
+    const meta=chart.getDatasetMeta(di);
+    if(meta.hidden)return;
+    meta.data.forEach((el,ii)=>{
+      const val=ds.data[ii];
+      if(val==null||val<minV)return;
+      const label=val>=1000?(val/1000).toFixed(1)+'k':String(val);
+      const type=chart.config.type;
       ctx.save();
-      ctx.font=`600 ${pl.fs||10}px 'JetBrains Mono',monospace`;
-      ctx.fillStyle=pl.col||'#1e293b';
+      ctx.font=`600 ${fSize}px ${MONO}`;
       ctx.textAlign='center';ctx.textBaseline='middle';
-      // pie/doughnut
-      if(el.startAngle!==undefined){
-        const mid=(el.startAngle+el.endAngle)/2,r2=(el.innerRadius+el.outerRadius)/2;
-        const x=el.x+Math.cos(mid)*r2,y=el.y+Math.sin(mid)*r2;
-        const lines=txt.split('\n');const lh=(pl.fs||10)+3;let ly=y-(lines.length-1)*lh/2;
-        lines.forEach(l=>{ctx.fillText(l,x,ly);ly+=lh;});
+      if(type==='doughnut'||type==='pie'){
+        const{x,y}=el.getCenterPoint();
+        ctx.fillStyle=fColor;
+        ctx.fillText(label,x,y);
+      } else if(ds.stack){
+        const h=Math.abs(el.base-el.y);
+        if(h>18){ctx.fillStyle='rgba(13,17,23,.7)';ctx.fillText(label,el.x,(el.y+el.base)/2);}
       } else {
-        // bar
-        let x,y;
-        if(el.base!==undefined){
-          x=el.x;
-          if(pl.pos==='center'){y=(el.y+el.base)/2;}
-          else if(pl.pos==='top'){y=el.y-(pl.fs||10)/2-4;}
-          else{y=el.y-(pl.fs||10)/2-4;}
-          // horizontal bar
-          if(chart.options.indexAxis==='y'){x=(el.x+el.base)/2;y=el.y;}
-        } else {x=el.x;y=el.y-7;}
-        const lines=txt.split('\n');const lh=(pl.fs||10)+3;let ly=y-(lines.length-1)*lh/2;
-        lines.forEach(l=>{ctx.fillText(l,x,ly);ly+=lh;});
+        // Above bar
+        ctx.fillStyle=fColor;
+        ctx.fillText(label,el.x,el.y-8);
       }
       ctx.restore();
     });
   });
 }};
-Chart.register(DLP);
+Chart.register(dlPlugin);
 
-function setL(m,p=null){document.getElementById('ldMsg').textContent=m;if(p!==null)document.getElementById('ldBar').style.width=p+'%';}
-function switchPg(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.navt').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');btn.classList.add('on');}
-function showCT(id,btn){['cSeason','cRCUy','cEvY'].forEach(t=>{const e=document.getElementById(t);if(e)e.style.display=t===id?'':'none';});document.querySelectorAll('#pCmp .stab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-
+// ─── PARSE ────────────────────────────────────────────────────────────
 function parse26(rows){
-  let tot=0,apr=0,jun=0,jul=0,aug=0,part=0;const rcu={},dcu={};
-  let uT=0,rT=0,uA=0,uJ=0,uJl=0,rA=0,rJ=0,rJl=0;
+  let total=0,apr=0,jun=0,jul=0,aug=0,part=0;
+  const rcu={},dcu={};let urbT=0,rurT=0,urbA=0,urbJ=0,urbL=0,rurA=0,rurJ=0,rurL=0;
   rows.forEach(r=>{
-    const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'?';
-    const a=n(r[EV26[0]]),j=n(r[EV26[1]]),jl=n(r[EV26[2]]),au=n(r[EV26[3]]),t2=a+j+jl+au;
-    const ur=r['Urban/Rural']||'';
-    tot+=t2;apr+=a;jun+=j;jul+=jl;aug+=au;
-    if(r['Participation']==='Participated')part++;
+    const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'Unknown';
+    const a=n(r[EV26[0]]),j=n(r[EV26[1]]),jl=n(r[EV26[2]]),au=n(r[EV26[3]]),tot=a+j+jl+au;
+    const ur=r['Urban/Rural']||'',isPart=r['Participation']==='Participated';
+    total+=tot;apr+=a;jun+=j;jul+=jl;aug+=au;if(isPart)part++;
     if(!rcu[rc])rcu[rc]={total:0,alcs:0,part:0,np:0,apr:0,jun:0,jul:0,aug:0};
-    rcu[rc].total+=t2;rcu[rc].alcs++;rcu[rc].apr+=a;rcu[rc].jun+=j;rcu[rc].jul+=jl;rcu[rc].aug+=au;
-    if(r['Participation']==='Participated')rcu[rc].part++;else rcu[rc].np++;
+    rcu[rc].total+=tot;rcu[rc].alcs++;rcu[rc].apr+=a;rcu[rc].jun+=j;rcu[rc].jul+=jl;rcu[rc].aug+=au;
+    if(isPart)rcu[rc].part++;else rcu[rc].np++;
     if(!dcu[d])dcu[d]={rcu:rc,total:0,alcs:0,part:0,np:0,apr:0,jun:0,jul:0,aug:0};
-    dcu[d].total+=t2;dcu[d].alcs++;dcu[d].apr+=a;dcu[d].jun+=j;dcu[d].jul+=jl;dcu[d].aug+=au;
-    if(r['Participation']==='Participated')dcu[d].part++;else dcu[d].np++;
-    if(ur==='Urban'){uT+=t2;uA+=a;uJ+=j;uJl+=jl;}else{rT+=t2;rA+=a;rJ+=j;rJl+=jl;}
+    dcu[d].total+=tot;dcu[d].alcs++;dcu[d].apr+=a;dcu[d].jun+=j;dcu[d].jul+=jl;dcu[d].aug+=au;
+    if(isPart)dcu[d].part++;else dcu[d].np++;
+    if(ur==='Urban'){urbT+=tot;urbA+=a;urbJ+=j;urbL+=jl;}else{rurT+=tot;rurA+=a;rurJ+=j;rurL+=jl;}
   });
   const top20=[...rows].sort((a,b)=>n(b['Total Admissions'])-n(a['Total Admissions'])).slice(0,20).map(r=>{
-    const d2=r['DCU']||'',rc2=D2R[d2]||r['RCU']||'';
-    return{n:r['Center Name'],rcu:rc2,dcu:d2,t:r['Taluka']||'',ur:r['Urban/Rural']||'',
-           apr:n(r[EV26[0]]),jun:n(r[EV26[1]]),jul:n(r[EV26[2]]),aug:n(r[EV26[3]]),tot:n(r['Total Admissions'])};
+    const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'';
+    return{n:r['Center Name'],rcu:rc,dcu:d,t:r['Taluka']||'',ur:r['Urban/Rural']||'',
+      apr:n(r[EV26[0]]),jun:n(r[EV26[1]]),jul:n(r[EV26[2]]),aug:n(r[EV26[3]]),tot:n(r['Total Admissions'])};
   });
-  return{total:tot,alcs:rows.length,part,np:rows.length-part,apr,jun,jul,aug,rcu,dcu,top20,
-    urb:{total:uT,alcs:rows.filter(r=>r['Urban/Rural']==='Urban').length,apr:uA,jun:uJ,jul:uJl},
-    rur:{total:rT,alcs:rows.filter(r=>r['Urban/Rural']==='Rural').length,apr:rA,jun:rJ,jul:rJl}};
+  return{total,alcs:rows.length,part,np:rows.length-part,apr,jun,jul,aug,rcu,dcu,top20,
+    urb:{total:urbT,alcs:rows.filter(r=>r['Urban/Rural']==='Urban').length,apr:urbA,jun:urbJ,jul:urbL},
+    rur:{total:rurT,alcs:rows.filter(r=>r['Urban/Rural']==='Rural').length,apr:rurA,jun:rurJ,jul:rurL}};
 }
 function parse25(rows){
-  let tot=0,part=0;const rcu={};
-  rows.forEach(r=>{tot+=n(r['Total Admissions']);if(r['Participation']==='Participated')part++;
-    const d=r['LLC Region']||r['DCU']||'',rc=D2R[d]||'?';
-    if(!rcu[rc])rcu[rc]={total:0};rcu[rc].total+=n(r['Total Admissions']);
+  let total=0,part=0;const rcu={};
+  rows.forEach(r=>{total+=n(r['Total Admissions']);if(r['Participation']==='Participated')part++;
+    const d=r['LLC Region']||r['DCU']||'',rc=D2R[d]||'Unknown';
+    if(!rcu[rc])rcu[rc]={total:0,alcs:0};rcu[rc].total+=n(r['Total Admissions']);rcu[rc].alcs++;
   });
   const events=EL25.map((l,i)=>({label:l,total:rows.reduce((s,r2)=>s+n(r2[EV25[i]]),0)}));
-  return{total:tot,alcs:rows.length,part,rcu,events};
+  return{total,alcs:rows.length,part,rcu,events};
 }
 function fC26(rows){return rows.filter(r=>CDCU.has(r['DCU'])||RO.includes(r['RCU']));}
 function fC25(rows){return rows.filter(r=>{const d=r['LLC Region']||r['DCU']||'';return CDCU.has(d)||RO.includes(r['RCU']);});}
 
+// ─── RENDER 2026 ──────────────────────────────────────────────────────
 function rend26(d){
   const isF=CF.rcu||CF.dcu||CF.event;
-  document.getElementById('p26m').textContent=isF?`Filtered: ${F(d.alcs)} ALCs · ${F(d.total)} admissions`:'Click RCU card · event card · DCU bar to cross-filter';
+  document.getElementById('p26m').textContent=isF?`Filtered · ${F(d.alcs)} ALCs · ${F(d.total)} admissions`:'Click any card, event or DCU bar to cross-filter all panels';
 
-  // ── ZONE KPI ──
-  const best=Math.max(d.apr,d.jun,d.jul,d.aug);const bestL=EL[([d.apr,d.jun,d.jul,d.aug]).indexOf(best)]||'—';
+  // ── 1. ZONE KPI STRIP ────────────────────────────────────────────
+  const evVals=[d.apr,d.jun,d.jul,d.aug];
+  const peak=Math.max(...evVals);
+  const peakLbl=EL[evVals.indexOf(peak)];
   document.getElementById('kpiZone').innerHTML=`
-    <div class="kpi hero"><div class="klab">ZONE TOTAL 2026</div><div class="kval">${F(d.total)}</div><div class="ksub">${F(d.alcs)} ALCs · 4 RCUs</div></div>
-    <div class="kpi"><div class="klab">PARTICIPATED</div><div class="kval">${F(d.part)}</div><div class="ksub ok">${P(d.part,d.alcs)} participation</div></div>
-    <div class="kpi"><div class="klab">NOT PARTICIPATED</div><div class="kval">${F(d.np)}</div><div class="ksub da">${P(d.np,d.alcs)} of ALCs</div></div>
-    <div class="kpi"><div class="klab">AVG PER ALC</div><div class="kval">${d.alcs?(d.total/d.alcs).toFixed(0):'—'}</div><div class="ksub">admissions per centre</div></div>
-    <div class="kpi"><div class="klab">PEAK EVENT</div><div class="kval">${F(best)}</div><div class="ksub">${bestL} — largest event</div></div>`;
+    <div class="kpi hero"><div class="ke">Zone Total</div><div class="kv">${F(d.total)}</div><div class="ks">${F(d.alcs)} centres · 2026</div></div>
+    <div class="kpi"><div class="ke">Participated</div><div class="kv sm">${F(d.part)}</div><div class="ks ok">${P(d.part,d.alcs)} of ALCs</div></div>
+    <div class="kpi"><div class="ke">Not Participated</div><div class="kv sm">${F(d.np)}</div><div class="ks dn">${P(d.np,d.alcs)} of ALCs</div></div>
+    <div class="kpi"><div class="ke">Avg / ALC</div><div class="kv sm">${d.alcs?(d.total/d.alcs).toFixed(0):'—'}</div><div class="ks">admissions per centre</div></div>
+    <div class="kpi"><div class="ke">Peak Event</div><div class="kv sm">${peakLbl||'—'}</div><div class="ks">${F(peak)} admissions</div></div>`;
 
-  // ── RCU CARDS ──
-  const zT=d.total||1;
-  document.getElementById('rcuCards').innerHTML=RO.map(rcu=>{
-    const r=d.rcu[rcu]||{total:0,alcs:0,part:0,np:0,apr:0,jun:0,jul:0,aug:0};
-    const cl='rc-'+RCLS[rcu],pp=Math.round((r.total/zT)*100);
-    return`<div class="rcuc ${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
-      <div class="rclbl">${rcu.toUpperCase()}</div>
-      <div class="rcval">${F(r.total)}</div>
-      <div class="rcalc">${F(r.alcs)} ALCs · ${F(r.part)} participated</div>
-      <div class="rcpg"><div class="rcf" style="width:${pp}%;background:${RCOL[rcu]}60"></div></div>
-      <div class="rch">CLICK TO FILTER ▸</div>
-    </div>`;
-  }).join('');
-
-  // ── DCU TABLE ──
-  const tb=document.getElementById('dcuTbl');tb.innerHTML='';
+  // ── 2. CONTRIBUTION TABLE ─────────────────────────────────────────
+  const dT=d.total||1;const tb=document.getElementById('dcuTbl');tb.innerHTML='';
+  // Zone row
+  tb.innerHTML+=`<tr style="background:#f0f4ff">
+    <td class="bld" style="color:var(--accent);letter-spacing:-.01em">▸ Central Zone Total</td>
+    <td class="tr bld">${F(d.alcs)}</td><td class="tr bld">${F(d.part)}</td><td class="tr bld">${F(d.np)}</td>
+    <td class="tr bld">${F(d.apr)}</td><td class="tr bld">${F(d.jun)}</td><td class="tr bld">${F(d.jul)}</td><td class="tr bld">${F(d.aug)}</td>
+    <td class="tr bld">${F(d.total)}</td><td class="tr bld">${d.alcs?(d.total/d.alcs).toFixed(0):'—'}</td>
+    <td class="tr bld">100%</td></tr>`;
   RO.forEach(rcu=>{
-    const r=d.rcu[rcu]||{},cl=RCLS[rcu];
-    tb.innerHTML+=`<tr style="background:var(--sf2);font-weight:700">
-      <td><span class="bdg b-${cl}" style="font-size:10.5px;padding:2px 10px">${rcu}</span></td>
-      <td class="tr bld">${F(r.alcs)}</td><td class="tr bld">${F(r.part)}</td><td class="tr" style="color:var(--danger)">${F(r.np)}</td>
+    const r=d.rcu[rcu]||{alcs:0,part:0,np:0,apr:0,jun:0,jul:0,aug:0,total:0},cl=RCLS[rcu];
+    tb.innerHTML+=`<tr style="background:var(--sf2)">
+      <td><span class="bdg b-${cl}" style="font-size:11px;padding:3px 11px">${rcu}</span></td>
+      <td class="tr bld">${F(r.alcs)}</td><td class="tr bld">${F(r.part)}</td><td class="tr bld">${F(r.np)}</td>
       <td class="tr bld">${F(r.apr)}</td><td class="tr bld">${F(r.jun)}</td><td class="tr bld">${F(r.jul)}</td><td class="tr bld">${F(r.aug)}</td>
-      <td class="tr bld">${F(r.total)}</td><td class="tr bld">${P(r.total,zT)}</td><td class="tr bld">${r.alcs?(r.total/r.alcs).toFixed(0):'—'}</td></tr>`;
+      <td class="tr bld">${F(r.total)}</td><td class="tr bld">${r.alcs?(r.total/r.alcs).toFixed(0):'—'}</td>
+      <td class="tr bld">${P(r.total,dT)}</td></tr>`;
     Object.entries(d.dcu).filter(([,v])=>v.rcu===rcu).sort((a,b)=>b[1].total-a[1].total).forEach(([dn,dv])=>{
       tb.innerHTML+=`<tr>
-        <td style="padding-left:1.75rem;color:var(--ink2)">${dn}</td>
-        <td class="tr">${F(dv.alcs)}</td><td class="tr">${F(dv.part)}</td><td class="tr" style="color:var(--danger)">${F(dv.np)}</td>
+        <td style="padding-left:2.2rem;color:var(--mu);font-size:11.5px">└ ${dn}</td>
+        <td class="tr">${F(dv.alcs)}</td><td class="tr">${F(dv.part)}</td><td class="tr">${F(dv.np)}</td>
         <td class="tr">${F(dv.apr)}</td><td class="tr">${F(dv.jun)}</td><td class="tr">${F(dv.jul)}</td><td class="tr">${F(dv.aug)}</td>
-        <td class="tr bld">${F(dv.total)}</td><td class="tr">${P(dv.total,zT)}</td><td class="tr">${dv.alcs?(dv.total/dv.alcs).toFixed(0):'—'}</td></tr>`;
+        <td class="tr bld">${F(dv.total)}</td><td class="tr">${dv.alcs?(dv.total/dv.alcs).toFixed(0):'—'}</td>
+        <td class="tr">${P(dv.total,dT)}</td></tr>`;
     });
   });
-  tb.innerHTML+=`<tr style="border-top:2px solid var(--bd2);font-weight:800">
-    <td>CENTRAL ZONE TOTAL</td>
-    <td class="tr bld">${F(d.alcs)}</td><td class="tr bld">${F(d.part)}</td><td class="tr bld" style="color:var(--danger)">${F(d.np)}</td>
-    <td class="tr bld">${F(d.apr)}</td><td class="tr bld">${F(d.jun)}</td><td class="tr bld">${F(d.jul)}</td><td class="tr bld">${F(d.aug)}</td>
-    <td class="tr bld">${F(d.total)}</td><td class="tr bld">100%</td><td class="tr bld">${d.alcs?(d.total/d.alcs).toFixed(0):'—'}</td></tr>`;
 
-  // ── DCU BARS ──
-  const be=document.getElementById('dcuBars');be.innerHTML='';
-  const mx=Math.max(...Object.values(d.dcu).map(v=>v.total))||1;
-  Object.entries(d.dcu).sort((a,b)=>b[1].total-a[1].total).forEach(([dn,dv])=>{
-    const pp=Math.round((dv.total/mx)*100),cl=RCLS[dv.rcu||'South Maharashtra'];
-    be.innerHTML+=`<div class="pbr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
-      <div class="pbl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
-      <div class="pbb"><div class="pbf" style="width:${pp}%;background:${RCOL[dv.rcu]||'#1a56c4'}"></div></div>
-      <div class="pbn">${F(dv.total)}</div>
-      <div class="pbp">${P(dv.total,d.total)}</div>
-    </div>`;
-  });
-
-  // ── EVENT MINI CARDS ──
-  const eT=d.total||1,eV=[d.apr,d.jun,d.jul,d.aug];
-  document.getElementById('evCards').innerHTML=EL.map((l,i)=>{
-    const v=eV[i],pp=Pn(v,eT),done=v>0;
-    return`<div class="evc" data-ev="${l}" onclick="setCF('event','${l}')">
-      <div class="evlb">${l.toUpperCase()}</div>
-      <div class="evvl" style="color:${EC[i]}">${done?F(v):'—'}</div>
-      <div class="evpt">${done?pp+'% of zone total':l==='August'?'Pending':''}</div>
-      <div class="evbg"><div class="evbf" style="width:${pp}%;background:${EC[i]}"></div></div>
+  // ── 3. RCU CARDS ──────────────────────────────────────────────────
+  const rT=d.total||1;
+  document.getElementById('rcuCards').innerHTML=RO.map(rcu=>{
+    const r=d.rcu[rcu]||{total:0,alcs:0,part:0,np:0};const cl=RCLS[rcu];const p=Math.round((r.total/rT)*100);
+    return`<div class="rc rc-${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
+      <div class="rl" style="color:${RCOL[rcu]}">${rcu.toUpperCase()}</div>
+      <div class="rv" style="color:${RCOL[rcu]}">${F(r.total)}</div>
+      <div class="rs">${F(r.alcs)} ALCs · ${p}% share</div>
+      <div class="rpg"><div class="rpgf" style="width:${p}%;background:${RCOL[rcu]}"></div></div>
+      <div class="rhi" style="color:${RCOL[rcu]}">Click to filter ▸</div>
     </div>`;
   }).join('');
 
-  // ── CHART: EVENT STACKED BAR with data labels ──
-  const rcs=RO.filter(r=>d.rcu[r]);
-  mkC('cEvBar',{type:'bar',
-    data:{labels:EL,datasets:rcs.map(rcu=>({
-      label:rcu,data:[d.rcu[rcu]?.apr||0,d.rcu[rcu]?.jun||0,d.rcu[rcu]?.jul||0,d.rcu[rcu]?.aug||0],
-      backgroundColor:RBGA[rcu],borderColor:RCOL[rcu],borderWidth:1.5,borderRadius:2}))},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'center',fs:9.5,col:'#1e293b',min:800,fmt:v=>F(v)}},
-      scales:{x:{stacked:true,grid:{color:GC},ticks:{font:FONT,color:TC}},y:{stacked:true,grid:{color:GC},ticks:{font:MONO,color:TC}}}}});
+  // ── 4. DCU PROGRESS BARS ──────────────────────────────────────────
+  const db=document.getElementById('dcuBars');db.innerHTML='';
+  const maxD=Math.max(...Object.values(d.dcu).map(v=>v.total))||1;
+  Object.entries(d.dcu).sort((a,b)=>b[1].total-a[1].total).forEach(([dn,dv])=>{
+    const p=Math.round((dv.total/maxD)*100),cl=RCLS[dv.rcu||''];
+    db.innerHTML+=`<div class="pr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
+      <div class="prl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
+      <div class="prb"><div class="prf" style="width:${p}%;background:${RCOL[dv.rcu]||'#1a5cb5'}"></div></div>
+      <div class="prn">${F(dv.total)}</div>
+      <div class="prp">${P(dv.total,d.total)}</div>
+    </div>`;
+  });
 
-  // ── CHART: RCU DOUGHNUT with data labels ──
-  mkC('cRpie',{type:'doughnut',
-    data:{labels:RO,datasets:[{data:RO.map(r=>d.rcu[r]?.total||0),
-      backgroundColor:RO.map(r=>RBGA[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'52%',
-      plugins:{legend:{position:'bottom',labels:{font:FONT,color:TC,boxWidth:10,padding:14}},tooltip:TTOPTS,
-        czDL:{on:true,fs:10,col:'#1e293b',fmt:(v)=>{const pp=Pn(v,d.total);return pp>4?`${F(v)}\n${pp}%`:''}}}}});
+  // ── 5. EVENT MINI CARDS ───────────────────────────────────────────
+  const eT=d.total||1;const evv=[d.apr,d.jun,d.jul,d.aug];
+  document.getElementById('evCards').innerHTML=EL.map((l,i)=>{
+    const v=evv[i],pc=pN(v,eT);
+    return`<div class="em" data-ev="${l}" onclick="setCF('event','${l}')">
+      <div class="eml" style="color:${EC[i]}">${l} 2026</div>
+      <div class="emv" style="color:${EC[i]}">${v?F(v):'—'}</div>
+      <div class="emp">${v?pc+'% of zone':l==='August'?'Pending':'—'}</div>
+      <div class="embar"><div class="embf" style="width:${pc}%;background:${EC[i]}"></div></div>
+    </div>`;
+  }).join('');
 
-  // ── CHART: RCU × EVENT grouped bar with data labels ──
-  mkC('cRev',{type:'bar',
+  // ── EVENT STACKED BAR ────────────────────────────────────────────
+  const rcuF=RO.filter(r=>d.rcu[r]);
+  mk('cEvBar',{type:'bar',
+    data:{labels:EL,datasets:rcuF.map(rcu=>({label:rcu,data:[d.rcu[rcu]?.apr||0,d.rcu[rcu]?.jun||0,d.rcu[rcu]?.jul||0,d.rcu[rcu]?.aug||0],backgroundColor:RBG[rcu],borderColor:RCOL[rcu],borderWidth:1.5,stack:'s'}))},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:600,fontSize:9.5,color:'rgba(13,17,23,.65)'},legend:{...BASE.plugins.legend,position:'bottom'}},
+      scales:{x:{...BASE.scales.x,stacked:true},y:{...BASE.scales.y,stacked:true}}}});
+
+  // ── RCU DOUGHNUT ─────────────────────────────────────────────────
+  mk('cRCUpie',{type:'doughnut',
+    data:{labels:RO,datasets:[{data:RO.map(r=>d.rcu[r]?.total||0),backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{datalabels:{fontSize:10.5,color:'rgba(13,17,23,.7)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#5a6480',boxWidth:9,padding:14}}}}});
+
+  // ── RCU GROUPED BAR ───────────────────────────────────────────────
+  mk('cRCUev',{type:'bar',
     data:{labels:RO,datasets:[
-      {label:'April',data:RO.map(r=>d.rcu[r]?.apr||0),backgroundColor:'rgba(124,58,237,.18)',borderColor:'#7c3aed',borderWidth:1.5,borderRadius:3},
-      {label:'June', data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(26,86,196,.18)', borderColor:'#1a56c4',borderWidth:1.5,borderRadius:3},
-      {label:'July', data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(192,57,43,.18)', borderColor:'#c0392b',borderWidth:1.5,borderRadius:3}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'top',fs:9,col:'#334155',min:600,fmt:v=>F(v)}}}});
+      {label:'April',data:RO.map(r=>d.rcu[r]?.apr||0),backgroundColor:'rgba(98,84,196,.14)',borderColor:'#6254c4',borderWidth:1.5},
+      {label:'June', data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(26,92,181,.13)', borderColor:'#1a5cb5',borderWidth:1.5},
+      {label:'July', data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(192,57,43,.13)', borderColor:'#c0392b',borderWidth:1.5},
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:500,fontSize:9.5,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
 
-  // ── Urban/Rural ──
-  document.getElementById('urbV').textContent=F(d.urb.total);
-  document.getElementById('rurV').textContent=F(d.rur.total);
-  document.getElementById('urbS').textContent=P(d.urb.total,d.total)+' of total';
-  document.getElementById('rurS').textContent=P(d.rur.total,d.total)+' of total';
-  mkC('cUrRu',{type:'bar',
+  // ── URBAN / RURAL ─────────────────────────────────────────────────
+  document.getElementById('uvU').textContent=F(d.urb.total);
+  document.getElementById('uvR').textContent=F(d.rur.total);
+  document.getElementById('uvUs').textContent=P(d.urb.total,d.total)+' of zone total';
+  document.getElementById('uvRs').textContent=P(d.rur.total,d.total)+' of zone total';
+  mk('cUrRu',{type:'bar',
     data:{labels:['Urban','Rural'],datasets:[
-      {label:'April',data:[d.urb.apr,d.rur.apr],backgroundColor:'rgba(124,58,237,.18)',borderColor:'#7c3aed',borderWidth:1.5,borderRadius:3},
-      {label:'June', data:[d.urb.jun,d.rur.jun],backgroundColor:'rgba(26,86,196,.18)', borderColor:'#1a56c4',borderWidth:1.5,borderRadius:3},
-      {label:'July', data:[d.urb.jul,d.rur.jul],backgroundColor:'rgba(192,57,43,.18)', borderColor:'#c0392b',borderWidth:1.5,borderRadius:3}]},
-    options:{...BASE,indexAxis:'y',plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'center',fs:9,col:'#1e293b',min:1500,fmt:v=>F(v)}}}});
+      {label:'April',data:[d.urb.apr,d.rur.apr],backgroundColor:'rgba(98,84,196,.14)',borderColor:'#6254c4',borderWidth:1.5},
+      {label:'June', data:[d.urb.jun,d.rur.jun],backgroundColor:'rgba(26,92,181,.13)', borderColor:'#1a5cb5',borderWidth:1.5},
+      {label:'July', data:[d.urb.jul,d.rur.jul],backgroundColor:'rgba(192,57,43,.13)', borderColor:'#c0392b',borderWidth:1.5},
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:1000,fontSize:9.5,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
 
-  // ── Participation doughnut with data labels ──
-  mkC('cPart',{type:'doughnut',
-    data:{labels:['Participated','Not Participated'],datasets:[{
-      data:[d.part,d.np],
-      backgroundColor:['rgba(21,122,60,.16)','rgba(192,57,43,.14)'],borderColor:['#157a3c','#c0392b'],borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
-      plugins:{legend:{position:'bottom',labels:{font:FONT,color:TC,boxWidth:10,padding:14}},tooltip:TTOPTS,
-        czDL:{on:true,fs:10,col:'#1e293b',fmt:(v)=>`${F(v)}\n${P(v,d.alcs)}`}}}});
-  document.getElementById('partD').innerHTML=
-    `<strong style="color:var(--ok)">${F(d.part)}</strong> participated &nbsp;(${P(d.part,d.alcs)})<br>
-     <strong style="color:var(--danger)">${F(d.np)}</strong> not participated &nbsp;(${P(d.np,d.alcs)})`;
+  // ── PARTICIPATION DOUGHNUT ────────────────────────────────────────
+  mk('cPart',{type:'doughnut',
+    data:{labels:['Participated','Not Participated'],datasets:[{data:[d.part,d.np],backgroundColor:['rgba(26,122,66,.15)','rgba(192,57,43,.12)'],borderColor:['#1a7a42','#c0392b'],borderWidth:2,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{datalabels:{fontSize:11,color:'rgba(13,17,23,.7)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#5a6480',boxWidth:9,padding:14}}}}});
+  document.getElementById('partDet').innerHTML=`<span style="color:var(--ok);font-weight:700">${F(d.part)} participated</span>&nbsp;·&nbsp;<span style="color:var(--danger);font-weight:700">${F(d.np)} not participated</span>`;
 
-  // ── Top 20 ──
-  document.getElementById('top20m').textContent=isF?`Filtered — ${d.alcs} ALCs`:'Zone-wide';
-  const t20=document.getElementById('top20b');t20.innerHTML='';
+  // ── TOP 20 ────────────────────────────────────────────────────────
+  const t20=document.getElementById('t20b');t20.innerHTML='';
+  document.getElementById('t20m').textContent=isF?'Filtered view':'Ranked by total admissions';
   (d.top20||[]).forEach((c,i)=>{
-    const rc=RCLS[c.rcu]||'smh';
-    t20.innerHTML+=`<tr>
-      <td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600">${i+1}</td>
-      <td class="bld">${c.n}</td><td><span class="bdg b-${rc}">${c.rcu}</span></td>
-      <td>${c.dcu}</td><td>${c.t}</td>
-      <td><span class="bdg ${c.ur==='Urban'?'b-urb':'b-rul'}">${c.ur}</span></td>
+    const cl=RCLS[c.rcu]||'smh';
+    t20.innerHTML+=`<tr><td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
+      <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
+      <td>${c.dcu}</td><td>${c.t}</td><td><span class="bdg ${c.ur==='Urban'?'b-urb':'b-rul'}">${c.ur}</span></td>
       <td class="tr">${c.apr||'—'}</td><td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr">${c.aug||'—'}</td>
       <td class="tr bld">${F(c.tot)}</td></tr>`;
   });
-  hilite();
+  hiUI();
 }
 
+// ─── RENDER SUMMER ────────────────────────────────────────────────────
 function rendSum(d){
   const sT=(d.jun||0)+(d.jul||0);
   document.getElementById('shT').textContent=F(sT);
   document.getElementById('shA').textContent=F(d.alcs);
   document.getElementById('shP').textContent=F(d.part);
   document.getElementById('sumRC').innerHTML=RO.map(rcu=>{
-    const r=d.rcu[rcu]||{},cl='rc-'+RCLS[rcu],s=(r.jun||0)+(r.jul||0),pp=Math.round((s/(sT||1))*100);
-    return`<div class="rcuc ${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
-      <div class="rclbl">${rcu.toUpperCase()}</div>
-      <div class="rcval">${F(s)}</div>
-      <div class="rcalc">Jun: ${F(r.jun||0)} · Jul: ${F(r.jul||0)}</div>
-      <div class="rcpg"><div class="rcf" style="width:${pp}%;background:${RCOL[rcu]}60"></div></div>
-      <div class="rch">CLICK TO FILTER ▸</div>
+    const r=d.rcu[rcu]||{},cl=RCLS[rcu],s=(r.jun||0)+(r.jul||0),p=Math.round((s/(sT||1))*100);
+    return`<div class="rc rc-${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
+      <div class="rl" style="color:${RCOL[rcu]}">${rcu.toUpperCase()}</div>
+      <div class="rv" style="color:${RCOL[rcu]}">${F(s)}</div>
+      <div class="rs">Jun: ${F(r.jun||0)} · Jul: ${F(r.jul||0)}</div>
+      <div class="rpg"><div class="rpgf" style="width:${p}%;background:${RCOL[rcu]}"></div></div>
+      <div class="rhi" style="color:${RCOL[rcu]}">Click to filter ▸</div>
     </div>`;
   }).join('');
-  mkC('cSumRCU',{type:'bar',
+
+  mk('cSumBar',{type:'bar',
     data:{labels:RO,datasets:[
-      {label:'June',data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(26,86,196,.18)',borderColor:'#1a56c4',borderWidth:1.5,borderRadius:3},
-      {label:'July',data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(192,57,43,.18)',borderColor:'#c0392b',borderWidth:1.5,borderRadius:3}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'top',fs:9.5,col:'#334155',min:500,fmt:v=>F(v)}}}});
-  mkC('cSumPie',{type:'doughnut',
-    data:{labels:RO,datasets:[{data:RO.map(r=>(d.rcu[r]?.jun||0)+(d.rcu[r]?.jul||0)),
-      backgroundColor:RO.map(r=>RBGA[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'50%',
-      plugins:{legend:{position:'bottom',labels:{font:FONT,color:TC,boxWidth:10,padding:14}},tooltip:TTOPTS,
-        czDL:{on:true,fs:10,col:'#1e293b',fmt:(v)=>{const pp=Pn(v,sT);return pp>5?`${F(v)}\n${pp}%`:''}}}}});
+      {label:'June',data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(26,92,181,.13)',borderColor:'#1a5cb5',borderWidth:1.5},
+      {label:'July',data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(192,57,43,.13)',borderColor:'#c0392b',borderWidth:1.5},
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:500,fontSize:10,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
+
+  mk('cSumPie',{type:'doughnut',
+    data:{labels:RO,datasets:[{data:RO.map(r=>(d.rcu[r]?.jun||0)+(d.rcu[r]?.jul||0)),backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{datalabels:{fontSize:10.5,color:'rgba(13,17,23,.7)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#5a6480',boxWidth:9,padding:14}}}}});
+
   const sb=document.getElementById('sumBars');sb.innerHTML='';
-  const mx=Math.max(...Object.values(d.dcu).map(v=>(v.jun||0)+(v.jul||0)))||1;
+  const maxS=Math.max(...Object.values(d.dcu).map(v=>(v.jun||0)+(v.jul||0)))||1;
   Object.entries(d.dcu).sort((a,b)=>((b[1].jun||0)+(b[1].jul||0))-((a[1].jun||0)+(a[1].jul||0))).forEach(([dn,dv])=>{
-    const s=(dv.jun||0)+(dv.jul||0),pp=Math.round((s/mx)*100),cl=RCLS[dv.rcu||'South Maharashtra'];
-    sb.innerHTML+=`<div class="pbr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
-      <div class="pbl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
-      <div class="pbb"><div class="pbf" style="width:${pp}%;background:${RCOL[dv.rcu]||'#1a56c4'}"></div></div>
-      <div class="pbn">${F(s)}</div><div class="pbp">Jun: ${F(dv.jun||0)}</div>
+    const s=(dv.jun||0)+(dv.jul||0),p=Math.round((s/maxS)*100),cl=RCLS[dv.rcu||''];
+    sb.innerHTML+=`<div class="pr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
+      <div class="prl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
+      <div class="prb"><div class="prf" style="width:${p}%;background:${RCOL[dv.rcu]||'#1a5cb5'}"></div></div>
+      <div class="prn">${F(s)}</div>
+      <div class="prp">J:${F(dv.jun||0)}</div>
     </div>`;
   });
-  document.getElementById('sTop20m').textContent=CF.rcu||CF.dcu?'Filtered':'Zone-wide';
-  const sb2=document.getElementById('sTop20b');sb2.innerHTML='';
-  const sorted=(d.top20||[]).slice().sort((a,b)=>((b.jun||0)+(b.jul||0))-((a.jun||0)+(a.jul||0)));
-  sorted.slice(0,20).forEach((c,i)=>{
-    const rc=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0);
-    sb2.innerHTML+=`<tr>
-      <td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600">${i+1}</td>
-      <td class="bld">${c.n}</td><td><span class="bdg b-${rc}">${c.rcu}</span></td>
+
+  const st=document.getElementById('sT20b');st.innerHTML='';
+  document.getElementById('sT20m').textContent=CF.rcu||CF.dcu?'Filtered view':'All centres · ranked by summer total';
+  (d.top20||[]).slice().sort((a,b)=>((b.jun||0)+(b.jul||0))-((a.jun||0)+(a.jul||0))).slice(0,20).forEach((c,i)=>{
+    const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0);
+    st.innerHTML+=`<tr><td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
+      <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
       <td>${c.dcu}</td><td>${c.t}</td>
-      <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr bld">${F(s)}</td></tr>`;
+      <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td>
+      <td class="tr bld">${F(s)}</td></tr>`;
   });
-  hilite();
+  hiUI();
 }
 
+// ─── RENDER COMPARE ───────────────────────────────────────────────────
 function rendCmp(d26,d25){
-  const y25=d25.total,y26=d26.total,df=y26-y25,pc=y25?((df/y25)*100).toFixed(1):'—';
-  document.getElementById('yoyKpi').innerHTML=`
-    <div class="kpi"><div class="klab">2025 TOTAL</div><div class="kval">${F(y25)}</div><div class="ksub">all events · frozen</div></div>
-    <div class="kpi"><div class="klab">2026 SO FAR</div><div class="kval">${F(y26)}</div><div class="ksub wa">Apr + Jun + Jul only</div></div>
-    <div class="kpi"><div class="klab">CHANGE (PARTIAL)</div><div class="kval" style="color:${df>=0?'var(--ok)':'var(--danger)'}">${df>=0?'+':''}${F(df)}</div><div class="ksub ${df>=0?'ok':'da'}">${df>=0?'+':''}${pc}% vs 2025</div></div>
-    <div class="kpi"><div class="klab">2026 ALCs</div><div class="kval">${F(d26.alcs)}</div><div class="ksub">${d25.alcs?`vs ${F(d25.alcs)} in 2025`:''}</div></div>`;
+  const y25=d25.total,y26=d26.total,diff=y26-y25,pctC=y25?((diff/y25)*100).toFixed(1):'—';
+  document.getElementById('yoyKPI').innerHTML=`
+    <div class="kpi"><div class="ke">2025 Total</div><div class="kv sm">${F(y25)}</div><div class="ks">all events · frozen</div></div>
+    <div class="kpi"><div class="ke">2026 So Far</div><div class="kv sm">${F(y26)}</div><div class="ks wn">Apr+Jun+Jul only</div></div>
+    <div class="kpi"><div class="ke">Change (Partial)</div><div class="kv sm" style="color:${diff>=0?'var(--ok)':'var(--danger)'}">${diff>=0?'+':''}${F(diff)}</div><div class="ks ${diff>=0?'ok':'dn'}">${diff>=0?'+':''}${pctC}% vs 2025</div></div>
+    <div class="kpi"><div class="ke">2026 Centres</div><div class="kv sm">${F(d26.alcs)}</div><div class="ks">${d25.alcs?`vs ${F(d25.alcs)} in 2025`:''}</div></div>`;
+
   const sum25=(d25.events?.find(e=>e.label==='May')?.total||0)+(d25.events?.find(e=>e.label==='June')?.total||0)+(d25.events?.find(e=>e.label==='July')?.total||0);
   const sum26=(d26.jun||0)+(d26.jul||0);
+  document.getElementById('ss25s').textContent=F(sum25);document.getElementById('ss26s').textContent=F(sum26);
+  const sd=sum26-sum25;
+  document.getElementById('ssSchg').innerHTML=`<span class="${sd>=0?'yg':'yr'}">${sd>=0?'+':''}${F(sd)}</span> <span style="color:var(--mu);font-size:10.5px">vs 2025 Summer</span>`;
   const mon25=(d25.events?.find(e=>e.label==='October')?.total||0)+(d25.events?.find(e=>e.label==='December')?.total||0);
+  document.getElementById('ss25m').textContent=F(mon25);
   const win25=(d25.events?.find(e=>e.label==='February')?.total||0)+(d25.events?.find(e=>e.label==='March')?.total||0);
   const win26=d26.apr||0;
-  document.getElementById('s25s').textContent=F(sum25);document.getElementById('s26s').textContent=F(sum26);
-  const sd=sum26-sum25;document.getElementById('ssc').innerHTML=`<span class="${sd>=0?'yg':'yb'}">${sd>=0?'+':''}${F(sd)} (${sum25?((sd/sum25)*100).toFixed(1):0}%)</span> vs 2025 Summer`;
-  document.getElementById('s25m').textContent=F(mon25);
-  document.getElementById('s25w').textContent=F(win25);document.getElementById('s26w').textContent=F(win26);
-  const wd=win26-win25;document.getElementById('swc').innerHTML=`<span class="${wd>=0?'yg':'yb'}">${wd>=0?'+':''}${F(wd)}</span> vs 2025 Winter`;
-  mkC('cSCmp',{type:'bar',
+  document.getElementById('ss25w').textContent=F(win25);document.getElementById('ss26w').textContent=F(win26);
+  const wd=win26-win25;
+  document.getElementById('ssWchg').innerHTML=`<span class="${wd>=0?'yg':'yr'}">${wd>=0?'+':''}${F(wd)}</span> <span style="color:var(--mu);font-size:10.5px">vs 2025 Winter</span>`;
+
+  mk('cScmp',{type:'bar',
     data:{labels:['Summer','Monsoon','Winter'],datasets:[
-      {label:'2025',data:[sum25,mon25,win25],backgroundColor:'rgba(148,163,184,.38)',borderColor:'#64748b',borderWidth:1.5,borderRadius:4},
-      {label:'2026 (partial)',data:[sum26,null,win26],backgroundColor:'rgba(160,89,10,.2)',borderColor:'#a0590a',borderWidth:1.5,borderRadius:4}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'top',fs:10,col:'#334155',min:0,fmt:v=>F(v)}}}});
-  const r25=RO.map(r=>d25.rcu?.[r]?.total||0),r26=RO.map(r=>d26.rcu?.[r]?.total||0);
-  mkC('cRyoy',{type:'bar',
+      {label:'2025',data:[sum25,mon25,win25],backgroundColor:'rgba(148,163,184,.2)',borderColor:'#94a3b8',borderWidth:1.5},
+      {label:'2026 (partial)',data:[sum26,null,win26],backgroundColor:'rgba(184,92,0,.14)',borderColor:'#b85c00',borderWidth:1.5},
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:1000,fontSize:10.5,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
+
+  const r25=RO.map(r=>d25.rcu?.[r]?.total||0),r26arr=RO.map(r=>d26.rcu?.[r]?.total||0);
+  mk('cRyoy',{type:'bar',
     data:{labels:RO,datasets:[
-      {label:'2025',data:r25,backgroundColor:'rgba(148,163,184,.38)',borderColor:'#64748b',borderWidth:1.5,borderRadius:4},
-      {label:'2026',data:r26,backgroundColor:RO.map(r=>RBGA[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:1.5,borderRadius:4}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{...BASE.plugins.legend,position:'bottom'},
-      czDL:{on:true,pos:'top',fs:9.5,col:'#334155',min:0,fmt:v=>F(v)}}}});
-  const yt=document.getElementById('yoyTbl');yt.innerHTML='';
+      {label:'2025',data:r25,backgroundColor:'rgba(148,163,184,.2)',borderColor:'#94a3b8',borderWidth:1.5},
+      {label:'2026',data:r26arr,backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:1.5},
+    ]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:1000,fontSize:10.5,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
+
+  const ryTb=document.getElementById('ryoyTbl');ryTb.innerHTML='';
   RO.forEach((rcu,i)=>{
-    const v25=r25[i],v26=r26[i],dv=v26-v25,pp=v25?((dv/v25)*100).toFixed(1):0,cl=RCLS[rcu];
-    yt.innerHTML+=`<tr><td><span class="bdg b-${cl}">${rcu}</span></td>
-      <td class="tr">${F(v25)}</td><td class="tr">${F(v26)}</td>
-      <td class="tr ${dv>=0?'yg':'yb'}">${dv>=0?'+':''}${F(dv)}</td>
-      <td class="tr ${dv>=0?'yg':'yb'}">${dv>=0?'+':''}${pp}%</td>
-      <td style="font-weight:700;color:${dv>=0?'var(--ok)':'var(--danger)'}">${dv>=0?'▲ Up':'▼ Down'}</td></tr>`;
+    const v25=r25[i],v26=r26arr[i],di=v26-v25,p=v25?((di/v25)*100).toFixed(1):0,cl=RCLS[rcu];
+    ryTb.innerHTML+=`<tr><td><span class="bdg b-${cl}">${rcu}</span></td>
+      <td class="tr">${F(v25)}</td><td class="tr bld">${F(v26)}</td>
+      <td class="tr ${di>=0?'yg':'yr'}">${di>=0?'+':''}${F(di)}</td>
+      <td class="tr ${di>=0?'yg':'yr'}">${di>=0?'+':''}${p}%</td>
+      <td style="font-size:16px;color:${di>=0?'var(--ok)':'var(--danger)'}">${di>=0?'↑':'↓'}</td></tr>`;
   });
+
   const ev25v=(d25.events||[]).map(e=>e.total),ev26v=[d26.apr,d26.jun,d26.jul,d26.aug];
-  mkC('cEvC',{type:'bar',
-    data:{labels:[...(d25.events||[]).map(e=>`${e.label} '25`),...EL.map(l=>`${l} '26`)],
+  const ev25l=(d25.events||[]).map(e=>e.label);
+  mk('cEcmp',{type:'bar',
+    data:{labels:[...ev25l.map(l=>`${l} '25`),...EL.map(l=>`${l} '26`)],
       datasets:[{data:[...ev25v,...ev26v],
-        backgroundColor:[...(d25.events||[]).map(()=>'rgba(148,163,184,.38)'),...EL.map(()=>'rgba(160,89,10,.2)')],
-        borderColor:[...(d25.events||[]).map(()=>'#64748b'),...EL.map(()=>'#a0590a')],borderWidth:1.5,borderRadius:3}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{display:false},
-      czDL:{on:true,pos:'top',fs:9,col:'#334155',min:0,fmt:v=>F(v)}},
-      scales:{...BASE.scales,x:{...BASE.scales.x,ticks:{font:{family:"'Plus Jakarta Sans',sans-serif",size:10},color:TC}}}}});
-  const et=document.getElementById('evCTbl');et.innerHTML='';
-  (d25.events||[]).forEach(e=>{et.innerHTML+=`<tr><td>${e.label}</td><td><span class="bdg" style="background:#f1f5f9;color:#475569">2025</span></td><td class="tr">${F(e.total)}</td><td class="tr">${y25?((e.total/y25)*100).toFixed(1)+'%':'—'}</td></tr>`;});
-  EL.forEach((l,i)=>{const v=ev26v[i]||0;et.innerHTML+=`<tr><td>${l}</td><td><span class="bdg" style="background:var(--sol-l);color:var(--sol)">2026</span></td><td class="tr">${v?F(v):'Pending'}</td><td class="tr">${v&&y26?((v/y26)*100).toFixed(1)+'%':'—'}</td></tr>`;});
+        backgroundColor:[...ev25v.map(()=>'rgba(148,163,184,.2)'),...ev26v.map(()=>'rgba(26,92,181,.13)')],
+        borderColor:[...ev25v.map(()=>'#94a3b8'),...ev26v.map(()=>'#1a5cb5')],borderWidth:1.5}]},
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:1000,fontSize:10,color:'rgba(13,17,23,.7)'},legend:{display:false}}}});
+
+  const eTb=document.getElementById('eTbl');eTb.innerHTML='';
+  (d25.events||[]).forEach(e=>{
+    eTb.innerHTML+=`<tr><td>${e.label}</td><td><span class="bdg" style="background:#f1f5f9;color:#64748b">2025</span></td>
+      <td class="tr bld">${F(e.total)}</td><td class="tr">${y25?pN(e.total,y25)+'%':'—'}</td></tr>`;
+  });
+  EL.forEach((l,i)=>{const v=ev26v[i]||0;
+    eTb.innerHTML+=`<tr><td>${l}</td><td><span class="bdg b-pune">2026</span></td>
+      <td class="tr bld">${v?F(v):'Pending'}</td><td class="tr">${v&&y26?pN(v,y26)+'%':'—'}</td></tr>`;
+  });
 }
 
+// ─── ALL CENTRES FILTER ───────────────────────────────────────────────
 let _sc='Total Admissions',_sd=-1;
 function popF(){
   if(!_r26||!_r26.length)return;
@@ -894,59 +993,50 @@ function applyF(){
 function sortT(col){if(_sc===col)_sd*=-1;else{_sc=col;_sd=-1;}applyF();}
 function resetF(){CF.rcu=null;CF.dcu=null;CF.event=null;['fRCU','fDCU','fUr','fPt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});const si=document.getElementById('srch');if(si)si.value='';updCF();refilter();}
 
+// ─── DATA LOADING ─────────────────────────────────────────────────────
 let _r26=null,_r25=null,_d26=null,_d25=null;
 async function csvFetch(url){
-  // Use fetch() instead of PapaParse download:true to avoid CORS hang on GitHub Pages
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),15000); // 15s timeout
-  try{
-    const resp=await fetch(url,{signal:controller.signal});
-    clearTimeout(timer);
-    if(!resp.ok)throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
-    const text=await resp.text();
-    return new Promise((res,rej)=>Papa.parse(text,{header:true,skipEmptyLines:true,complete:r=>res(r.data),error:e=>rej(new Error(e.message||'CSV parse failed'))}));
-  }catch(e){
-    clearTimeout(timer);
-    if(e.name==='AbortError')throw new Error('Request timed out after 15s. Check your URL and sheet publish settings.');
-    throw e;
-  }
+  return new Promise((res,rej)=>Papa.parse(url,{download:true,header:true,skipEmptyLines:true,
+    complete:r=>res(r.data),error:e=>rej(new Error(e.message||'CSV fetch failed'))}));
 }
-async function loadSheets(){const u26=document.getElementById('url26').value.trim(),u25=document.getElementById('url25').value.trim();if(!u26||!u25){alert('Enter both URLs.');return;}CFG.url26=u26;CFG.url25=u25;document.getElementById('setupModal').style.display='none';await loadData(u26,u25);}
+async function loadSheets(){
+  const u26=document.getElementById('url26').value.trim(),u25=document.getElementById('url25').value.trim();
+  if(!u26||!u25){alert('Please enter both URLs.');return;}
+  CFG.url26=u26;CFG.url25=u25;
+  document.getElementById('setupModal').style.display='none';
+  await loadData(u26,u25);
+}
 async function loadData(u26,u25){
   document.getElementById('loader').style.display='flex';document.getElementById('app').style.display='none';
   try{
-    setL('Fetching 2026…',20);const all26=await csvFetch(u26);
-    setL('Fetching 2025…',45);const all25=await csvFetch(u25);
-    setL('Filtering Central Zone…',65);
-    _r26=fC26(all26);_r25=fC25(all25);
-    setL('Computing…',82);_d26=parse26(_r26);_d25=parse25(_r25);
+    setL('Fetching 2026 data…',20);const all26=await csvFetch(u26);
+    setL('Fetching 2025 data…',45);const all25=await csvFetch(u25);
+    setL('Filtering Central Zone…',65);_r26=fC26(all26);_r25=fC25(all25);
+    setL('Computing metrics…',82);_d26=parse26(_r26);_d25=parse25(_r25);
     rendAll(_d26,_d25);
   }catch(e){
     document.getElementById('loader').style.display='none';document.getElementById('setupModal').style.display='flex';
-    document.getElementById('fetchErr').innerHTML=`<div style="background:#fef2f2;color:#c0392b;border:1px solid var(--smh-m);border-radius:8px;padding:10px 14px;font-size:12px;margin-top:1rem;line-height:1.6"><strong>Could not load data.</strong><br>${e.message}<br><small>File → Share → Publish to web → CSV → Copy URL</small></div>`;
+    document.getElementById('fetchErr').innerHTML=`<div style="background:#fdf0ef;color:#c0392b;border:1px solid #e88074;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6"><strong>Could not load data.</strong><br>${e.message}<br><small>Ensure the sheet is published: File → Share → Publish to web → CSV → Copy URL</small></div>`;
   }
 }
-function loadDemo(){document.getElementById('setupModal').style.display='none';document.getElementById('loader').style.display='flex';setL('Loading demo…',50);_r26=null;_d26=D26;_d25=D25;setTimeout(()=>rendAll(D26,D25),400);}
+function loadDemo(){
+  document.getElementById('setupModal').style.display='none';
+  document.getElementById('loader').style.display='flex';
+  setL('Loading demo data…',50);_r26=null;_d26=D26;_d25=D25;
+  setTimeout(()=>rendAll(D26,D25),300);
+}
 function rendAll(d26,d25){
-  setL('Rendering…',90);
-  // Show app FIRST so canvas elements have layout/dimensions before Chart.js initialises
-  document.getElementById('loader').style.display='none';
-  document.getElementById('app').style.display='block';
-  requestAnimationFrame(()=>{
-    setTimeout(()=>{
-      try{
-        rend26(d26);rendSum(d26);rendCmp(d26,d25);
-        popF();applyF();
-        document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
-      }catch(err){
-        console.error('Render error:',err);
-      }
-    },80);
-  });
+  setL('Rendering dashboard…',90);
+  setTimeout(()=>{
+    rend26(d26);rendSum(d26);rendCmp(d26,d25);popF();applyF();
+    document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
+    document.getElementById('loader').style.display='none';document.getElementById('app').style.display='block';
+  },150);
 }
 async function refreshData(){if(CFG.url26&&CFG.url25)await loadData(CFG.url26,CFG.url25);else showSetup();}
 function showSetup(){document.getElementById('url26').value=CFG.url26||'';document.getElementById('url25').value=CFG.url25||'';document.getElementById('fetchErr').innerHTML='';document.getElementById('setupModal').style.display='flex';}
 
+// ─── DEMO DATA ────────────────────────────────────────────────────────
 const D26={total:87340,alcs:1820,part:1698,np:122,apr:10820,jun:51240,jul:25280,aug:0,
   rcu:{'South Maharashtra':{total:22890,alcs:515,part:484,np:31,apr:2769,jun:13578,jul:6543,aug:0},'Pune':{total:28450,alcs:580,part:548,np:32,apr:3810,jun:16340,jul:8300,aug:0},'North Maharashtra':{total:21600,alcs:420,part:388,np:32,apr:2580,jun:12740,jul:6280,aug:0},'Solapur':{total:14400,alcs:305,part:278,np:27,apr:1661,jun:8582,jul:4157,aug:0}},
   dcu:{'Satara':{rcu:'South Maharashtra',total:8323,alcs:165,part:158,np:7,apr:886,jun:5042,jul:2395,aug:0},'Kolhapur':{rcu:'South Maharashtra',total:7855,alcs:195,part:177,np:18,apr:1103,jun:4335,jul:2417,aug:0},'Sangli':{rcu:'South Maharashtra',total:6712,alcs:155,part:149,np:6,apr:780,jun:4201,jul:1731,aug:0},'Pune':{rcu:'Pune',total:9820,alcs:198,part:189,np:9,apr:1250,jun:5610,jul:2960,aug:0},'Baramati':{rcu:'Pune',total:7340,alcs:158,part:151,np:7,apr:1050,jun:4230,jul:2060,aug:0},'Maval':{rcu:'Pune',total:6120,alcs:120,part:112,np:8,apr:820,jun:3560,jul:1740,aug:0},'Haveli':{rcu:'Pune',total:5170,alcs:104,part:96,np:8,apr:690,jun:2940,jul:1540,aug:0},'Nashik':{rcu:'North Maharashtra',total:8640,alcs:166,part:153,np:13,apr:1030,jun:5100,jul:2510,aug:0},'Dhule':{rcu:'North Maharashtra',total:5280,alcs:100,part:93,np:7,apr:620,jun:3120,jul:1540,aug:0},'Jalgaon':{rcu:'North Maharashtra',total:4780,alcs:92,part:85,np:7,apr:560,jun:2820,jul:1400,aug:0},'Nandurbar':{rcu:'North Maharashtra',total:2900,alcs:62,part:57,np:5,apr:370,jun:1700,jul:830,aug:0},'Solapur':{rcu:'Solapur',total:5820,alcs:124,part:114,np:10,apr:680,jun:3470,jul:1670,aug:0},'Latur':{rcu:'Solapur',total:4480,alcs:95,part:86,np:9,apr:510,jun:2660,jul:1310,aug:0},'Osmanabad':{rcu:'Solapur',total:2540,alcs:52,part:47,np:5,apr:296,jun:1512,jul:732,aug:0},'Bidar':{rcu:'Solapur',total:1560,alcs:34,part:31,np:3,apr:175,jun:940,jul:445,aug:0}},
@@ -954,11 +1044,16 @@ const D26={total:87340,alcs:1820,part:1698,np:122,apr:10820,jun:51240,jul:25280,
   top20:[{n:'Gurukul Academy',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Hatkanangle',ur:'Urban',apr:21,jun:286,jul:66,aug:0,tot:373},{n:'Apex Computer Institute',rcu:'Pune',dcu:'Pune',t:'Pune City',ur:'Urban',apr:35,jun:210,jul:95,aug:0,tot:340},{n:'Darpan Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Koregaon',ur:'Urban',apr:12,jun:206,jul:59,aug:0,tot:277},{n:'Nashik Digital Academy',rcu:'North Maharashtra',dcu:'Nashik',t:'Nashik',ur:'Urban',apr:28,jun:165,jul:75,aug:0,tot:268},{n:'Amar Computer Institute',rcu:'South Maharashtra',dcu:'Satara',t:'Satara',ur:'Rural',apr:15,jun:141,jul:88,aug:0,tot:244},{n:'Sunrise Computers',rcu:'Pune',dcu:'Baramati',t:'Baramati',ur:'Rural',apr:22,jun:148,jul:68,aug:0,tot:238},{n:'Solapur Tech Education',rcu:'Solapur',dcu:'Solapur',t:'Solapur',ur:'Urban',apr:18,jun:142,jul:70,aug:0,tot:230},{n:'Narmada Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Khandala',ur:'Urban',apr:12,jun:124,jul:87,aug:0,tot:223},{n:'Silicon Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Man',ur:'Urban',apr:10,jun:156,jul:55,aug:0,tot:221},{n:'Info Tech Studies',rcu:'South Maharashtra',dcu:'Sangli',t:'Tasgaon',ur:'Urban',apr:14,jun:154,jul:52,aug:0,tot:220},{n:'Sahyadri Computer Center',rcu:'North Maharashtra',dcu:'Nashik',t:'Igatpuri',ur:'Rural',apr:20,jun:130,jul:68,aug:0,tot:218},{n:'Latur Computer Academy',rcu:'Solapur',dcu:'Latur',t:'Latur',ur:'Urban',apr:16,jun:128,jul:65,aug:0,tot:209},{n:'Jalgaon Infotech',rcu:'North Maharashtra',dcu:'Jalgaon',t:'Jalgaon',ur:'Urban',apr:14,jun:120,jul:72,aug:0,tot:206},{n:'Symbiosis IT Center',rcu:'Pune',dcu:'Haveli',t:'Haveli',ur:'Rural',apr:25,jun:118,jul:58,aug:0,tot:201},{n:'Prosoft Computers',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Panhala',ur:'Rural',apr:10,jun:205,jul:0,aug:0,tot:215},{n:'Dhule Digital Hub',rcu:'North Maharashtra',dcu:'Dhule',t:'Dhule',ur:'Urban',apr:17,jun:115,jul:65,aug:0,tot:197},{n:'Osmanabad IT Institute',rcu:'Solapur',dcu:'Osmanabad',t:'Osmanabad',ur:'Urban',apr:11,jun:106,jul:52,aug:0,tot:169},{n:'Maval Computers',rcu:'Pune',dcu:'Maval',t:'Maval',ur:'Rural',apr:19,jun:98,jul:50,aug:0,tot:167},{n:'Bidar Digital Center',rcu:'Solapur',dcu:'Bidar',t:'Bidar',ur:'Urban',apr:8,jun:95,jul:42,aug:0,tot:145},{n:'Nandurbar Skill Center',rcu:'North Maharashtra',dcu:'Nandurbar',t:'Nandurbar',ur:'Rural',apr:9,jun:88,jul:38,aug:0,tot:135}]};
 const D25={total:312400,alcs:2010,part:1978,rcu:{'South Maharashtra':{total:67031},'Pune':{total:98420},'North Maharashtra':{total:84300},'Solapur':{total:62649}},events:EL25.map((l,i)=>({label:l,total:[28400,18200,42100,38600,52800,38000,94300][i]}))};
 
+// ─── INIT ─────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   setL('Starting…',10);
   if(CFG.url26&&CFG.url25)loadData(CFG.url26,CFG.url25);
   else{document.getElementById('loader').style.display='none';document.getElementById('setupModal').style.display='flex';}
 });
 </script>
+
+<!-- Load Chart.js and PapaParse AFTER page content — prevents render blocking -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </body>
 </html>
