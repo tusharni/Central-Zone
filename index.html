@@ -575,7 +575,15 @@ function fRows(rows=_r26){
 function refilter(){
   if(!_d26||!_d25)return;
   const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;
-  rend26(fd);rendSum(fd);applyF();hiUI();
+  // Only re-render the page currently visible — not all pages
+  const active=document.querySelector('.page.active')?.id;
+  if(active==='p26'||!active) rend26(fd);
+  else if(active==='pSum') rendSum(fd);
+  else if(active==='pCtr') applyF();
+  // Invalidate other pages so they re-render when next visited
+  if(active!=='p26')  _rendered.p26=false;
+  if(active!=='pSum') _rendered.pSum=false;
+  hiUI();
 }
 function hiUI(){
   document.querySelectorAll('.rc').forEach(c=>c.classList.toggle('cfa',CF.rcu===c.dataset.rcu));
@@ -594,13 +602,13 @@ function goPage(id,btn){
   document.querySelectorAll('.navt').forEach(b=>b.classList.remove('on'));
   document.getElementById(id).classList.add('active');
   btn.classList.add('on');
-  if(id==='pCmp') setTimeout(()=>rendCmpCharts('cS'),50);
+  ensureRendered(id);
 }
 function cmpTab(id,btn){
   ['cS','cR','cE'].forEach(t=>{const e=document.getElementById(t);if(e)e.style.display=t===id?'':'none';});
   document.querySelectorAll('#pCmp .stab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  setTimeout(()=>rendCmpCharts(id),50);
+  setTimeout(()=>rendCmpCharts(id),30);
 }
 
 // ─── CHART DEFAULTS ───────────────────────────────────────────────────
@@ -1041,29 +1049,52 @@ async function loadData(u26,u25){
     document.getElementById('fetchErr').innerHTML=`<div style="background:#fdf0ef;color:#c0392b;border:1px solid #e88074;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6"><strong>Could not load data.</strong><br>${e.message}<br><small>Ensure the sheet is published: File → Share → Publish to web → CSV → Copy URL</small></div>`;
   }
 }
+// Track which pages have been rendered
+const _rendered={p26:false,pSum:false,pCmp:false,pCtr:false};
+
 function loadDemo(){
   document.getElementById('setupModal').style.display='none';
   document.getElementById('loader').style.display='flex';
-  setL('Loading demo data…',50);_r26=null;_d26=D26;_d25=D25;
-  setTimeout(()=>rendAll(D26,D25),300);
+  setL('Loading demo…',60);
+  _r26=null;_d26=D26;_d25=D25;
+  Object.keys(_rendered).forEach(k=>_rendered[k]=false);
+  setL('Almost ready…',90);
+  rendAll(D26,D25);
 }
+
 function rendAll(d26,d25){
-  setL('Rendering dashboard…',90);
-  setTimeout(()=>{
-    try{
-      rend26(d26); rendSum(d26); rendCmp(d26,d25); popF(); applyF();
-      document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
-      document.getElementById('loader').style.display='none';
-      document.getElementById('app').style.display='block';
-    } catch(err){
-      document.getElementById('loader').style.display='none';
-      document.getElementById('setupModal').style.display='flex';
-      document.getElementById('fetchErr').innerHTML=`<div style="background:#fdf0ef;color:#c0392b;border:1px solid #e88074;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6"><strong>Render error.</strong><br>${err.message}</div>`;
-      console.error(err);
-    }
-  },100);
+  setL('Almost ready…',95);
+  // Show the app shell immediately — only render the active page (Overview)
+  document.getElementById('loader').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('lastUp').textContent=new Date().toLocaleTimeString();
+  try{
+    rend26(d26);
+    _rendered.p26=true;
+  }catch(err){
+    console.error('Overview render error:',err);
+  }
 }
-async function refreshData(){if(CFG.url26&&CFG.url25)await loadData(CFG.url26,CFG.url25);else showSetup();}
+
+// Called on every page switch — renders that page the first time, instant after
+function ensureRendered(pageId){
+  if(!_d26||!_d25)return;
+  if(pageId==='pSum'&&!_rendered.pSum){
+    try{rendSum(_d26);_rendered.pSum=true;}catch(e){console.error(e);}
+  }
+  if(pageId==='pCmp'&&!_rendered.pCmp){
+    try{rendCmp(_d26,_d25);_rendered.pCmp=true;}catch(e){console.error(e);}
+    setTimeout(()=>rendCmpCharts('cS'),30);
+  }
+  if(pageId==='pCtr'&&!_rendered.pCtr){
+    try{popF();applyF();_rendered.pCtr=true;}catch(e){console.error(e);}
+  }
+}
+async function refreshData(){
+  Object.keys(_rendered).forEach(k=>_rendered[k]=false);
+  if(CFG.url26&&CFG.url25) await loadData(CFG.url26,CFG.url25);
+  else showSetup();
+}
 function showSetup(){document.getElementById('url26').value=CFG.url26||'';document.getElementById('url25').value=CFG.url25||'';document.getElementById('fetchErr').innerHTML='';document.getElementById('setupModal').style.display='flex';}
 
 // ─── DEMO DATA ────────────────────────────────────────────────────────
