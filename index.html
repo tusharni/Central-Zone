@@ -421,7 +421,7 @@ tbody tr:hover td{background:var(--sf2)}
   <div class="shero">
     <div>
       <div class="shtitle">Summer Season 2026</div>
-      <div class="shsub">June + July exam events · Central Zone</div>
+      <div class="shsub">June + July + August exam events · Central Zone</div>
     </div>
     <div class="shnums">
       <div><div class="shnl">Total Admissions</div><div class="shnv" id="shT">—</div></div>
@@ -462,10 +462,10 @@ tbody tr:hover td{background:var(--sf2)}
   </div>
   <div id="cS">
     <div class="g3">
-      <div class="scard scs"><div class="schd"><span>Summer</span><span class="sctag">Jun+Jul / May+Jun+Jul</span></div>
+      <div class="scard scs"><div class="schd"><span>Summer</span><span class="sctag">Jun+Jul+Aug / May+Jun+Jul</span></div>
         <div class="scbd"><div class="g2 gnb" style="gap:8px;margin-bottom:.6rem">
-          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25s">—</div><div style="font-size:11px;color:var(--mu)">May+Jun+Jul</div></div>
-          <div><div style="font-size:9.5px;font-weight:700;color:var(--sol);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26s">—</div><div style="font-size:11px;color:var(--mu)">Jun+Jul</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25s">—</div><div style="font-size:11px;color:var(--mu)">May+Jun+Jul 2025</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--sol);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26s">—</div><div style="font-size:11px;color:var(--mu)">Jun+Jul+Aug 2026</div></div>
         </div><div id="ssSchg" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div></div>
       </div>
       <div class="scard scm"><div class="schd"><span>Monsoon</span><span class="sctag">Oct · Dec</span></div>
@@ -474,10 +474,10 @@ tbody tr:hover td{background:var(--sf2)}
           <div><div style="font-size:9.5px;font-weight:700;color:var(--pune);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" style="color:var(--fa);font-size:1.2rem">Pending</div></div>
         </div><div style="font-size:11px;color:var(--mu)">2026 Monsoon events not yet started</div></div>
       </div>
-      <div class="scard scw"><div class="schd"><span>Winter</span><span class="sctag">Feb · Apr</span></div>
+      <div class="scard scw"><div class="schd"><span>Winter</span><span class="sctag">Feb 2026 · Apr 2026</span></div>
         <div class="scbd"><div class="g2 gnb" style="gap:8px;margin-bottom:.6rem">
-          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25w">—</div><div style="font-size:11px;color:var(--mu)">Feb+Apr</div></div>
-          <div><div style="font-size:9.5px;font-weight:700;color:var(--nmh);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26w">—</div><div style="font-size:11px;color:var(--mu)">Apr only</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--mu);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2025</div><div class="scn" id="ss25w">—</div><div style="font-size:11px;color:var(--mu)">Feb 2026</div></div>
+          <div><div style="font-size:9.5px;font-weight:700;color:var(--nmh);letter-spacing:.07em;margin-bottom:3px;text-transform:uppercase">2026</div><div class="scn" id="ss26w">—</div><div style="font-size:11px;color:var(--mu)">Apr 2026</div></div>
         </div><div id="ssWchg" style="font-size:12px;font-family:'JetBrains Mono',monospace"></div></div>
       </div>
     </div>
@@ -536,7 +536,7 @@ tbody tr:hover td{background:var(--sf2)}
 const CFG={url26:'',url25:''};
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────
-const RD={'South Maharashtra':['Satara','Kolhapur','Sangli'],'Pune':['Pune','Baramati','Maval','Haveli'],'North Maharashtra':['Nashik','Dhule','Jalgaon','Nandurbar'],'Solapur':['Solapur','Latur','Osmanabad','Bidar']};
+const RD={'South Maharashtra':['Kolhapur','Sangli','Satara'],'Pune':['Ahilyanagar','Nashik','Pune North','Pune South'],'North Maharashtra':['Dhule','Jalgaon','Nandurbar'],'Solapur':['Solapur']};
 const D2R={};Object.entries(RD).forEach(([r,ds])=>ds.forEach(d=>D2R[d]=r));
 const CDCU=new Set(Object.values(RD).flat());
 const RCOL={'South Maharashtra':'#e8200a','Pune':'#1040d0','North Maharashtra':'#0a8a3a','Solapur':'#e06000'};
@@ -547,7 +547,7 @@ const EV26=['MS-CIT April 2026 Exam Event','MS-CIT June 2026 Exam Event','MS-CIT
 const EL=['April','June','July','August'];
 const EC=['#6c3fe8','#1040d0','#e8200a','#e06000'];
 const EL25=['March','May','June','July','October','December','February'];
-const EV25=['March Exam Event','May Exam Event','June Exam Event','July Exam Event','October Exam Event','December Exam Event','February Exam Event'];
+const EV25=['March Exam Event 2025','May Exam Event 2025','June Exam Event 2025','July Exam Event 2025','October Exam Event 2025','December Exam Event 2025','February Exam Event 2026'];
 
 // ─── CROSS-FILTER STATE ───────────────────────────────────────────────
 const CF={rcu:null,dcu:null,event:null};
@@ -665,8 +665,8 @@ function parse26(rows){
   const rcu={},dcu={};let urbT=0,rurT=0,urbA=0,urbJ=0,urbL=0,rurA=0,rurJ=0,rurL=0;
   rows.forEach(r=>{
     const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'Unknown';
-    const a=n(r[EV26[0]]),j=n(r[EV26[1]]),jl=n(r[EV26[2]]),au=n(r[EV26[3]]),tot=a+j+jl+au;
-    const ur=r['Urban/Rural']||'',isPart=r['Participation']==='Participated';
+    const a=n(r[EV26[0]]),j=n(r[EV26[1]]),jl=n(r[EV26[2]]),au=n(r[EV26[3]]),tot=n(r['Total Admissions'])||a+j+jl+au;
+    const ur=(r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'Urban':'Rural',isPart=r['Participation']==='Participated';
     total+=tot;apr+=a;jun+=j;jul+=jl;aug+=au;if(isPart)part++;
     if(!rcu[rc])rcu[rc]={total:0,alcs:0,part:0,np:0,apr:0,jun:0,jul:0,aug:0};
     rcu[rc].total+=tot;rcu[rc].alcs++;rcu[rc].apr+=a;rcu[rc].jun+=j;rcu[rc].jul+=jl;rcu[rc].aug+=au;
@@ -678,24 +678,24 @@ function parse26(rows){
   });
   const top20=[...rows].sort((a,b)=>n(b['Total Admissions'])-n(a['Total Admissions'])).slice(0,20).map(r=>{
     const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'';
-    return{n:r['Center Name'],rcu:rc,dcu:d,t:r['Taluka']||'',ur:r['Urban/Rural']||'',
-      apr:n(r[EV26[0]]),jun:n(r[EV26[1]]),jul:n(r[EV26[2]]),aug:n(r[EV26[3]]),tot:n(r['Total Admissions'])};
+    return{n:r['Center Name'],rcu:rc,dcu:d,t:r['Taluka']||'',ur:(r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'Urban':'Rural',cat:r['ALC Type']||'',
+      apr:n(r[EV26[0]]),jun:n(r[EV26[1]]),jul:n(r[EV26[2]]),aug:n(r[EV26[3]]),tot:n(r['Total Admissions'])||0};
   });
   return{total,alcs:rows.length,part,np:rows.length-part,apr,jun,jul,aug,rcu,dcu,top20,
-    urb:{total:urbT,alcs:rows.filter(r=>r['Urban/Rural']==='Urban').length,apr:urbA,jun:urbJ,jul:urbL},
-    rur:{total:rurT,alcs:rows.filter(r=>r['Urban/Rural']==='Rural').length,apr:rurA,jun:rurJ,jul:rurL}};
+    urb:{total:urbT,alcs:rows.filter(r=>(r['Urban/Rural']||'').trim().toLowerCase()==='urban').length,apr:urbA,jun:urbJ,jul:urbL},
+    rur:{total:rurT,alcs:rows.filter(r=>(r['Urban/Rural']||'').trim().toLowerCase()!=='urban').length,apr:rurA,jun:rurJ,jul:rurL}};
 }
 function parse25(rows){
   let total=0,part=0;const rcu={};
   rows.forEach(r=>{total+=n(r['Total Admissions']);if(r['Participation']==='Participated')part++;
-    const d=r['LLC Region']||r['DCU']||'',rc=D2R[d]||'Unknown';
+    const d=r['LLC Region']||'',rc=r['RLC Region']||D2R[d]||'Unknown';
     if(!rcu[rc])rcu[rc]={total:0,alcs:0};rcu[rc].total+=n(r['Total Admissions']);rcu[rc].alcs++;
   });
   const events=EL25.map((l,i)=>({label:l,total:rows.reduce((s,r2)=>s+n(r2[EV25[i]]),0)}));
   return{total,alcs:rows.length,part,rcu,events};
 }
 function fC26(rows){return rows.filter(r=>CDCU.has(r['DCU'])||RO.includes(r['RCU']));}
-function fC25(rows){return rows.filter(r=>{const d=r['LLC Region']||r['DCU']||'';return CDCU.has(d)||RO.includes(r['RCU']);});}
+function fC25(rows){return rows.filter(r=>{const d=r['LLC Region']||'',rc=r['RLC Region']||'';return CDCU.has(d)||RO.includes(rc);});}
 
 // ─── RENDER 2026 ──────────────────────────────────────────────────────
 function rend26(d){
@@ -836,7 +836,7 @@ function rend26(d){
 
 // ─── RENDER SUMMER ────────────────────────────────────────────────────
 function rendSum(d){
-  const sT=(d.jun||0)+(d.jul||0);
+  const sT=(d.jun||0)+(d.jul||0)+(d.aug||0);
   document.getElementById('shT').textContent=F(sT);
   document.getElementById('shA').textContent=F(d.alcs);
   document.getElementById('shP').textContent=F(d.part);
@@ -845,7 +845,7 @@ function rendSum(d){
     return`<div class="rc rc-${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
       <div class="rl" style="color:${RCOL[rcu]}">${rcu.toUpperCase()}</div>
       <div class="rv" style="color:${RCOL[rcu]}">${F(s)}</div>
-      <div class="rs">Jun: ${F(r.jun||0)} · Jul: ${F(r.jul||0)}</div>
+      <div class="rs">Jun: ${F(r.jun||0)} · Jul: ${F(r.jul||0)} · Aug: ${F(r.aug||0)}</div>
       <div class="rpg"><div class="rpgf" style="width:${p}%;background:${RCOL[rcu]}"></div></div>
       <div class="rhi" style="color:${RCOL[rcu]}">Click to filter ▸</div>
     </div>`;
@@ -871,18 +871,18 @@ function rendSum(d){
       <div class="prl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
       <div class="prb"><div class="prf" style="width:${p}%;background:${RCOL[dv.rcu]||'#1a5cb5'}"></div></div>
       <div class="prn">${F(s)}</div>
-      <div class="prp">J:${F(dv.jun||0)}</div>
+      <div class="prp">${P(s,sT)}</div>
     </div>`;
   });
 
   const st=document.getElementById('sT20b');st.innerHTML='';
   document.getElementById('sT20m').textContent=CF.rcu||CF.dcu?'Filtered view':'All centres · ranked by summer total';
-  (d.top20||[]).slice().sort((a,b)=>((b.jun||0)+(b.jul||0))-((a.jun||0)+(a.jul||0))).slice(0,20).forEach((c,i)=>{
-    const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0);
+  (d.top20||[]).slice().sort((a,b)=>((b.jun||0)+(b.jul||0)+(b.aug||0))-((a.jun||0)+(a.jul||0)+(a.aug||0))).slice(0,20).forEach((c,i)=>{
+    const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0)+(c.aug||0);
     st.innerHTML+=`<tr><td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
       <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
       <td>${c.dcu}</td><td>${c.t}</td>
-      <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td>
+      <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr">${c.aug||'—'}</td>
       <td class="tr bld">${F(s)}</td></tr>`;
   });
   hiUI();
@@ -901,13 +901,13 @@ function rendCmp(d26,d25){
     <div class="kpi"><div class="ke">2026 Centres</div><div class="kv sm">${F(d26.alcs)}</div><div class="ks">${d25.alcs?`vs ${F(d25.alcs)} in 2025`:''}</div></div>`;
 
   const sum25=(d25.events?.find(e=>e.label==='May')?.total||0)+(d25.events?.find(e=>e.label==='June')?.total||0)+(d25.events?.find(e=>e.label==='July')?.total||0);
-  const sum26=(d26.jun||0)+(d26.jul||0);
+  const sum26=(d26.jun||0)+(d26.jul||0)+(d26.aug||0);
   document.getElementById('ss25s').textContent=F(sum25);document.getElementById('ss26s').textContent=F(sum26);
   const sd=sum26-sum25;
   document.getElementById('ssSchg').innerHTML=`<span class="${sd>=0?'yg':'yr'}">${sd>=0?'+':''}${F(sd)}</span> <span style="color:var(--mu);font-size:10.5px">vs 2025 Summer</span>`;
   const mon25=(d25.events?.find(e=>e.label==='October')?.total||0)+(d25.events?.find(e=>e.label==='December')?.total||0);
   document.getElementById('ss25m').textContent=F(mon25);
-  const win25=(d25.events?.find(e=>e.label==='February')?.total||0)+(d25.events?.find(e=>e.label==='March')?.total||0);
+  const win25=(d25.events?.find(e=>e.label==='February')?.total||0);
   const win26=d26.apr||0;
   document.getElementById('ss25w').textContent=F(win25);document.getElementById('ss26w').textContent=F(win26);
   const wd=win26-win25;
@@ -944,9 +944,9 @@ function rendCmpCharts(tabId){
   if(!_cmpData) return;
   const {d26,d25}=_cmpData;
   const sum25=(d25.events?.find(e=>e.label==='May')?.total||0)+(d25.events?.find(e=>e.label==='June')?.total||0)+(d25.events?.find(e=>e.label==='July')?.total||0);
-  const sum26=(d26.jun||0)+(d26.jul||0);
+  const sum26=(d26.jun||0)+(d26.jul||0)+(d26.aug||0);
   const mon25=(d25.events?.find(e=>e.label==='October')?.total||0)+(d25.events?.find(e=>e.label==='December')?.total||0);
-  const win25=(d25.events?.find(e=>e.label==='February')?.total||0)+(d25.events?.find(e=>e.label==='March')?.total||0);
+  const win25=(d25.events?.find(e=>e.label==='February')?.total||0);
   const win26=d26.apr||0;
   const r25=RO.map(r=>d25.rcu?.[r]?.total||0),r26arr=RO.map(r=>d26.rcu?.[r]?.total||0);
   const ev25v=(d25.events||[]).map(e=>e.total),ev26v=[d26.apr,d26.jun,d26.jul,d26.aug];
@@ -954,7 +954,7 @@ function rendCmpCharts(tabId){
 
   if(!tabId||tabId==='cS'){
     mk('cScmp',{type:'bar',
-      data:{labels:['Summer','Monsoon','Winter'],datasets:[
+      data:{labels:['Summer (Jun-Aug)','Monsoon (Oct+Dec)','Winter (Feb/Apr)'],datasets:[
         {label:'2025',data:[sum25,mon25,win25],backgroundColor:'rgba(148,163,184,.2)',borderColor:'#94a3b8',borderWidth:1.5},
         {label:'2026 (partial)',data:[sum26,null,win26],backgroundColor:'rgba(184,92,0,.14)',borderColor:'#b85c00',borderWidth:1.5},
       ]},
@@ -1000,8 +1000,8 @@ function applyF(){
   let rows=_r26.filter(r=>{
     const rc=D2R[r['DCU']]||r['RCU']||'';
     if(rcu&&rc!==rcu)return false;if(dcu&&r['DCU']!==dcu)return false;
-    if(ur&&r['Urban/Rural']!==ur)return false;if(pt&&r['Participation']!==pt)return false;
-    if(q&&!(r['Center Name']||'').toLowerCase().includes(q)&&!(r['Taluka']||'').toLowerCase().includes(q)&&!(r['DCU']||'').toLowerCase().includes(q))return false;
+    if(ur&&((r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'Urban':'Rural')!==ur)return false;if(pt&&r['Participation']!==pt)return false;
+    if(q&&!(r['Center Name']||'').toLowerCase().includes(q)&&!(r['Taluka']||'').toLowerCase().includes(q)&&!(r['DCU']||'').toLowerCase().includes(q)&&!(r['Center Code']||'').toString().toLowerCase().includes(q))return false;
     if(ei>=0&&!(parseFloat(r[EV26[ei]])>0))return false;
     return true;
   });
@@ -1013,7 +1013,7 @@ function applyF(){
     tb.innerHTML+=`<tr>
       <td class="bld">${r['Center Name']||''}</td><td><span class="bdg b-${cl}">${rc2}</span></td>
       <td>${r['DCU']||''}</td><td>${r['Taluka']||''}</td>
-      <td><span class="bdg ${r['Urban/Rural']==='Urban'?'b-urb':'b-rul'}">${r['Urban/Rural']||''}</span></td>
+      <td><span class="bdg ${(r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'b-urb':'b-rul'}">${(r['Urban/Rural']||'').trim()}</span></td>
       <td><span class="bdg ${pOk?'b-ok':'b-np'}">${r['Participation']||''}</span></td>
       <td class="tr">${n(r[EV26[0]])||'—'}</td><td class="tr">${n(r[EV26[1]])||'—'}</td>
       <td class="tr">${n(r[EV26[2]])||'—'}</td><td class="tr">${n(r[EV26[3]])||'—'}</td>
@@ -1042,6 +1042,10 @@ async function loadData(u26,u25){
     setL('Fetching 2026 data…',20);const all26=await csvFetch(u26);
     setL('Fetching 2025 data…',45);const all25=await csvFetch(u25);
     setL('Filtering Central Zone…',65);_r26=fC26(all26);_r25=fC25(all25);
+    // Debug: log first raw rows to console so column names can be verified
+    if(all26[0]) console.log('2026 first row keys:',Object.keys(all26[0]));
+    if(all25[0]) console.log('2025 first row keys:',Object.keys(all25[0]));
+    console.log('Central Zone rows — 2026:',_r26.length,'| 2025:',_r25.length);
     setL('Computing metrics…',82);_d26=parse26(_r26);_d25=parse25(_r25);
     rendAll(_d26,_d25);
   }catch(e){
@@ -1098,12 +1102,12 @@ async function refreshData(){
 function showSetup(){document.getElementById('url26').value=CFG.url26||'';document.getElementById('url25').value=CFG.url25||'';document.getElementById('fetchErr').innerHTML='';document.getElementById('setupModal').style.display='flex';}
 
 // ─── DEMO DATA ────────────────────────────────────────────────────────
-const D26={total:87340,alcs:1820,part:1698,np:122,apr:10820,jun:51240,jul:25280,aug:0,
-  rcu:{'South Maharashtra':{total:22890,alcs:515,part:484,np:31,apr:2769,jun:13578,jul:6543,aug:0},'Pune':{total:28450,alcs:580,part:548,np:32,apr:3810,jun:16340,jul:8300,aug:0},'North Maharashtra':{total:21600,alcs:420,part:388,np:32,apr:2580,jun:12740,jul:6280,aug:0},'Solapur':{total:14400,alcs:305,part:278,np:27,apr:1661,jun:8582,jul:4157,aug:0}},
-  dcu:{'Satara':{rcu:'South Maharashtra',total:8323,alcs:165,part:158,np:7,apr:886,jun:5042,jul:2395,aug:0},'Kolhapur':{rcu:'South Maharashtra',total:7855,alcs:195,part:177,np:18,apr:1103,jun:4335,jul:2417,aug:0},'Sangli':{rcu:'South Maharashtra',total:6712,alcs:155,part:149,np:6,apr:780,jun:4201,jul:1731,aug:0},'Pune':{rcu:'Pune',total:9820,alcs:198,part:189,np:9,apr:1250,jun:5610,jul:2960,aug:0},'Baramati':{rcu:'Pune',total:7340,alcs:158,part:151,np:7,apr:1050,jun:4230,jul:2060,aug:0},'Maval':{rcu:'Pune',total:6120,alcs:120,part:112,np:8,apr:820,jun:3560,jul:1740,aug:0},'Haveli':{rcu:'Pune',total:5170,alcs:104,part:96,np:8,apr:690,jun:2940,jul:1540,aug:0},'Nashik':{rcu:'North Maharashtra',total:8640,alcs:166,part:153,np:13,apr:1030,jun:5100,jul:2510,aug:0},'Dhule':{rcu:'North Maharashtra',total:5280,alcs:100,part:93,np:7,apr:620,jun:3120,jul:1540,aug:0},'Jalgaon':{rcu:'North Maharashtra',total:4780,alcs:92,part:85,np:7,apr:560,jun:2820,jul:1400,aug:0},'Nandurbar':{rcu:'North Maharashtra',total:2900,alcs:62,part:57,np:5,apr:370,jun:1700,jul:830,aug:0},'Solapur':{rcu:'Solapur',total:5820,alcs:124,part:114,np:10,apr:680,jun:3470,jul:1670,aug:0},'Latur':{rcu:'Solapur',total:4480,alcs:95,part:86,np:9,apr:510,jun:2660,jul:1310,aug:0},'Osmanabad':{rcu:'Solapur',total:2540,alcs:52,part:47,np:5,apr:296,jun:1512,jul:732,aug:0},'Bidar':{rcu:'Solapur',total:1560,alcs:34,part:31,np:3,apr:175,jun:940,jul:445,aug:0}},
-  urb:{total:40820,alcs:680,apr:5012,jun:23980,jul:11828,aug:0},rur:{total:46520,alcs:1140,apr:5808,jun:27260,jul:13452,aug:0},
-  top20:[{n:'Gurukul Academy',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Hatkanangle',ur:'Urban',apr:21,jun:286,jul:66,aug:0,tot:373},{n:'Apex Computer Institute',rcu:'Pune',dcu:'Pune',t:'Pune City',ur:'Urban',apr:35,jun:210,jul:95,aug:0,tot:340},{n:'Darpan Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Koregaon',ur:'Urban',apr:12,jun:206,jul:59,aug:0,tot:277},{n:'Nashik Digital Academy',rcu:'North Maharashtra',dcu:'Nashik',t:'Nashik',ur:'Urban',apr:28,jun:165,jul:75,aug:0,tot:268},{n:'Amar Computer Institute',rcu:'South Maharashtra',dcu:'Satara',t:'Satara',ur:'Rural',apr:15,jun:141,jul:88,aug:0,tot:244},{n:'Sunrise Computers',rcu:'Pune',dcu:'Baramati',t:'Baramati',ur:'Rural',apr:22,jun:148,jul:68,aug:0,tot:238},{n:'Solapur Tech Education',rcu:'Solapur',dcu:'Solapur',t:'Solapur',ur:'Urban',apr:18,jun:142,jul:70,aug:0,tot:230},{n:'Narmada Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Khandala',ur:'Urban',apr:12,jun:124,jul:87,aug:0,tot:223},{n:'Silicon Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Man',ur:'Urban',apr:10,jun:156,jul:55,aug:0,tot:221},{n:'Info Tech Studies',rcu:'South Maharashtra',dcu:'Sangli',t:'Tasgaon',ur:'Urban',apr:14,jun:154,jul:52,aug:0,tot:220},{n:'Sahyadri Computer Center',rcu:'North Maharashtra',dcu:'Nashik',t:'Igatpuri',ur:'Rural',apr:20,jun:130,jul:68,aug:0,tot:218},{n:'Latur Computer Academy',rcu:'Solapur',dcu:'Latur',t:'Latur',ur:'Urban',apr:16,jun:128,jul:65,aug:0,tot:209},{n:'Jalgaon Infotech',rcu:'North Maharashtra',dcu:'Jalgaon',t:'Jalgaon',ur:'Urban',apr:14,jun:120,jul:72,aug:0,tot:206},{n:'Symbiosis IT Center',rcu:'Pune',dcu:'Haveli',t:'Haveli',ur:'Rural',apr:25,jun:118,jul:58,aug:0,tot:201},{n:'Prosoft Computers',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Panhala',ur:'Rural',apr:10,jun:205,jul:0,aug:0,tot:215},{n:'Dhule Digital Hub',rcu:'North Maharashtra',dcu:'Dhule',t:'Dhule',ur:'Urban',apr:17,jun:115,jul:65,aug:0,tot:197},{n:'Osmanabad IT Institute',rcu:'Solapur',dcu:'Osmanabad',t:'Osmanabad',ur:'Urban',apr:11,jun:106,jul:52,aug:0,tot:169},{n:'Maval Computers',rcu:'Pune',dcu:'Maval',t:'Maval',ur:'Rural',apr:19,jun:98,jul:50,aug:0,tot:167},{n:'Bidar Digital Center',rcu:'Solapur',dcu:'Bidar',t:'Bidar',ur:'Urban',apr:8,jun:95,jul:42,aug:0,tot:145},{n:'Nandurbar Skill Center',rcu:'North Maharashtra',dcu:'Nandurbar',t:'Nandurbar',ur:'Rural',apr:9,jun:88,jul:38,aug:0,tot:135}]};
-const D25={total:312400,alcs:2010,part:1978,rcu:{'South Maharashtra':{total:67031},'Pune':{total:98420},'North Maharashtra':{total:84300},'Solapur':{total:62649}},events:EL25.map((l,i)=>({label:l,total:[28400,18200,42100,38600,52800,38000,94300][i]}))};
+const D26={total:188381,alcs:1698,part:1540,np:158,apr:11403,jun:58068,jul:103457,aug:15453,
+  rcu:{'South Maharashtra':{total:48555,alcs:515,part:484,np:31,apr:2769,jun:13578,jul:28258,aug:3950},'Pune':{total:89731,alcs:772,part:696,np:76,apr:5343,jun:28056,jul:47953,aug:8379},'North Maharashtra':{total:30482,alcs:236,part:206,np:30,apr:2177,jun:9816,jul:16747,aug:1742},'Solapur':{total:19613,alcs:175,part:154,np:21,apr:1114,jun:6618,jul:10499,aug:1382}},
+  dcu:{'Pune North':{rcu:'Pune',total:25947,alcs:238,part:218,np:20,apr:1420,jun:7890,jul:13680,aug:2957},'Nashik':{rcu:'Pune',total:25232,alcs:206,part:188,np:18,apr:1380,jun:7660,jul:13250,aug:2942},'Ahilyanagar':{rcu:'Pune',total:25069,alcs:203,part:181,np:22,apr:1543,jun:7890,jul:13023,aug:2613},'Kolhapur':{rcu:'South Maharashtra',total:20784,alcs:195,part:184,np:11,apr:1200,jun:5800,jul:11950,aug:1834},'Solapur':{rcu:'Solapur',total:19613,alcs:175,part:154,np:21,apr:1114,jun:6618,jul:10499,aug:1382},'Jalgaon':{rcu:'North Maharashtra',total:17332,alcs:141,part:124,np:17,apr:1240,jun:5600,jul:9370,aug:1122},'Satara':{rcu:'South Maharashtra',total:14197,alcs:165,part:155,np:10,apr:840,jun:3978,jul:8260,aug:1119},'Sangli':{rcu:'South Maharashtra',total:13574,alcs:155,part:145,np:10,apr:729,jun:3800,jul:8048,aug:997},'Pune South':{rcu:'Pune',total:13483,alcs:125,part:109,np:16,apr:1000,jun:4616,jul:8000,aug:867},'Dhule':{rcu:'North Maharashtra',total:9151,alcs:67,part:55,np:12,apr:657,jun:2896,jul:5200,aug:398},'Nandurbar':{rcu:'North Maharashtra',total:3999,alcs:28,part:27,np:1,apr:280,jun:1320,jul:2177,aug:222}},
+  urb:{total:106453,alcs:780,apr:6500,jun:33200,jul:58900,aug:7853},rur:{total:81928,alcs:918,apr:4903,jun:24868,jul:44557,aug:7600},
+  top20:[{n:'Creative Computers',rcu:'Pune',dcu:'Pune North',t:'Pune City',ur:'Urban',apr:16,jun:381,jul:219,aug:23,tot:639},{n:'Gurukul Academy',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Hatkanangle',ur:'Urban',apr:21,jun:286,jul:66,aug:0,tot:373},{n:'Apex Institute',rcu:'Pune',dcu:'Ahilyanagar',t:'Ahmednagar',ur:'Urban',apr:35,jun:210,jul:95,aug:0,tot:340},{n:'Darpan Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Koregaon',ur:'Urban',apr:12,jun:206,jul:59,aug:0,tot:277},{n:'Nashik Digital Academy',rcu:'Pune',dcu:'Nashik',t:'Nashik',ur:'Urban',apr:28,jun:165,jul:75,aug:0,tot:268},{n:'Amar Computer Institute',rcu:'South Maharashtra',dcu:'Satara',t:'Satara',ur:'Rural',apr:15,jun:141,jul:88,aug:0,tot:244},{n:'Sunrise Computers',rcu:'Pune',dcu:'Pune South',t:'Haveli',ur:'Rural',apr:22,jun:148,jul:68,aug:0,tot:238},{n:'Solapur Tech Education',rcu:'Solapur',dcu:'Solapur',t:'Solapur',ur:'Urban',apr:18,jun:142,jul:70,aug:0,tot:230},{n:'Narmada Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Khandala',ur:'Urban',apr:12,jun:124,jul:87,aug:0,tot:223},{n:'Silicon Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Man',ur:'Urban',apr:10,jun:156,jul:55,aug:0,tot:221},{n:'Info Tech Studies',rcu:'South Maharashtra',dcu:'Sangli',t:'Tasgaon',ur:'Urban',apr:14,jun:154,jul:52,aug:0,tot:220},{n:'Sahyadri Computer Center',rcu:'Pune',dcu:'Nashik',t:'Igatpuri',ur:'Rural',apr:20,jun:130,jul:68,aug:0,tot:218},{n:'Jalgaon Infotech',rcu:'North Maharashtra',dcu:'Jalgaon',t:'Jalgaon',ur:'Urban',apr:14,jun:120,jul:72,aug:0,tot:206},{n:'Symbiosis IT',rcu:'Pune',dcu:'Pune North',t:'Pune',ur:'Rural',apr:25,jun:118,jul:58,aug:0,tot:201},{n:'Prosoft Computers',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Panhala',ur:'Rural',apr:10,jun:205,jul:0,aug:0,tot:215},{n:'Dhule Digital Hub',rcu:'North Maharashtra',dcu:'Dhule',t:'Dhule',ur:'Urban',apr:17,jun:115,jul:65,aug:0,tot:197},{n:'Ahilyanagar IT Institute',rcu:'Pune',dcu:'Ahilyanagar',t:'Ahmednagar',ur:'Urban',apr:11,jun:106,jul:52,aug:0,tot:169},{n:'Pune South Computers',rcu:'Pune',dcu:'Pune South',t:'Haveli',ur:'Rural',apr:19,jun:98,jul:50,aug:0,tot:167},{n:'Nandurbar Skill Center',rcu:'North Maharashtra',dcu:'Nandurbar',t:'Nandurbar',ur:'Rural',apr:9,jun:88,jul:38,aug:0,tot:135},{n:'Sangli Tech Center',rcu:'South Maharashtra',dcu:'Sangli',t:'Sangli',ur:'Urban',apr:8,jun:78,jul:32,aug:0,tot:118}]};
+const D25={total:259391,alcs:1737,part:1709,rcu:{'South Maharashtra':{total:67031},'Pune':{total:122258},'North Maharashtra':{total:44330},'Solapur':{total:25772}},events:EL25.map((l,i)=>({label:l,total:[16459,46803,113093,29611,21760,14799,16866][i]}))};
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 function waitAndInit(){
