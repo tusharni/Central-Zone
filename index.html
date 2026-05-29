@@ -575,12 +575,11 @@ function fRows(rows=_r26){
 function refilter(){
   if(!_d26||!_d25)return;
   const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;
-  // Only re-render the page currently visible — not all pages
   const active=document.querySelector('.page.active')?.id;
   if(active==='p26'||!active) rend26(fd);
-  else if(active==='pSum') rendSum(fd);
+  // Summer: always pass full _d26 so all 4 RCU cards show; fd used inside for DCU/Top20
+  else if(active==='pSum') rendSum(_d26,fd);
   else if(active==='pCtr') applyF();
-  // Invalidate other pages so they re-render when next visited
   if(active!=='p26')  _rendered.p26=false;
   if(active!=='pSum') _rendered.pSum=false;
   hiUI();
@@ -835,13 +834,21 @@ function rend26(d){
 }
 
 // ─── RENDER SUMMER ────────────────────────────────────────────────────
-function rendSum(d){
+// d = full _d26 always (hero + RCU cards + charts show all 4 RCUs)
+// fd = filtered data (DCU bars + Top20 respect cross-filter)
+function rendSum(d, fd){
+  if(!fd) fd=d;
   const sT=(d.jun||0)+(d.jul||0)+(d.aug||0);
+  const sTf=(fd.jun||0)+(fd.jul||0)+(fd.aug||0);
+
+  // Hero — always full zone
   document.getElementById('shT').textContent=F(sT);
   document.getElementById('shA').textContent=F(d.alcs);
   document.getElementById('shP').textContent=F(d.part);
+
+  // RCU cards — always all 4, full data
   document.getElementById('sumRC').innerHTML=RO.map(rcu=>{
-    const r=d.rcu[rcu]||{},cl=RCLS[rcu],s=(r.jun||0)+(r.jul||0),p=Math.round((s/(sT||1))*100);
+    const r=d.rcu[rcu]||{},cl=RCLS[rcu],s=(r.jun||0)+(r.jul||0)+(r.aug||0),p=Math.round((s/(sT||1))*100);
     return`<div class="rc rc-${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
       <div class="rl" style="color:${RCOL[rcu]}">${rcu.toUpperCase()}</div>
       <div class="rv" style="color:${RCOL[rcu]}">${F(s)}</div>
@@ -851,33 +858,39 @@ function rendSum(d){
     </div>`;
   }).join('');
 
+  // Charts — full zone data (always show all 4 RCUs)
   mk('cSumBar',{type:'bar',
     data:{labels:RO,datasets:[
-      {label:'June',data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(26,92,181,.13)',borderColor:'#1a5cb5',borderWidth:1.5},
-      {label:'July',data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(192,57,43,.13)',borderColor:'#c0392b',borderWidth:1.5},
+      {label:'June',  data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(16,64,208,.12)',borderColor:'#1040d0',borderWidth:1.5},
+      {label:'July',  data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(232,32,10,.12)', borderColor:'#e8200a',borderWidth:1.5},
+      {label:'August',data:RO.map(r=>d.rcu[r]?.aug||0),backgroundColor:'rgba(224,96,0,.12)',  borderColor:'#e06000',borderWidth:1.5},
     ]},
-    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:500,fontSize:10,color:'rgba(13,17,23,.7)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
+    options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:500,fontSize:10,color:'rgba(11,17,32,.65)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
 
   mk('cSumPie',{type:'doughnut',
-    data:{labels:RO,datasets:[{data:RO.map(r=>(d.rcu[r]?.jun||0)+(d.rcu[r]?.jul||0)),backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
-      plugins:{datalabels:{fontSize:10.5,color:'rgba(13,17,23,.7)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#5a6480',boxWidth:9,padding:14}}}}});
+    data:{labels:RO,datasets:[{data:RO.map(r=>(d.rcu[r]?.jun||0)+(d.rcu[r]?.jul||0)+(d.rcu[r]?.aug||0)),backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',animation:false,
+      plugins:{datalabels:{fontSize:10.5,color:'rgba(11,17,32,.65)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#526080',boxWidth:9,padding:14}}}}});
 
+  // DCU bars — filtered data
   const sb=document.getElementById('sumBars');sb.innerHTML='';
-  const maxS=Math.max(...Object.values(d.dcu).map(v=>(v.jun||0)+(v.jul||0)))||1;
-  Object.entries(d.dcu).sort((a,b)=>((b[1].jun||0)+(b[1].jul||0))-((a[1].jun||0)+(a[1].jul||0))).forEach(([dn,dv])=>{
-    const s=(dv.jun||0)+(dv.jul||0),p=Math.round((s/maxS)*100),cl=RCLS[dv.rcu||''];
+  const dcuSrc=Object.keys(fd.dcu||{}).length?fd.dcu:d.dcu;
+  const maxS=Math.max(...Object.values(dcuSrc).map(v=>(v.jun||0)+(v.jul||0)+(v.aug||0)))||1;
+  Object.entries(dcuSrc).sort((a,b)=>((b[1].jun||0)+(b[1].jul||0)+(b[1].aug||0))-((a[1].jun||0)+(a[1].jul||0)+(a[1].aug||0))).forEach(([dn,dv])=>{
+    const s=(dv.jun||0)+(dv.jul||0)+(dv.aug||0),p=Math.round((s/maxS)*100),cl=RCLS[dv.rcu||''];
     sb.innerHTML+=`<div class="pr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
       <div class="prl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
-      <div class="prb"><div class="prf" style="width:${p}%;background:${RCOL[dv.rcu]||'#1a5cb5'}"></div></div>
+      <div class="prb"><div class="prf" style="width:${p}%;background:${RCOL[dv.rcu]||'#1040d0'}"></div></div>
       <div class="prn">${F(s)}</div>
-      <div class="prp">${P(s,sT)}</div>
+      <div class="prp">${P(s,sTf||sT)}</div>
     </div>`;
   });
 
+  // Top 20 — filtered data
   const st=document.getElementById('sT20b');st.innerHTML='';
   document.getElementById('sT20m').textContent=CF.rcu||CF.dcu?'Filtered view':'All centres · ranked by summer total';
-  (d.top20||[]).slice().sort((a,b)=>((b.jun||0)+(b.jul||0)+(b.aug||0))-((a.jun||0)+(a.jul||0)+(a.aug||0))).slice(0,20).forEach((c,i)=>{
+  const top20src=(fd.top20&&fd.top20.length)?fd.top20:d.top20;
+  top20src.slice().sort((a,b)=>((b.jun||0)+(b.jul||0)+(b.aug||0))-((a.jun||0)+(a.jul||0)+(a.aug||0))).slice(0,20).forEach((c,i)=>{
     const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0)+(c.aug||0);
     st.innerHTML+=`<tr><td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
       <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
@@ -887,7 +900,6 @@ function rendSum(d){
   });
   hiUI();
 }
-
 // ─── RENDER COMPARE ───────────────────────────────────────────────────
 let _cmpData=null; // stored for lazy chart rendering
 
@@ -1084,7 +1096,7 @@ function rendAll(d26,d25){
 function ensureRendered(pageId){
   if(!_d26||!_d25)return;
   if(pageId==='pSum'&&!_rendered.pSum){
-    try{rendSum(_d26);_rendered.pSum=true;}catch(e){console.error(e);}
+    try{const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;rendSum(_d26,fd);_rendered.pSum=true;}catch(e){console.error(e);}
   }
   if(pageId==='pCmp'&&!_rendered.pCmp){
     try{rendCmp(_d26,_d25);_rendered.pCmp=true;}catch(e){console.error(e);}
