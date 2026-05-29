@@ -561,6 +561,7 @@ function updCF(){
   pills.innerHTML=act.map(([k,v])=>`<div class="cfpill">${k.toUpperCase()}: <strong>${v}</strong><span class="cfx" onclick="setCF('${k}',null)">×</span></div>`).join('');
   const cnt=document.getElementById('cfCnt');
   if(_r26)cnt.textContent=`${fRows().length} centres`;
+  else if(_d26){const fd=filterParsed(_d26);cnt.textContent=`${fd.alcs} centres`;}
 }
 function fRows(rows=_r26){
   if(!rows)return[];
@@ -572,16 +573,63 @@ function fRows(rows=_r26){
     return true;
   });
 }
+// Filter pre-parsed _d26 data when raw rows aren't available (demo mode)
+function filterParsed(d){
+  if(!d)return d;
+  const rcu={},dcu={};
+  let total=0,alcs=0,part=0,np=0,apr=0,jun=0,jul=0,aug=0;
+  let urbT=0,rurT=0,urbA=0,urbJ=0,urbL=0,urbAu=0,rurA=0,rurJ=0,rurL=0,rurAu=0;
+  // Filter RCU entries
+  Object.entries(d.rcu).forEach(([rc,rv])=>{
+    if(CF.rcu&&rc!==CF.rcu)return;
+    rcu[rc]=rv;
+    total+=rv.total||0;alcs+=rv.alcs||0;part+=rv.part||0;np+=rv.np||0;
+    apr+=rv.apr||0;jun+=rv.jun||0;jul+=rv.jul||0;aug+=rv.aug||0;
+  });
+  // Filter DCU entries
+  Object.entries(d.dcu).forEach(([dn,dv])=>{
+    if(CF.rcu&&dv.rcu!==CF.rcu)return;
+    if(CF.dcu&&dn!==CF.dcu)return;
+    dcu[dn]=dv;
+  });
+  // Recalc totals if DCU filter active
+  if(CF.dcu){
+    total=0;alcs=0;part=0;np=0;apr=0;jun=0;jul=0;aug=0;
+    Object.values(dcu).forEach(dv=>{
+      total+=dv.total||0;alcs+=dv.alcs||0;part+=dv.part||0;np+=dv.np||0;
+      apr+=dv.apr||0;jun+=dv.jun||0;jul+=dv.jul||0;aug+=dv.aug||0;
+    });
+  }
+  // Filter top20
+  const top20=(d.top20||[]).filter(c=>{
+    if(CF.rcu&&c.rcu!==CF.rcu)return false;
+    if(CF.dcu&&c.dcu!==CF.dcu)return false;
+    if(CF.event){const ev={April:'apr',June:'jun',July:'jul',August:'aug'}[CF.event];if(ev&&!(c[ev]>0))return false;}
+    return true;
+  });
+  return{...d,total,alcs,part,np,apr,jun,jul,aug,rcu,dcu,top20,
+    urb:{...d.urb},rur:{...d.rur}};
+}
 function refilter(){
   if(!_d26||!_d25)return;
-  const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;
+  let fd;
+  if(CF.rcu||CF.dcu||CF.event){
+    fd=_r26?parse26(fRows()):filterParsed(_d26);
+  } else {
+    fd=_d26;
+  }
   const active=document.querySelector('.page.active')?.id;
-  if(active==='p26'||!active) rend26(fd);
-  // Summer: always pass full _d26 so all 4 RCU cards show; fd used inside for DCU/Top20
-  else if(active==='pSum') rendSum(_d26,fd);
-  else if(active==='pCtr') applyF();
-  if(active!=='p26')  _rendered.p26=false;
-  if(active!=='pSum') _rendered.pSum=false;
+  if(active==='p26'||!active){
+    rend26(fd);
+    _rendered.pSum=false; // summer needs refresh next visit
+  } else if(active==='pSum'){
+    rendSum(_d26,fd); // always _d26 for full RCU data
+    _rendered.p26=false;
+  } else if(active==='pCtr'){
+    applyF();
+    _rendered.p26=false;
+    _rendered.pSum=false;
+  }
   hiUI();
 }
 function hiUI(){
@@ -834,22 +882,26 @@ function rend26(d){
 }
 
 // ─── RENDER SUMMER ────────────────────────────────────────────────────
-// d = full _d26 always (hero + RCU cards + charts show all 4 RCUs)
-// fd = filtered data (DCU bars + Top20 respect cross-filter)
-function rendSum(d, fd){
-  if(!fd) fd=d;
-  const sT=(d.jun||0)+(d.jul||0)+(d.aug||0);
+// full = always _d26 (4 RCU cards always show all RCUs with full figures)
+// fd   = filtered data (hero, charts, DCU bars, Top20 respect cross-filter)
+function rendSum(full, fd){
+  if(!full||!full.rcu||Object.keys(full.rcu).length<4) full=_d26;
+  if(!fd) fd=full;
+
+  // ── HERO: filtered total (if RCU selected, show that RCU's summer total) ──
   const sTf=(fd.jun||0)+(fd.jul||0)+(fd.aug||0);
+  const sT=(full.jun||0)+(full.jul||0)+(full.aug||0); // zone total for % calc
+  document.getElementById('shT').textContent=F(sTf);
+  document.getElementById('shA').textContent=F(fd.alcs);
+  document.getElementById('shP').textContent=F(fd.part);
 
-  // Hero — always full zone
-  document.getElementById('shT').textContent=F(sT);
-  document.getElementById('shA').textContent=F(d.alcs);
-  document.getElementById('shP').textContent=F(d.part);
-
-  // RCU cards — always all 4, full data
+  // ── RCU CARDS: always all 4, always full figures ──────────────────
   document.getElementById('sumRC').innerHTML=RO.map(rcu=>{
-    const r=d.rcu[rcu]||{},cl=RCLS[rcu],s=(r.jun||0)+(r.jul||0)+(r.aug||0),p=Math.round((s/(sT||1))*100);
-    return`<div class="rc rc-${cl}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
+    const r=full.rcu[rcu]||{},cl=RCLS[rcu];
+    const s=(r.jun||0)+(r.jul||0)+(r.aug||0);
+    const p=Math.round((s/(sT||1))*100);
+    const isActive=CF.rcu===rcu;
+    return`<div class="rc rc-${cl}${isActive?' cfa':''}" data-rcu="${rcu}" onclick="setCF('rcu','${rcu}')">
       <div class="rl" style="color:${RCOL[rcu]}">${rcu.toUpperCase()}</div>
       <div class="rv" style="color:${RCOL[rcu]}">${F(s)}</div>
       <div class="rs">Jun: ${F(r.jun||0)} · Jul: ${F(r.jul||0)} · Aug: ${F(r.aug||0)}</div>
@@ -858,25 +910,35 @@ function rendSum(d, fd){
     </div>`;
   }).join('');
 
-  // Charts — full zone data (always show all 4 RCUs)
+  // ── CHARTS: use filtered RCU data so selected RCU is highlighted ──
+  // When a filter is active, show only that RCU's bar; others stay visible but use filtered values
+  const chartRCUs=RO;
+  const getV=(rcu,key)=>{
+    if(!CF.rcu) return full.rcu[rcu]?.[key]||0; // no filter: all full
+    return rcu===CF.rcu?(full.rcu[rcu]?.[key]||0):0; // filter: only selected
+  };
   mk('cSumBar',{type:'bar',
-    data:{labels:RO,datasets:[
-      {label:'June',  data:RO.map(r=>d.rcu[r]?.jun||0),backgroundColor:'rgba(16,64,208,.12)',borderColor:'#1040d0',borderWidth:1.5},
-      {label:'July',  data:RO.map(r=>d.rcu[r]?.jul||0),backgroundColor:'rgba(232,32,10,.12)', borderColor:'#e8200a',borderWidth:1.5},
-      {label:'August',data:RO.map(r=>d.rcu[r]?.aug||0),backgroundColor:'rgba(224,96,0,.12)',  borderColor:'#e06000',borderWidth:1.5},
+    data:{labels:chartRCUs,datasets:[
+      {label:'June',  data:chartRCUs.map(r=>getV(r,'jun')),backgroundColor:'rgba(16,64,208,.13)',borderColor:'#1040d0',borderWidth:1.5},
+      {label:'July',  data:chartRCUs.map(r=>getV(r,'jul')),backgroundColor:'rgba(232,32,10,.13)', borderColor:'#e8200a',borderWidth:1.5},
+      {label:'August',data:chartRCUs.map(r=>getV(r,'aug')),backgroundColor:'rgba(224,96,0,.13)',  borderColor:'#e06000',borderWidth:1.5},
     ]},
     options:{...BASE,plugins:{...BASE.plugins,datalabels:{minVal:500,fontSize:10,color:'rgba(11,17,32,.65)'},legend:{...BASE.plugins.legend,position:'bottom'}}}});
 
   mk('cSumPie',{type:'doughnut',
-    data:{labels:RO,datasets:[{data:RO.map(r=>(d.rcu[r]?.jun||0)+(d.rcu[r]?.jul||0)+(d.rcu[r]?.aug||0)),backgroundColor:RO.map(r=>RBG[r]),borderColor:RO.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
+    data:{labels:chartRCUs,datasets:[{
+      data:chartRCUs.map(r=>getV(r,'jun')+getV(r,'jul')+getV(r,'aug')),
+      backgroundColor:chartRCUs.map(r=>RBG[r]),borderColor:chartRCUs.map(r=>RCOL[r]),borderWidth:2,hoverOffset:6}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'58%',animation:false,
       plugins:{datalabels:{fontSize:10.5,color:'rgba(11,17,32,.65)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#526080',boxWidth:9,padding:14}}}}});
 
-  // DCU bars — filtered data
+  // ── DCU BARS: filtered ─────────────────────────────────────────────
   const sb=document.getElementById('sumBars');sb.innerHTML='';
-  const dcuSrc=Object.keys(fd.dcu||{}).length?fd.dcu:d.dcu;
+  const dcuSrc=Object.keys(fd.dcu||{}).length?fd.dcu:full.dcu;
   const maxS=Math.max(...Object.values(dcuSrc).map(v=>(v.jun||0)+(v.jul||0)+(v.aug||0)))||1;
-  Object.entries(dcuSrc).sort((a,b)=>((b[1].jun||0)+(b[1].jul||0)+(b[1].aug||0))-((a[1].jun||0)+(a[1].jul||0)+(a[1].aug||0))).forEach(([dn,dv])=>{
+  Object.entries(dcuSrc).sort((a,b)=>
+    ((b[1].jun||0)+(b[1].jul||0)+(b[1].aug||0))-((a[1].jun||0)+(a[1].jul||0)+(a[1].aug||0))
+  ).forEach(([dn,dv])=>{
     const s=(dv.jun||0)+(dv.jul||0)+(dv.aug||0),p=Math.round((s/maxS)*100),cl=RCLS[dv.rcu||''];
     sb.innerHTML+=`<div class="pr" data-dcu="${dn}" onclick="setCF('dcu','${dn}')">
       <div class="prl"><span class="bdg b-${cl}">${(dv.rcu||'').split(' ')[0]}</span>${dn}</div>
@@ -886,18 +948,21 @@ function rendSum(d, fd){
     </div>`;
   });
 
-  // Top 20 — filtered data
+  // ── TOP 20: filtered ───────────────────────────────────────────────
   const st=document.getElementById('sT20b');st.innerHTML='';
-  document.getElementById('sT20m').textContent=CF.rcu||CF.dcu?'Filtered view':'All centres · ranked by summer total';
-  const top20src=(fd.top20&&fd.top20.length)?fd.top20:d.top20;
-  top20src.slice().sort((a,b)=>((b.jun||0)+(b.jul||0)+(b.aug||0))-((a.jun||0)+(a.jul||0)+(a.aug||0))).slice(0,20).forEach((c,i)=>{
-    const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0)+(c.aug||0);
-    st.innerHTML+=`<tr><td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
-      <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
-      <td>${c.dcu}</td><td>${c.t}</td>
-      <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr">${c.aug||'—'}</td>
-      <td class="tr bld">${F(s)}</td></tr>`;
-  });
+  document.getElementById('sT20m').textContent=(CF.rcu||CF.dcu)?'Filtered view':'All centres · ranked by summer total';
+  const top20src=(fd.top20&&fd.top20.length)?fd.top20:full.top20;
+  top20src.slice()
+    .sort((a,b)=>((b.jun||0)+(b.jul||0)+(b.aug||0))-((a.jun||0)+(a.jul||0)+(a.aug||0)))
+    .slice(0,20).forEach((c,i)=>{
+      const cl=RCLS[c.rcu]||'smh',s=(c.jun||0)+(c.jul||0)+(c.aug||0);
+      st.innerHTML+=`<tr>
+        <td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
+        <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
+        <td>${c.dcu}</td><td>${c.t}</td>
+        <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr">${c.aug||'—'}</td>
+        <td class="tr bld">${F(s)}</td></tr>`;
+    });
   hiUI();
 }
 // ─── RENDER COMPARE ───────────────────────────────────────────────────
@@ -1002,7 +1067,8 @@ function popF(){
   if(CF.rcu)rs.value=CF.rcu;if(CF.dcu)ds.value=CF.dcu;
 }
 function applyF(){
-  if(!_r26){document.getElementById('ctrTbl').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--fa);padding:2rem">No data loaded</td></tr>';return;}
+  if(!_r26&&!_d26){document.getElementById('ctrTbl').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--fa);padding:2rem">No data loaded</td></tr>';return;}
+  if(!_r26){document.getElementById('ctrTbl').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--fa);padding:2rem">All Centres table requires live data (CSV URLs). Demo mode shows pre-aggregated data only.</td></tr>';return;}
   const rcu=document.getElementById('fRCU')?.value||CF.rcu||'';
   const dcu=document.getElementById('fDCU')?.value||CF.dcu||'';
   const ur=document.getElementById('fUr')?.value||'';
@@ -1096,7 +1162,12 @@ function rendAll(d26,d25){
 function ensureRendered(pageId){
   if(!_d26||!_d25)return;
   if(pageId==='pSum'&&!_rendered.pSum){
-    try{const fd=(CF.rcu||CF.dcu||CF.event)?parse26(fRows()):_d26;rendSum(_d26,fd);_rendered.pSum=true;}catch(e){console.error(e);}
+    try{
+      const _full=_d26; // always the global full dataset — never filtered
+      const fd=(CF.rcu||CF.dcu||CF.event)?(_r26?parse26(fRows()):filterParsed(_d26)):_d26;
+      rendSum(_full,fd);
+      _rendered.pSum=true;
+    }catch(e){console.error('rendSum error:',e);}
   }
   if(pageId==='pCmp'&&!_rendered.pCmp){
     try{rendCmp(_d26,_d25);_rendered.pCmp=true;}catch(e){console.error(e);}
