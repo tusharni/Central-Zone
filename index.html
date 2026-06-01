@@ -236,12 +236,54 @@ tbody tr:hover td{background:var(--sf2)}
 .scbd{padding:1.1rem 1.2rem}
 .scn{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1}
 
+/* ── SEASON CARDS ── */
+.sc-rcu{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:1.1rem 1.3rem;border-top:4px solid}
+.sc-rcu-name{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.5rem}
+.sc-season-row{display:flex;align-items:center;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--li)}
+.sc-season-row:last-child{border-bottom:none}
+.sc-season-lbl{font-size:11px;font-weight:700;color:var(--mu);min-width:80px}
+.sc-vals{display:flex;align-items:center;gap:12px}
+.sc-v25{font-size:11.5px;color:var(--mu);font-family:'JetBrains Mono',monospace;min-width:60px;text-align:right}
+.sc-arr{font-size:14px;color:var(--bd2)}
+.sc-v26{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:65px;text-align:right}
+.sc-chg{font-size:10.5px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:60px;text-align:right}
+.sc-bar-wrap{height:5px;background:var(--li);border-radius:3px;overflow:hidden;margin-top:8px}
+.sc-bar-fill{height:100%;border-radius:3px}
+
+/* ── DCU VISUAL BARS ── */
+.dcu-row{display:flex;align-items:stretch;gap:0;margin-bottom:10px;border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;background:#fff}
+.dcu-row:hover{box-shadow:var(--sh)}
+.dcu-label-col{width:180px;flex-shrink:0;padding:.75rem 1rem;border-right:1px solid var(--bd);display:flex;flex-direction:column;justify-content:center;gap:3px;background:var(--sf2)}
+.dcu-name{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.2}
+.dcu-alcs{font-size:10.5px;color:var(--mu)}
+.dcu-data-col{flex:1;padding:.65rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.dcu-total{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.03em}
+.dcu-ev-row{display:flex;gap:10px;align-items:center}
+.dcu-ev{font-size:10.5px;color:var(--mu);white-space:nowrap}
+.dcu-ev strong{color:var(--ink2);font-family:'JetBrains Mono',monospace}
+.dcu-prog-col{width:140px;flex-shrink:0;padding:.75rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:5px;border-left:1px solid var(--bd)}
+.dcu-pct{font-size:11px;font-weight:700;color:var(--mu);text-align:right}
+.dcu-prog{height:6px;background:var(--li);border-radius:3px;overflow:hidden}
+.dcu-prog-fill{height:100%;border-radius:3px}
+.dcu-summer{font-size:10.5px;color:var(--mu);text-align:right}
+.dcu-summer strong{font-family:'JetBrains Mono',monospace;color:var(--sol)}
+
+.evc-grid{display:grid;gap:12px;margin-bottom:1.25rem}
+.evc-grid-3{grid-template-columns:repeat(3,1fr)}
+.evc-grid-4{grid-template-columns:repeat(4,1fr)}
+.evc{background:#fff;border:1px solid var(--bd);border-radius:var(--r2);padding:1.1rem 1.4rem;display:flex;flex-direction:column;gap:6px}
+.evc-name{font-size:11px;font-weight:700;letter-spacing:.02em}
+.evc-val{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;line-height:1;letter-spacing:-.03em}
+.evc-sub{font-size:11px;color:var(--mu)}
+.evc-bar{height:4px;border-radius:2px;background:var(--li);overflow:hidden;margin-top:4px}
+.evc-bar-fill{height:100%;border-radius:2px}
 @media(max-width:920px){
   .rg,.g4,.g5,.emg{grid-template-columns:1fr 1fr}
   .g3{grid-template-columns:1fr 1fr}
   header,.nav,.page{padding-left:1rem;padding-right:1rem}
   #cfBar{padding:8px 1rem}
   .shero{flex-direction:column;align-items:flex-start}
+  #sumDCUCards{grid-template-columns:repeat(2,1fr)!important}
 }
 </style>
 </head>
@@ -342,6 +384,9 @@ tbody tr:hover td{background:var(--sf2)}
     </table></div>
   </div>
 
+  <!-- 2b. EVENT STAT CARDS -->
+  <div id="ovEvCards" class="evc-grid evc-grid-4"></div>
+
   <!-- 3. RCU CARDS (clickable cross-filter) -->
   <div class="sh"><div class="st">RCU Performance</div><div class="sm">Click to cross-filter all panels</div></div>
   <div class="rg" id="rcuCards"></div>
@@ -429,21 +474,28 @@ tbody tr:hover td{background:var(--sf2)}
       <div><div class="shnl">Participated</div><div class="shnv" id="shP">—</div></div>
     </div>
   </div>
+  <div id="sumEvCards" class="evc-grid evc-grid-3"></div>
   <div class="sh"><div class="st">RCU — Summer 2026</div><div class="sm">Click to cross-filter</div></div>
   <div class="rg" id="sumRC"></div>
   <div class="g2">
-    <div class="pan gnb"><div class="sh"><div class="st">June vs July by RCU</div></div><div class="cw h270"><canvas id="cSumBar"></canvas></div></div>
+    <div class="pan gnb"><div class="sh"><div class="st">RCU Wise Distribution — Summer 2026</div></div><div class="cw h270"><canvas id="cSumBar"></canvas></div></div>
     <div class="pan gnb"><div class="sh"><div class="st">Summer Share by RCU</div></div><div class="cw h270"><canvas id="cSumPie"></canvas></div></div>
   </div>
-  <div class="pan" style="margin-top:1.25rem">
-    <div class="sh"><div class="st">DCU — Summer Performance</div><div class="sm">Click to cross-filter</div></div>
-    <div id="sumBars"></div>
+  <!-- DCU Cards — same style as RCU cards -->
+  <div class="sh" style="margin-top:1.25rem">
+    <div class="st">DCU — Summer 2026</div>
+    <div class="sm" id="sumDCUSm">Click to cross-filter</div>
   </div>
+  <div id="sumDCUCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem"></div>
+
+  <div id="sumBars" style="display:none"></div>
   <div class="pan">
     <div class="sh"><div class="st">Top 20 Centres — Summer 2026</div><div class="pgm" id="sT20m"></div></div>
     <div class="tw sth"><table>
       <thead><tr><th>#</th><th>Centre</th><th>RCU</th><th>DCU</th><th>Taluka</th>
-        <th class="tr">June</th><th class="tr">July</th><th class="tr">Summer Total</th></tr></thead>
+        <th class="tr">June</th><th class="tr">July</th><th class="tr">August</th>
+        <th class="tr" style="color:var(--sol)">Summer Total</th>
+        <th class="tr">Overall Total</th></tr></thead>
       <tbody id="sT20b"></tbody>
     </table></div>
   </div>
@@ -484,6 +536,20 @@ tbody tr:hover td{background:var(--sf2)}
     <div class="pan"><div class="sh"><div class="st">Season Totals — 2025 vs 2026</div>
       <div class="leg"><span><span class="ld" style="background:#94a3b8"></span>2025</span><span><span class="ld" style="background:var(--sol)"></span>2026 (partial)</span></div>
     </div><div class="cw h270"><canvas id="cScmp"></canvas></div></div>
+
+    <!-- RCU × Season visual cards -->
+    <div class="pan">
+      <div class="sh"><div class="st">RCU — Season Breakdown</div><div class="sm">Summer = Jun+Jul+Aug &nbsp;·&nbsp; Winter = Apr (2026) / Feb (2025)</div></div>
+      <div id="rcuSeasonCards" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px"></div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd)" id="rcuSeasonTbl"></div>
+    </div>
+
+    <!-- DCU season visual bars -->
+    <div class="pan">
+      <div class="sh"><div class="st">DCU — Season Breakdown 2026</div><div class="sm">Summer = Jun+Jul+Aug &nbsp;·&nbsp; Winter = Apr</div></div>
+      <div id="dcuSeasonBars"></div>
+      <div id="dcuSeasonTbl" style="display:none"></div>
+    </div>
   </div>
   <div id="cR" style="display:none">
     <div class="pan"><div class="sh"><div class="st">Total Admissions by RCU — 2025 vs 2026</div>
@@ -492,6 +558,12 @@ tbody tr:hover td{background:var(--sf2)}
     <div class="pan"><div class="sh"><div class="st">RCU Year-on-Year Table</div></div>
     <div class="tw"><table><thead><tr><th>RCU</th><th class="tr">2025 Total</th><th class="tr">2026 Total</th><th class="tr">Change</th><th class="tr">% Change</th><th>Trend</th></tr></thead>
     <tbody id="ryoyTbl"></tbody></table></div></div>
+    <!-- DCU visual breakdown under RCU YoY -->
+    <div class="pan">
+      <div class="sh"><div class="st">DCU — Performance 2026</div><div class="sm">Ranked by total admissions · click to cross-filter</div></div>
+      <div id="dcuYoyCards"></div>
+      <div id="dcuYoyTbl" style="display:none"></div>
+    </div>
   </div>
   <div id="cE" style="display:none">
     <div class="pan"><div class="sh"><div class="st">Event Admissions — 2025 &amp; 2026</div></div><div class="cw h310"><canvas id="cEcmp"></canvas></div></div>
@@ -505,35 +577,37 @@ tbody tr:hover td{background:var(--sf2)}
      PAGE: ALL CENTRES
 ══════════════════════════════════════════════════════════ -->
 <div class="page" id="pCtr">
-  <div class="pgh"><div class="pgt">All Centres — 2026</div><div class="pgm">Cross-filters from other pages are applied here</div></div>
-  <div class="fb">
-    <span class="fbl">Filter</span>
-    <select class="fsel" id="fRCU" onchange="applyF()"><option value="">All RCUs</option></select>
-    <select class="fsel" id="fDCU" onchange="applyF()"><option value="">All DCUs</option></select>
-    <select class="fsel" id="fUr"  onchange="applyF()"><option value="">Urban &amp; Rural</option><option>Urban</option><option>Rural</option></select>
-    <select class="fsel" id="fPt"  onchange="applyF()"><option value="">All Status</option><option value="Participated">Participated</option><option value="Not Participated">Not Participated</option></select>
-    <button class="frst" onclick="resetF()">Reset</button>
-    <span class="fcnt" id="fCnt"></span>
+  <div class="pgh"><div class="pgt">All Centres — 2026</div><div class="pgm">Download as Excel</div></div>
+  <div class="pan" style="text-align:center;padding:3rem 2rem">
+    <div style="font-size:3rem;margin-bottom:1rem">📊</div>
+    <div style="font-size:1.3rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-bottom:.5rem">Download All Centres Data</div>
+    <div style="font-size:13px;color:var(--mu);margin-bottom:2rem;line-height:1.7">
+      Download the complete centre-level data as an Excel file.<br>
+      Includes all admissions, RCU, DCU, taluka, urban/rural, and participation data.
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">
+      <button onclick="downloadExcel('all')" style="background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:14px 32px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">
+        ⬇ Download All Centres
+      </button>
+      <button onclick="downloadExcel('filtered')" id="btnFiltered" style="background:#fff;color:var(--accent);border:2px solid var(--accent);border-radius:var(--r2);padding:14px 32px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">
+        ⬇ Download Filtered Only
+      </button>
+    </div>
+    <div id="xlStatus" style="font-size:12.5px;color:var(--mu);font-family:'JetBrains Mono',monospace;min-height:20px"></div>
+    <div style="margin-top:2.5rem;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.25rem 1.5rem;display:inline-block;text-align:left;min-width:320px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--mu);text-transform:uppercase;margin-bottom:.75rem">Active Cross-Filters</div>
+      <div id="xlFilterSummary" style="font-size:13px;color:var(--ink);line-height:1.8">No filters active — all centres will be downloaded</div>
+    </div>
   </div>
-  <input class="srch" id="srch" placeholder="Search centre name, taluka, DCU…" oninput="applyF()">
-  <div class="pan"><div class="tw sth"><table>
-    <thead><tr>
-      <th class="srt" onclick="sortT('Center Name')">Centre ↕</th><th>RCU</th>
-      <th class="srt" onclick="sortT('DCU')">DCU ↕</th><th>Taluka</th><th>Type</th><th>Status</th>
-      <th class="tr srt" onclick="sortT('MS-CIT April 2026 Exam Event')">Apr ↕</th>
-      <th class="tr srt" onclick="sortT('MS-CIT June 2026 Exam Event')">Jun ↕</th>
-      <th class="tr srt" onclick="sortT('MS-CIT July 2026 Exam Event')">Jul ↕</th>
-      <th class="tr srt" onclick="sortT('MS-CIT August 2026 Exam Event')">Aug ↕</th>
-      <th class="tr srt" onclick="sortT('Total Admissions')">Total ↕</th>
-    </tr></thead>
-    <tbody id="ctrTbl"></tbody>
-  </table></div></div>
 </div>
 </div><!-- /app -->
 
 <script>
 // ─── CONFIG ──────────────────────────────────────────────────────────
-const CFG={url26:'',url25:''};
+const CFG={
+  url26:'https://docs.google.com/spreadsheets/d/e/2PACX-1vS1I_PUqZZVh7c1iipT0am1DgxyPsLdrzZ4warW3z9o6oD29yAOO5OMkEBDQwpVal5wBztUFnmxtpf4/pub?gid=1252904265&single=true&output=csv',
+  url25:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgUJy3Lv4OMJ7HgAs19wVYSYQD72GOpkWVoIhlUVcxlP-IwugRBBO9CJmP3mKpIvHNlgV1S66mzzkS/pub?gid=1945860874&single=true&output=csv'
+};
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────
 const RD={'South Maharashtra':['Kolhapur','Sangli','Satara'],'Pune':['Ahilyanagar','Nashik','Pune North','Pune South'],'North Maharashtra':['Dhule','Jalgaon','Nandurbar'],'Solapur':['Solapur']};
@@ -626,16 +700,18 @@ function refilter(){
     rendSum(_d26,fd); // always _d26 for full RCU data
     _rendered.p26=false;
   } else if(active==='pCtr'){
-    applyF();
+    updXlFilterSummary();
     _rendered.p26=false;
     _rendered.pSum=false;
   }
   hiUI();
 }
 function hiUI(){
-  document.querySelectorAll('.rc').forEach(c=>c.classList.toggle('cfa',CF.rcu===c.dataset.rcu));
+  document.querySelectorAll('.rc[data-rcu]').forEach(c=>c.classList.toggle('cfa',CF.rcu===c.dataset.rcu));
+  document.querySelectorAll('.rc[data-dcu]').forEach(c=>c.classList.toggle('cfa',CF.dcu===c.dataset.dcu));
   document.querySelectorAll('.em').forEach(c=>c.classList.toggle('cfa',CF.event===c.dataset.ev));
   document.querySelectorAll('.pr[data-dcu]').forEach(c=>c.classList.toggle('cfa',CF.dcu===c.dataset.dcu));
+  updXlFilterSummary();
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
@@ -723,7 +799,7 @@ function parse26(rows){
     if(isPart)dcu[d].part++;else dcu[d].np++;
     if(ur==='Urban'){urbT+=tot;urbA+=a;urbJ+=j;urbL+=jl;}else{rurT+=tot;rurA+=a;rurJ+=j;rurL+=jl;}
   });
-  const top20=[...rows].sort((a,b)=>n(b['Total Admissions'])-n(a['Total Admissions'])).slice(0,20).map(r=>{
+  const top20=[...rows].sort((a,b)=>(n(b[EV26[1]])+n(b[EV26[2]])+n(b[EV26[3]]))-(n(a[EV26[1]])+n(a[EV26[2]])+n(a[EV26[3]]))).slice(0,20).map(r=>{
     const d=r['DCU']||'',rc=D2R[d]||r['RCU']||'';
     return{n:r['Center Name'],rcu:rc,dcu:d,t:r['Taluka']||'',ur:(r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'Urban':'Rural',cat:r['ALC Type']||'',
       apr:n(r[EV26[0]]),jun:n(r[EV26[1]]),jul:n(r[EV26[2]]),aug:n(r[EV26[3]]),tot:n(r['Total Admissions'])||0};
@@ -825,6 +901,22 @@ function rend26(d){
     </div>`;
   }).join('');
 
+  // ── OVERVIEW EVENT STAT CARDS (large, above RCU cards) ───────────────
+  const ovEv=document.getElementById('ovEvCards');
+  if(ovEv){
+    const evNames=['MS-CIT April 2026 Exam Event','MS-CIT June 2026 Exam Event','MS-CIT July 2026 Exam Event','MS-CIT August 2026 Exam Event'];
+    const maxEv=Math.max(...evv.filter(Boolean))||1;
+    ovEv.innerHTML=evNames.map((name,i)=>{
+      const v=evv[i],col=EC[i],pc=Math.round((v/maxEv)*100);
+      return`<div class="evc" style="border-top:4px solid ${col}">
+        <div class="evc-name" style="color:${col}">${name}</div>
+        <div class="evc-val" style="color:${col}">${v?F(v):'Pending'}</div>
+        <div class="evc-sub">${v?pN(v,eT)+'% of zone total':'Not yet started'}</div>
+        <div class="evc-bar"><div class="evc-bar-fill" style="width:${v?pc:0}%;background:${col}"></div></div>
+      </div>`;
+    }).join('');
+  }
+
   // ── EVENT STACKED BAR ────────────────────────────────────────────
   const rcuF=RO.filter(r=>d.rcu[r]);
   mk('cEvBar',{type:'bar',
@@ -895,6 +987,26 @@ function rendSum(full, fd){
   document.getElementById('shA').textContent=F(fd.alcs);
   document.getElementById('shP').textContent=F(fd.part);
 
+  // ── SUMMER EVENT STAT CARDS (Jun, Jul, Aug) — uses filtered fd ────────
+  const sumEvEl=document.getElementById('sumEvCards');
+  if(sumEvEl){
+    const sumEvDef=[
+      {name:'MS-CIT June 2026 Exam Event',  val:fd.jun||0, col:EC[1]},
+      {name:'MS-CIT July 2026 Exam Event',  val:fd.jul||0, col:EC[2]},
+      {name:'MS-CIT August 2026 Exam Event',val:fd.aug||0, col:EC[3]},
+    ];
+    const maxS=Math.max(...sumEvDef.map(e=>e.val))||1;
+    sumEvEl.innerHTML=sumEvDef.map(e=>{
+      const pc=Math.round((e.val/maxS)*100);
+      return`<div class="evc" style="border-top:4px solid ${e.col}">
+        <div class="evc-name" style="color:${e.col}">${e.name}</div>
+        <div class="evc-val" style="color:${e.col}">${e.val?F(e.val):'Pending'}</div>
+        <div class="evc-sub">${e.val?pN(e.val,sTf||1)+'% of summer total':'Not yet started'}</div>
+        <div class="evc-bar"><div class="evc-bar-fill" style="width:${e.val?pc:0}%;background:${e.col}"></div></div>
+      </div>`;
+    }).join('');
+  }
+
   // ── RCU CARDS: always all 4, always full figures ──────────────────
   document.getElementById('sumRC').innerHTML=RO.map(rcu=>{
     const r=full.rcu[rcu]||{},cl=RCLS[rcu];
@@ -932,6 +1044,38 @@ function rendSum(full, fd){
     options:{responsive:true,maintainAspectRatio:false,cutout:'58%',animation:false,
       plugins:{datalabels:{fontSize:10.5,color:'rgba(11,17,32,.65)'},legend:{position:'bottom',labels:{font:{family:FONT,size:11},color:'#526080',boxWidth:9,padding:14}}}}});
 
+  // ── DCU CARDS (same style as RCU cards) ─────────────────────────
+  const dcuCardsEl=document.getElementById('sumDCUCards');
+  const dcuSm=document.getElementById('sumDCUSm');
+  if(dcuSm) dcuSm.textContent=CF.rcu?`Showing DCUs for ${CF.rcu} · click to cross-filter`:'Click to cross-filter';
+  if(dcuCardsEl){
+    dcuCardsEl.innerHTML='';
+    // Use filtered dcu data when a filter is active, full data otherwise
+    const dcuDataSrc=Object.keys(fd.dcu||{}).length?fd.dcu:full.dcu;
+    const allDCUs=Object.entries(dcuDataSrc).sort((a,b)=>
+      ((b[1].jun||0)+(b[1].jul||0)+(b[1].aug||0))-((a[1].jun||0)+(a[1].jul||0)+(a[1].aug||0)));
+    const maxSumD=Math.max(...allDCUs.map(([,dv])=>(dv.jun||0)+(dv.jul||0)+(dv.aug||0)))||1;
+    allDCUs.forEach(([dn,dv])=>{
+      const col=RCOL[dv.rcu]||'#1040d0';
+      const cl=RCLS[dv.rcu]||'pune';
+      const s=(dv.jun||0)+(dv.jul||0)+(dv.aug||0);
+      const p=Math.round((s/maxSumD)*100);
+      const isActive=CF.dcu===dn;
+      dcuCardsEl.innerHTML+=`<div class="rc rc-${cl}${isActive?' cfa':''}" data-dcu="${dn}"
+        style="border-top:5px solid ${col};cursor:pointer"
+        onclick="setCF('dcu','${dn}')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+          <div class="rl" style="color:${col}">${dn.toUpperCase()}</div>
+          <span class="bdg b-${cl}" style="font-size:9px">${(dv.rcu||'').split(' ')[0]}</span>
+        </div>
+        <div class="rv" style="color:${col};font-size:1.6rem">${F(s)}</div>
+        <div class="rs">Jun: ${F(dv.jun||0)} · Jul: ${F(dv.jul||0)} · Aug: ${F(dv.aug||0)}</div>
+        <div class="rpg"><div class="rpgf" style="width:${p}%;background:${col}"></div></div>
+        <div class="rhi" style="color:${col}">Click to filter ▸</div>
+      </div>`;
+    });
+  }
+
   // ── DCU BARS: filtered ─────────────────────────────────────────────
   const sb=document.getElementById('sumBars');sb.innerHTML='';
   const dcuSrc=Object.keys(fd.dcu||{}).length?fd.dcu:full.dcu;
@@ -960,8 +1104,11 @@ function rendSum(full, fd){
         <td style="color:var(--fa);font-family:'JetBrains Mono',monospace;font-size:11px;width:28px">${i+1}</td>
         <td class="bld">${c.n}</td><td><span class="bdg b-${cl}">${c.rcu}</span></td>
         <td>${c.dcu}</td><td>${c.t}</td>
-        <td class="tr">${c.jun||'—'}</td><td class="tr">${c.jul||'—'}</td><td class="tr">${c.aug||'—'}</td>
-        <td class="tr bld">${F(s)}</td></tr>`;
+        <td class="tr">${c.jun?F(c.jun):'—'}</td>
+        <td class="tr">${c.jul?F(c.jul):'—'}</td>
+        <td class="tr">${c.aug?F(c.aug):'—'}</td>
+        <td class="tr bld" style="color:var(--sol)">${s?F(s):'—'}</td>
+        <td class="tr">${c.tot?F(c.tot):'—'}</td></tr>`;
     });
   hiUI();
 }
@@ -1013,6 +1160,144 @@ function rendCmp(d26,d25){
     eTb.innerHTML+=`<tr><td>${l}</td><td><span class="bdg b-pune">2026</span></td>
       <td class="tr bld">${v?F(v):'Pending'}</td><td class="tr">${v&&y26?pN(v,y26)+'%':'—'}</td></tr>`;
   });
+  // ── RCU Season VISUAL CARDS ─────────────────────────────────────────
+  const rcuCards=document.getElementById('rcuSeasonCards');
+  if(rcuCards){
+    rcuCards.innerHTML='';
+    const maxT26=Math.max(...RO.map(r=>d26.rcu?.[r]?.total||0))||1;
+    RO.forEach(rcu=>{
+      const cl=RCLS[rcu],col=RCOL[rcu];
+      const rTotal25=d25.rcu?.[rcu]?.total||0;
+      const rTotal26=d26.rcu?.[rcu]?.total||0;
+      const rSum26=(d26.rcu?.[rcu]?.jun||0)+(d26.rcu?.[rcu]?.jul||0)+(d26.rcu?.[rcu]?.aug||0);
+      const rWin25=y25>0?Math.round(rTotal25*(win25/y25)):0;
+      const rWin26=d26.rcu?.[rcu]?.apr||0;
+      const rSum25=y25>0?Math.round(rTotal25*((sum25)/(y25||1))):0;
+      const di=rTotal26-rTotal25;
+      const pctDi=rTotal25?((di/rTotal25)*100).toFixed(1):0;
+      const barW=Math.round((rTotal26/maxT26)*100);
+      const chgCol=di>=0?'var(--ok)':'var(--danger)';
+      rcuCards.innerHTML+=`<div class="sc-rcu" style="border-top-color:${col}">
+        <div class="sc-rcu-name" style="color:${col}">${rcu}</div>
+        <div class="sc-season-row">
+          <span class="sc-season-lbl">☀️ Summer</span>
+          <div class="sc-vals">
+            <span class="sc-v25">${F(rSum25)}</span>
+            <span class="sc-arr">→</span>
+            <span class="sc-v26" style="color:${col}">${F(rSum26)}</span>
+            <span class="sc-chg" style="color:${di>=0?'var(--ok)':'var(--danger)'}">${rSum26-rSum25>=0?'▲':'▼'} ${Math.abs(rSum26-rSum25).toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+        <div class="sc-season-row">
+          <span class="sc-season-lbl">❄️ Winter</span>
+          <div class="sc-vals">
+            <span class="sc-v25">${F(rWin25)}</span>
+            <span class="sc-arr">→</span>
+            <span class="sc-v26" style="color:${col}">${F(rWin26)}</span>
+            <span class="sc-chg" style="color:${rWin26-rWin25>=0?'var(--ok)':'var(--danger)'}">${rWin26-rWin25>=0?'▲':'▼'} ${Math.abs(rWin26-rWin25).toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+        <div class="sc-season-row">
+          <span class="sc-season-lbl">📊 Total</span>
+          <div class="sc-vals">
+            <span class="sc-v25">${F(rTotal25)}</span>
+            <span class="sc-arr">→</span>
+            <span class="sc-v26" style="color:${col}">${F(rTotal26)}</span>
+            <span class="sc-chg" style="color:${chgCol}">${di>=0?'+':''}${pctDi}%</span>
+          </div>
+        </div>
+        <div class="sc-bar-wrap"><div class="sc-bar-fill" style="width:${barW}%;background:${col}"></div></div>
+      </div>`;
+    });
+  }
+
+  // ── DCU Season VISUAL BARS ────────────────────────────────────────────
+  const dcuBarsEl=document.getElementById('dcuSeasonBars');
+  if(dcuBarsEl){
+    dcuBarsEl.innerHTML='';
+    const maxDcu=Math.max(...Object.values(d26.dcu).map(dv=>dv.total||0))||1;
+    RO.forEach(rcu=>{
+      const col=RCOL[rcu],cl=RCLS[rcu];
+      // RCU header row
+      const rcuTotal=d26.rcu?.[rcu]?.total||0;
+      const rcuSum=(d26.rcu?.[rcu]?.jun||0)+(d26.rcu?.[rcu]?.jul||0)+(d26.rcu?.[rcu]?.aug||0);
+      dcuBarsEl.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;margin:1rem 0 .5rem">
+        <span class="bdg b-${cl}" style="font-size:11px;padding:3px 12px">${rcu}</span>
+        <span style="font-size:11px;color:var(--mu)">Total: <strong style="color:${col};font-family:'JetBrains Mono',monospace">${F(rcuTotal)}</strong></span>
+        <span style="font-size:11px;color:var(--mu);margin-left:6px">Summer: <strong style="color:var(--sol);font-family:'JetBrains Mono',monospace">${F(rcuSum)}</strong></span>
+      </div>`;
+      Object.entries(d26.dcu).filter(([,dv])=>dv.rcu===rcu)
+        .sort((a,b)=>(b[1].total||0)-(a[1].total||0))
+        .forEach(([dn,dv])=>{
+          const sumD=(dv.jun||0)+(dv.jul||0)+(dv.aug||0);
+          const pct=Math.round((dv.total/maxDcu)*100);
+          const pctOfRcu=rcuTotal>0?((dv.total/rcuTotal)*100).toFixed(0):0;
+          dcuBarsEl.innerHTML+=`<div class="dcu-row" onclick="setCF('dcu','${dn}')">
+            <div class="dcu-label-col" style="border-left:4px solid ${col}">
+              <div class="dcu-name">${dn}</div>
+              <div class="dcu-alcs">${dv.alcs||0} ALCs · ${pctOfRcu}% of RCU</div>
+            </div>
+            <div class="dcu-data-col">
+              <div class="dcu-total" style="color:${col}">${F(dv.total||0)}</div>
+              <div class="dcu-ev-row">
+                <span class="dcu-ev">Apr <strong>${F(dv.apr||0)}</strong></span>
+                <span class="dcu-ev">Jun <strong>${F(dv.jun||0)}</strong></span>
+                <span class="dcu-ev">Jul <strong>${F(dv.jul||0)}</strong></span>
+                <span class="dcu-ev">Aug <strong>${F(dv.aug||0)}</strong></span>
+              </div>
+            </div>
+            <div class="dcu-prog-col">
+              <div class="dcu-pct">${pctOfRcu}%</div>
+              <div class="dcu-prog"><div class="dcu-prog-fill" style="width:${pct}%;background:${col}"></div></div>
+              <div class="dcu-summer">Summer <strong>${F(sumD)}</strong></div>
+            </div>
+          </div>`;
+        });
+    });
+  }
+
+  // ── DCU YoY VISUAL CARDS ──────────────────────────────────────────────
+  const dcuYoyCards=document.getElementById('dcuYoyCards');
+  if(dcuYoyCards){
+    dcuYoyCards.innerHTML='';
+    const maxT=Math.max(...Object.values(d26.dcu).map(dv=>dv.total||0))||1;
+    RO.forEach(rcu=>{
+      const col=RCOL[rcu],cl=RCLS[rcu];
+      dcuYoyCards.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;margin:1.1rem 0 .5rem">
+        <span class="bdg b-${cl}" style="font-size:11px;padding:3px 12px">${rcu}</span>
+        <span style="font-size:11px;color:var(--mu)">2026 Total: <strong style="color:${col};font-family:'JetBrains Mono',monospace">${F(d26.rcu?.[rcu]?.total||0)}</strong></span>
+      </div>`;
+      Object.entries(d26.dcu).filter(([,dv])=>dv.rcu===rcu)
+        .sort((a,b)=>(b[1].total||0)-(a[1].total||0))
+        .forEach(([dn,dv])=>{
+          const pct=Math.round((dv.total/maxT)*100);
+          const avg=dv.alcs?(dv.total/dv.alcs).toFixed(0):'—';
+          const sumD=(dv.jun||0)+(dv.jul||0)+(dv.aug||0);
+          const pctSum=dv.total>0?((sumD/dv.total)*100).toFixed(0):0;
+          dcuYoyCards.innerHTML+=`<div class="dcu-row" onclick="setCF('dcu','${dn}')">
+            <div class="dcu-label-col" style="border-left:4px solid ${col}">
+              <div class="dcu-name">${dn}</div>
+              <div class="dcu-alcs">${dv.alcs||0} ALCs · Avg ${avg}/ALC</div>
+            </div>
+            <div class="dcu-data-col">
+              <div class="dcu-total" style="color:${col}">${F(dv.total||0)}</div>
+              <div class="dcu-ev-row">
+                <span class="dcu-ev">Apr <strong>${F(dv.apr||0)}</strong></span>
+                <span class="dcu-ev">Jun <strong>${F(dv.jun||0)}</strong></span>
+                <span class="dcu-ev">Jul <strong>${F(dv.jul||0)}</strong></span>
+                <span class="dcu-ev">Aug <strong>${F(dv.aug||0)}</strong></span>
+              </div>
+            </div>
+            <div class="dcu-prog-col">
+              <div class="dcu-pct">${pct}% of max</div>
+              <div class="dcu-prog"><div class="dcu-prog-fill" style="width:${pct}%;background:${col}"></div></div>
+              <div class="dcu-summer">Summer <strong style="color:var(--sol)">${pctSum}%</strong></div>
+            </div>
+          </div>`;
+        });
+    });
+  }
+
   // Charts rendered lazily in rendCmpCharts() when tab is actually visible
 }
 
@@ -1066,40 +1351,10 @@ function popF(){
   ds.innerHTML='<option value="">All DCUs</option>'+dcus.map(d=>`<option>${d}</option>`).join('');
   if(CF.rcu)rs.value=CF.rcu;if(CF.dcu)ds.value=CF.dcu;
 }
-function applyF(){
-  if(!_r26&&!_d26){document.getElementById('ctrTbl').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--fa);padding:2rem">No data loaded</td></tr>';return;}
-  if(!_r26){document.getElementById('ctrTbl').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--fa);padding:2rem">All Centres table requires live data (CSV URLs). Demo mode shows pre-aggregated data only.</td></tr>';return;}
-  const rcu=document.getElementById('fRCU')?.value||CF.rcu||'';
-  const dcu=document.getElementById('fDCU')?.value||CF.dcu||'';
-  const ur=document.getElementById('fUr')?.value||'';
-  const pt=document.getElementById('fPt')?.value||'';
-  const q=(document.getElementById('srch')?.value||'').toLowerCase();
-  const ei=CF.event?EL.indexOf(CF.event):-1;
-  let rows=_r26.filter(r=>{
-    const rc=D2R[r['DCU']]||r['RCU']||'';
-    if(rcu&&rc!==rcu)return false;if(dcu&&r['DCU']!==dcu)return false;
-    if(ur&&((r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'Urban':'Rural')!==ur)return false;if(pt&&r['Participation']!==pt)return false;
-    if(q&&!(r['Center Name']||'').toLowerCase().includes(q)&&!(r['Taluka']||'').toLowerCase().includes(q)&&!(r['DCU']||'').toLowerCase().includes(q)&&!(r['Center Code']||'').toString().toLowerCase().includes(q))return false;
-    if(ei>=0&&!(parseFloat(r[EV26[ei]])>0))return false;
-    return true;
-  });
-  rows.sort((a,b)=>_sd*(n(b[_sc])-n(a[_sc]))||((a['Center Name']||'')>(b['Center Name']||'')?1:-1));
-  document.getElementById('fCnt').textContent=`${rows.length} centres`;
-  const tb=document.getElementById('ctrTbl');tb.innerHTML='';
-  rows.forEach(r=>{
-    const rc2=D2R[r['DCU']]||r['RCU']||'',cl=RCLS[rc2]||'smh',tot=n(r['Total Admissions']),pOk=r['Participation']==='Participated';
-    tb.innerHTML+=`<tr>
-      <td class="bld">${r['Center Name']||''}</td><td><span class="bdg b-${cl}">${rc2}</span></td>
-      <td>${r['DCU']||''}</td><td>${r['Taluka']||''}</td>
-      <td><span class="bdg ${(r['Urban/Rural']||'').trim().toLowerCase()==='urban'?'b-urb':'b-rul'}">${(r['Urban/Rural']||'').trim()}</span></td>
-      <td><span class="bdg ${pOk?'b-ok':'b-np'}">${r['Participation']||''}</span></td>
-      <td class="tr">${n(r[EV26[0]])||'—'}</td><td class="tr">${n(r[EV26[1]])||'—'}</td>
-      <td class="tr">${n(r[EV26[2]])||'—'}</td><td class="tr">${n(r[EV26[3]])||'—'}</td>
-      <td class="tr bld">${tot?F(tot):'—'}</td></tr>`;
-  });
-}
-function sortT(col){if(_sc===col)_sd*=-1;else{_sc=col;_sd=-1;}applyF();}
-function resetF(){CF.rcu=null;CF.dcu=null;CF.event=null;['fRCU','fDCU','fUr','fPt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});const si=document.getElementById('srch');if(si)si.value='';updCF();refilter();}
+function applyF(){} // replaced by downloadExcel
+function popF(){}   // no longer needed
+function sortT(){}  // no longer needed
+function resetF(){CF.rcu=null;CF.dcu=null;CF.event=null;updCF();refilter();}
 
 // ─── DATA LOADING ─────────────────────────────────────────────────────
 let _r26=null,_r25=null,_d26=null,_d25=null;
@@ -1173,8 +1428,8 @@ function ensureRendered(pageId){
     try{rendCmp(_d26,_d25);_rendered.pCmp=true;}catch(e){console.error(e);}
     setTimeout(()=>rendCmpCharts('cS'),30);
   }
-  if(pageId==='pCtr'&&!_rendered.pCtr){
-    try{popF();applyF();_rendered.pCtr=true;}catch(e){console.error(e);}
+  if(pageId==='pCtr'){
+    try{updXlFilterSummary();}catch(e){console.error(e);}
   }
 }
 async function refreshData(){
@@ -1182,7 +1437,12 @@ async function refreshData(){
   if(CFG.url26&&CFG.url25) await loadData(CFG.url26,CFG.url25);
   else showSetup();
 }
-function showSetup(){document.getElementById('url26').value=CFG.url26||'';document.getElementById('url25').value=CFG.url25||'';document.getElementById('fetchErr').innerHTML='';document.getElementById('setupModal').style.display='flex';}
+function showSetup(){
+  document.getElementById('url26').value=CFG.url26||'';
+  document.getElementById('url25').value=CFG.url25||'';
+  document.getElementById('fetchErr').innerHTML='';
+  document.getElementById('setupModal').style.display='flex';
+}
 
 // ─── DEMO DATA ────────────────────────────────────────────────────────
 const D26={total:188381,alcs:1698,part:1540,np:158,apr:11403,jun:58068,jul:103457,aug:15453,
@@ -1191,6 +1451,92 @@ const D26={total:188381,alcs:1698,part:1540,np:158,apr:11403,jun:58068,jul:10345
   urb:{total:106453,alcs:780,apr:6500,jun:33200,jul:58900,aug:7853},rur:{total:81928,alcs:918,apr:4903,jun:24868,jul:44557,aug:7600},
   top20:[{n:'Creative Computers',rcu:'Pune',dcu:'Pune North',t:'Pune City',ur:'Urban',apr:16,jun:381,jul:219,aug:23,tot:639},{n:'Gurukul Academy',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Hatkanangle',ur:'Urban',apr:21,jun:286,jul:66,aug:0,tot:373},{n:'Apex Institute',rcu:'Pune',dcu:'Ahilyanagar',t:'Ahmednagar',ur:'Urban',apr:35,jun:210,jul:95,aug:0,tot:340},{n:'Darpan Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Koregaon',ur:'Urban',apr:12,jun:206,jul:59,aug:0,tot:277},{n:'Nashik Digital Academy',rcu:'Pune',dcu:'Nashik',t:'Nashik',ur:'Urban',apr:28,jun:165,jul:75,aug:0,tot:268},{n:'Amar Computer Institute',rcu:'South Maharashtra',dcu:'Satara',t:'Satara',ur:'Rural',apr:15,jun:141,jul:88,aug:0,tot:244},{n:'Sunrise Computers',rcu:'Pune',dcu:'Pune South',t:'Haveli',ur:'Rural',apr:22,jun:148,jul:68,aug:0,tot:238},{n:'Solapur Tech Education',rcu:'Solapur',dcu:'Solapur',t:'Solapur',ur:'Urban',apr:18,jun:142,jul:70,aug:0,tot:230},{n:'Narmada Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Khandala',ur:'Urban',apr:12,jun:124,jul:87,aug:0,tot:223},{n:'Silicon Computers',rcu:'South Maharashtra',dcu:'Satara',t:'Man',ur:'Urban',apr:10,jun:156,jul:55,aug:0,tot:221},{n:'Info Tech Studies',rcu:'South Maharashtra',dcu:'Sangli',t:'Tasgaon',ur:'Urban',apr:14,jun:154,jul:52,aug:0,tot:220},{n:'Sahyadri Computer Center',rcu:'Pune',dcu:'Nashik',t:'Igatpuri',ur:'Rural',apr:20,jun:130,jul:68,aug:0,tot:218},{n:'Jalgaon Infotech',rcu:'North Maharashtra',dcu:'Jalgaon',t:'Jalgaon',ur:'Urban',apr:14,jun:120,jul:72,aug:0,tot:206},{n:'Symbiosis IT',rcu:'Pune',dcu:'Pune North',t:'Pune',ur:'Rural',apr:25,jun:118,jul:58,aug:0,tot:201},{n:'Prosoft Computers',rcu:'South Maharashtra',dcu:'Kolhapur',t:'Panhala',ur:'Rural',apr:10,jun:205,jul:0,aug:0,tot:215},{n:'Dhule Digital Hub',rcu:'North Maharashtra',dcu:'Dhule',t:'Dhule',ur:'Urban',apr:17,jun:115,jul:65,aug:0,tot:197},{n:'Ahilyanagar IT Institute',rcu:'Pune',dcu:'Ahilyanagar',t:'Ahmednagar',ur:'Urban',apr:11,jun:106,jul:52,aug:0,tot:169},{n:'Pune South Computers',rcu:'Pune',dcu:'Pune South',t:'Haveli',ur:'Rural',apr:19,jun:98,jul:50,aug:0,tot:167},{n:'Nandurbar Skill Center',rcu:'North Maharashtra',dcu:'Nandurbar',t:'Nandurbar',ur:'Rural',apr:9,jun:88,jul:38,aug:0,tot:135},{n:'Sangli Tech Center',rcu:'South Maharashtra',dcu:'Sangli',t:'Sangli',ur:'Urban',apr:8,jun:78,jul:32,aug:0,tot:118}]};
 const D25={total:259391,alcs:1737,part:1709,rcu:{'South Maharashtra':{total:67031},'Pune':{total:122258},'North Maharashtra':{total:44330},'Solapur':{total:25772}},events:EL25.map((l,i)=>({label:l,total:[16459,46803,113093,29611,21760,14799,16866][i]}))};
+
+// ─── EXCEL DOWNLOAD ───────────────────────────────────────────────────
+function downloadExcel(mode){
+  const rows = _r26;
+  if(!rows||!rows.length){
+    document.getElementById('xlStatus').textContent='No live data loaded. Please load data first.';
+    return;
+  }
+  const status=document.getElementById('xlStatus');
+  status.textContent='Preparing Excel file…';
+
+  // Apply same filters as applyF
+  const rcu=CF.rcu||'';
+  const dcu=CF.dcu||'';
+  const ur=''; const pt='';
+  const ei=CF.event?EL.indexOf(CF.event):-1;
+
+  let data = mode==='filtered' ? rows.filter(r=>{
+    const rc=D2R[r['DCU']]||r['RCU']||'';
+    if(rcu&&rc!==rcu)return false;
+    if(dcu&&r['DCU']!==dcu)return false;
+    if(ei>=0&&!(parseFloat(r[EV26[ei]])>0))return false;
+    return true;
+  }) : rows;
+
+  if(!data.length){
+    status.textContent='No rows match the current filters.';
+    return;
+  }
+
+  // Build CSV content (opens perfectly in Excel)
+  const headers=['Center Code','Center Name','RCU','DCU','Taluka','Urban/Rural','ALC Type','Participation',
+    'MS-CIT April 2026','MS-CIT June 2026','MS-CIT July 2026','MS-CIT August 2026',
+    'MS-CIT Oct 2026','MS-CIT Dec 2026','MS-CIT Feb 2027','Total Admissions','Average Admissions'];
+
+  const srcCols=['Center Code','Center Name','RCU','DCU','Taluka','Urban/Rural','ALC Type','Participation',
+    EV26[0],EV26[1],EV26[2],EV26[3],
+    'MS-CIT October 2026 Exam Event','MS-CIT December 2026 Exam Event','MS-CIT February 2027 Exam Event',
+    'Total Admissions','Average Admissions'];
+
+  const esc=v=>{
+    const s=String(v==null?'':v);
+    return s.includes(',')||s.includes('"')||s.includes('\n')?`"${s.replace(/"/g,'""')}"`:s;
+  };
+
+  const lines=[headers.map(esc).join(',')];
+  data.forEach(r=>{
+    // Add computed RCU if missing
+    const rc=D2R[r['DCU']]||r['RCU']||'';
+    const row={...r, RCU:rc};
+    lines.push(srcCols.map(c=>esc(row[c]||'')).join(','));
+  });
+
+  const csv='\uFEFF'+lines.join('\r\n'); // BOM for Excel UTF-8
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const ts=new Date().toISOString().slice(0,10);
+  const label=mode==='filtered'&&(CF.rcu||CF.dcu||CF.event)?`_${(CF.rcu||CF.dcu||CF.event).replace(/ /g,'_')}`:'';
+  a.href=url;
+  a.download=`CentralZone_MSCIT_2026${label}_${ts}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent=`✓ Downloaded ${data.length.toLocaleString('en-IN')} centres`;
+  setTimeout(()=>status.textContent='',4000);
+}
+
+function updXlFilterSummary(){
+  const el=document.getElementById('xlFilterSummary');
+  if(!el)return;
+  const parts=[];
+  if(CF.rcu)parts.push(`RCU: <strong>${CF.rcu}</strong>`);
+  if(CF.dcu)parts.push(`DCU: <strong>${CF.dcu}</strong>`);
+  if(CF.event)parts.push(`Event: <strong>${CF.event}</strong>`);
+  if(parts.length){
+    el.innerHTML=parts.join(' &nbsp;·&nbsp; ')+'<br><span style="font-size:11px;color:var(--mu)">Filtered download will apply these filters</span>';
+    const btn=document.getElementById('btnFiltered');
+    if(btn)btn.style.display='flex';
+  } else {
+    el.textContent='No filters active — all centres will be downloaded';
+    const btn=document.getElementById('btnFiltered');
+    if(btn)btn.style.display='none';
+  }
+}
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 function waitAndInit(){
