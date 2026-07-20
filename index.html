@@ -60,6 +60,23 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
 @media(max-width:900px){.app-header{padding:0 16px}.main-nav{padding:0 12px}.filter-bar{padding:9px 16px}.page{padding:20px 16px 48px}.two-col,.three-col{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}.card-grid,.event-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.header-actions .last-updated,.header-actions .status-dot{display:none}.page-head{align-items:flex-start}.chart-wrap{height:250px}.insight-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.brand-sub{display:none}.brand-logo{width:40px;height:30px}.header-btn{padding:6px 8px}.header-btn .wide{display:none}.kpi-grid,.card-grid,.event-grid{grid-template-columns:1fr}.modal-actions{flex-direction:column}.modal-actions .btn{width:100%}.page-logo{width:52px;height:38px}.page-title{font-size:1.28rem}.panel{padding:14px}.clear-link{margin-left:0}.chart-wrap{height:235px}}
 @media print{.app-header,.main-nav,.filter-bar,.header-actions,.panel-actions,.toolbar,.klic-filter{display:none!important}.page{display:none!important;padding:0}.page.active{display:block!important}.panel,.kpi-card,.metric-card{box-shadow:none;break-inside:avoid}.chart-wrap{height:250px}}
+/* ── AI DATA ANALYST ─────────────────────────────────────────────── */
+.ai-fab{position:fixed;right:24px;bottom:24px;z-index:8600;border:0;border-radius:999px;background:linear-gradient(135deg,#2348b8,#5a48a7);color:#fff;display:flex;align-items:center;gap:9px;padding:11px 16px 11px 12px;font-size:12px;font-weight:800;box-shadow:0 14px 36px rgba(35,72,184,.28);transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease}.ai-fab:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(35,72,184,.34)}.ai-fab[aria-expanded="true"]{opacity:0;pointer-events:none;transform:translateY(8px)}.ai-fab-icon{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);font-size:15px}.ai-fab-label{white-space:nowrap}
+.ai-panel{position:fixed;right:24px;top:126px;bottom:22px;z-index:8590;width:min(450px,calc(100vw - 32px));height:auto;max-height:calc(100vh - 148px);background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:0 24px 80px rgba(15,30,55,.26);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(18px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .2s ease,transform .2s ease}.ai-panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.ai-head{display:flex;align-items:center;gap:10px;padding:13px 14px;background:linear-gradient(135deg,#10203b 0%,#1d3560 62%,#3e3979 100%);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}.ai-brand-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#6d8cf6,#7d65c9);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}.ai-head-copy{min-width:0;flex:1}.ai-head-title{font-size:12.5px;font-weight:800;letter-spacing:-.015em}.ai-head-sub{display:flex;align-items:center;gap:6px;font-size:9.5px;color:rgba(255,255,255,.55);margin-top:2px}.ai-live-dot{width:6px;height:6px;border-radius:50%;background:#58d3a7;box-shadow:0 0 0 3px rgba(88,211,167,.12)}.ai-head-actions{display:flex;align-items:center;gap:4px}.ai-icon-btn{width:30px;height:30px;border:0;border-radius:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.72);display:grid;place-items:center;font-size:14px}.ai-icon-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+.ai-messages{flex:1;overflow-y:auto;padding:16px 14px 12px;background:linear-gradient(180deg,#f7f9fd 0%,#fff 26%);scroll-behavior:smooth}.ai-message{display:flex;align-items:flex-start;gap:8px;margin-bottom:13px}.ai-message.user{justify-content:flex-end}.ai-avatar{width:27px;height:27px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;background:#e9efff;color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:800}.ai-bubble{max-width:calc(100% - 35px);background:#fff;border:1px solid var(--border);border-radius:5px 14px 14px 14px;padding:11px 12px;box-shadow:var(--shadow-sm);font-size:11.2px;line-height:1.58;color:var(--ink-2)}.ai-message.user .ai-bubble{background:var(--primary);border-color:var(--primary);color:#fff;border-radius:14px 5px 14px 14px;max-width:84%;white-space:pre-wrap}.ai-answer-title{font-size:12px;font-weight:800;color:var(--ink);letter-spacing:-.015em;margin-bottom:5px}.ai-answer-lead{color:var(--ink-2);margin-bottom:10px}.ai-answer-lead strong{color:var(--ink)}
+.ai-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0 10px}.ai-stat{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:8px 9px;min-width:0}.ai-stat-label{font-size:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted)}.ai-stat-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-stat-meta{font-size:8.8px;color:var(--muted);margin-top:2px;line-height:1.35}.ai-stat.positive .ai-stat-value{color:var(--success)}.ai-stat.negative .ai-stat-value{color:var(--danger)}
+.ai-section-label{font-size:8.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:var(--muted);margin:11px 0 5px}.ai-list{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.ai-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 9px;border-bottom:1px solid #edf1f5}.ai-list-row:last-child{border-bottom:0}.ai-list-label{min-width:0;font-size:10.4px;font-weight:700;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-list-meta{font-size:8.8px;font-weight:500;color:var(--muted);margin-top:1px;white-space:normal}.ai-list-value{text-align:right;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;color:var(--ink);white-space:nowrap}.ai-list-value.positive{color:var(--success)}.ai-list-value.negative{color:var(--danger)}
+.ai-mini-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px;margin-top:6px}.ai-mini-table{width:100%;border-collapse:collapse;font-size:9.5px}.ai-mini-table th{background:var(--surface-2);color:var(--muted);font-size:7.8px;text-transform:uppercase;letter-spacing:.065em;text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);white-space:nowrap}.ai-mini-table td{padding:7px 8px;border-bottom:1px solid #edf1f5;white-space:nowrap;color:var(--ink-2)}.ai-mini-table tr:last-child td{border-bottom:0}.ai-mini-table .num{text-align:right;font-family:'JetBrains Mono',monospace}.ai-notes{margin:8px 0 0 16px;color:var(--ink-2)}.ai-notes li{margin:4px 0;padding-left:2px}.ai-grounding{display:flex;align-items:flex-start;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:8.8px;line-height:1.4;color:var(--muted)}.ai-grounding-dot{width:6px;height:6px;border-radius:50%;background:var(--success);margin-top:3px;flex:0 0 auto}.ai-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.ai-action{border:1px solid #cfdaff;background:var(--primary-soft);color:var(--primary-dark);border-radius:8px;padding:6px 8px;font-size:9px;font-weight:800}.ai-action:hover{background:#e3eaff}
+.ai-typing{display:flex;gap:4px;align-items:center;height:16px}.ai-typing span{width:5px;height:5px;border-radius:50%;background:var(--faint);animation:aiPulse 1s infinite ease-in-out}.ai-typing span:nth-child(2){animation-delay:.14s}.ai-typing span:nth-child(3){animation-delay:.28s}@keyframes aiPulse{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+.ai-suggestions{display:flex;gap:6px;overflow-x:auto;padding:9px 12px 7px;background:#fff;border-top:1px solid var(--border);scrollbar-width:none}.ai-suggestions::-webkit-scrollbar{display:none}.ai-chip{flex:0 0 auto;border:1px solid #d7e0f0;background:#f8faff;color:var(--ink-2);border-radius:999px;padding:6px 9px;font-size:9px;font-weight:700;white-space:nowrap}.ai-chip:hover{border-color:#b9c8ed;background:var(--primary-soft);color:var(--primary-dark)}
+.ai-composer{display:flex;align-items:flex-end;gap:8px;padding:9px 11px 10px;background:#fff}.ai-input{flex:1;resize:none;max-height:94px;min-height:39px;border:1px solid var(--border-strong);border-radius:12px;padding:10px 11px;background:var(--surface-2);color:var(--ink);font-size:11px;line-height:1.45;outline:none}.ai-input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(53,99,233,.1)}.ai-send{width:39px;height:39px;flex:0 0 auto;border:0;border-radius:12px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800}.ai-send:hover{background:var(--primary-dark)}.ai-send:disabled{opacity:.45;cursor:not-allowed}.ai-footer{display:flex;align-items:center;justify-content:center;gap:5px;padding:0 12px 9px;background:#fff;color:var(--faint);font-size:8px;text-align:center}.ai-footer svg{width:10px;height:10px;fill:currentColor}.ai-empty-answer{padding:10px;border:1px dashed var(--border-strong);border-radius:10px;background:var(--surface-2);color:var(--muted)}
+.toast{bottom:88px}
+body.ai-panel-open .toast{right:492px;bottom:24px}
+@media(max-width:560px){.ai-fab{right:14px;bottom:14px;padding:10px 13px 10px 10px}.ai-panel{inset:auto 8px 8px 8px;width:auto;height:min(720px,calc(100vh - 16px));max-height:none;border-radius:17px;transform-origin:bottom center}body.ai-panel-open .toast{right:14px;left:14px;top:72px;bottom:auto}.ai-head{padding:12px}.ai-messages{padding:13px 11px 10px}.ai-stat-grid{grid-template-columns:1fr 1fr}.ai-bubble{max-width:calc(100% - 32px)}.toast{bottom:76px;right:14px;left:14px;text-align:center}.ai-fab-label{display:inline}}
+@media(max-width:360px){.ai-stat-grid{grid-template-columns:1fr}.ai-fab-label{display:none}.ai-fab{padding:10px}}
+@media print{.ai-fab,.ai-panel{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -156,6 +173,26 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
   </div>
 </section>
 </main>
+<button class="ai-fab" id="aiFab" type="button" aria-label="Open AI Data Analyst" aria-controls="aiPanel" aria-expanded="false" onclick="toggleAiPanel()"><span class="ai-fab-icon">✦</span><span class="ai-fab-label">Ask AI</span></button>
+<aside class="ai-panel" id="aiPanel" role="dialog" aria-modal="false" aria-label="AI Data Analyst" aria-hidden="true">
+  <div class="ai-head">
+    <div class="ai-brand-icon">AI</div>
+    <div class="ai-head-copy"><div class="ai-head-title">AI Data Analyst</div><div class="ai-head-sub"><span class="ai-live-dot"></span><span>Grounded in the loaded dashboard data</span></div></div>
+    <div class="ai-head-actions">
+      <button class="ai-icon-btn" type="button" title="Copy last answer" aria-label="Copy last answer" onclick="copyAiAnswer()">⧉</button>
+      <button class="ai-icon-btn" type="button" title="Clear conversation" aria-label="Clear conversation" onclick="clearAiChat()">↺</button>
+      <button class="ai-icon-btn" type="button" title="Close analyst" aria-label="Close analyst" onclick="toggleAiPanel(false)">×</button>
+    </div>
+  </div>
+  <div class="ai-messages" id="aiMessages" aria-live="polite"></div>
+  <div class="ai-suggestions" id="aiSuggestions" aria-label="Suggested questions"></div>
+  <div class="ai-composer">
+    <textarea class="ai-input" id="aiInput" rows="1" maxlength="500" placeholder="Ask about admissions, RCUs, DCUs, centres, events or YoY…" aria-label="Question for AI Data Analyst"></textarea>
+    <button class="ai-send" id="aiSend" type="button" aria-label="Send question" onclick="submitAiQuestion()">➤</button>
+  </div>
+  <div class="ai-footer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5.25 3.4 10.13 8 11.5 4.6-1.37 8-6.25 8-11.5V5l-8-3Zm0 2.15 6 2.25V11c0 4.13-2.5 8.12-6 9.35C8.5 19.12 6 15.13 6 11V6.4l6-2.25Z"/></svg><span>Calculated locally in your browser. Dashboard data is not sent to an external AI service.</span></div>
+</aside>
+
 </div>
 <div class="toast" id="toast"></div>
 
@@ -216,6 +253,7 @@ const clean=v=>String(v??'').trim();
 const num=v=>{if(typeof v==='number')return Number.isFinite(v)?v:0;const s=String(v??'').replace(/,/g,'').trim();const n=Number.parseFloat(s);return Number.isFinite(n)?n:0};
 const range=n=>Array.from({length:n},(_,i)=>i);
 const sum=arr=>arr.reduce((a,b)=>a+(Number(b)||0),0);
+const isParticipated=v=>{const s=clean(v).toLowerCase();return s==='participated'||s==='participating'||s==='yes'||s==='y'||s==='active'};
 const clsDelta=v=>v>0?'positive':v<0?'negative':'neutral';
 const tag=r=>`<span class="tag tag-${RCU_CLASS[r]||'pune'}">${esc(r)}</span>`;
 function setProgress(message,value){$('loaderMsg').textContent=message;$('loaderFill').style.width=`${Math.max(8,Math.min(100,value))}%`}
@@ -291,10 +329,10 @@ function aggregate(rows,indices,field='events'){
     vals.forEach((v,i)=>eventTotals[i]+=num(v));
     const metric=sum(use.map(i=>vals[i]||0));
     total+=metric;if(metric>0)active++;
-    if(/participat/i.test(c.participation||''))participated++;
+    if(isParticipated(c.participation))participated++;
     if(!rcu[c.rcu])rcu[c.rcu]={total:0,centres:0,active:0,participated:0,eventTotals:Array(count).fill(0)};
     if(!dcu[c.dcu])dcu[c.dcu]={rcu:c.rcu,total:0,centres:0,active:0,participated:0,eventTotals:Array(count).fill(0)};
-    for(const g of [rcu[c.rcu],dcu[c.dcu]]){g.total+=metric;g.centres++;if(metric>0)g.active++;if(/participat/i.test(c.participation||''))g.participated++;vals.forEach((v,i)=>g.eventTotals[i]+=num(v))}
+    for(const g of [rcu[c.rcu],dcu[c.dcu]]){g.total+=metric;g.centres++;if(metric>0)g.active++;if(isParticipated(c.participation))g.participated++;vals.forEach((v,i)=>g.eventTotals[i]+=num(v))}
     items.push({...c,metric,allMetric:sum(vals)});
   });
   items.sort((a,b)=>b.metric-a.metric||b.allMetric-a.allMetric);
@@ -459,5 +497,296 @@ function init(){
 }
 window.addEventListener('load',init);
 </script>
+<script>
+(() => {
+'use strict';
+const AI_STATE={welcomed:false,busy:false,lastText:'',lastQuery:''};
+const AI_SUGGESTIONS=[
+  'Summarise the current MS-CIT performance',
+  'Compare 2025 vs 2026 for completed events',
+  'Top 5 DCUs by July admissions',
+  'Which centres need attention?',
+  'KLiC matched-month performance'
+];
+const AI_RCU_ALIASES={
+  'South Maharashtra':['south maharashtra','south mh','smh'],
+  'Pune':['pune rcu','pune region','pune'],
+  'North Maharashtra':['north maharashtra','north mh','nmh'],
+  'Solapur':['solapur rcu','solapur region','solapur']
+};
+const AI_DCU_EXTRA={'ahmednagar':'Ahilyanagar','nagar':'Ahilyanagar','north pune':'Pune North','south pune':'Pune South'};
+const AI_STOPWORDS=new Set('show tell give get me us the a an of for in on at to from with and or by is are was were be being been how what which who where when why performance admission admissions data dashboard current active total totals report analysis analyse analyze summary overview status details detail please centre center alc code named name rcu dcu region district klic mscit ms cit ms-cit year years event events batch batches month months 2025 2026 2027'.split(' '));
+
+const aiNorm=s=>String(s??'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9%+\- ]+/g,' ').replace(/\s+/g,' ').trim();
+const aiTitle=s=>String(s||'').replace(/\b\w/g,c=>c.toUpperCase());
+const aiTone=v=>v>0?'positive':v<0?'negative':'neutral';
+const aiDeltaPct=(a,b)=>b?((a-b)/b)*100:null;
+const aiPctText=v=>v===null||!Number.isFinite(v)?'—':`${v>=0?'+':''}${v.toFixed(1)}%`;
+const aiSigned=v=>`${v>0?'+':''}${fmt(v)}`;
+const aiEscape=esc;
+
+function aiFindAllRcus(q){
+  const found=[];
+  for(const [name,aliases] of Object.entries(AI_RCU_ALIASES)){
+    if(aliases.some(a=>new RegExp(`(?:^|\\b)${a.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')}(?:\\b|$)`,'i').test(q)))found.push(name);
+  }
+  return [...new Set(found)];
+}
+function aiFindAllDcus(q){
+  const found=[];
+  const nq=aiNorm(q);
+  for(const d of ALL_DCUS){const nd=aiNorm(d);if(new RegExp(`(?:^|\\b)${nd.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')}(?:\\b|$)`,'i').test(nq))found.push(d)}
+  for(const [alias,d] of Object.entries(AI_DCU_EXTRA)){if(new RegExp(`(?:^|\\b)${alias}(?:\\b|$)`,'i').test(nq))found.push(d)}
+  return [...new Set(found)];
+}
+function aiProgram(q){
+  if(/\bklic\b|\bbatch(?:es)?\b/.test(q))return'klic';
+  if(/\bms[ -]?cit\b|\bexam event/.test(q))return'mscit';
+  return state.page==='pKlic'?'klic':'mscit';
+}
+function aiResolveGeo(program,q){
+  const overall=/\boverall\b|\bcentral zone\b|\bzone[ -]?wide\b|\ball rcus?\b|\ball dcus?\b|\bentire zone\b/.test(q);
+  const dcus=aiFindAllDcus(q),rcus=aiFindAllRcus(q);
+  if(overall)return{rcu:null,dcu:null,source:'query'};
+  if(dcus.length)return{rcu:D2R[dcus[0]]||null,dcu:dcus[0],source:'query'};
+  if(rcus.length)return{rcu:rcus[0],dcu:null,source:'query'};
+  const f=program==='klic'?KCF:CF;
+  return{rcu:f.rcu||null,dcu:f.dcu||null,source:(f.rcu||f.dcu)?'active filter':'zone'};
+}
+function aiScopeLabel(geo){return[geo.rcu,geo.dcu].filter(Boolean).join(' · ')||'Central Zone'}
+function aiRows(program,year,geo){const rows=program==='klic'?(year===2026?state.k26:state.k25):(year===2026?state.m26:state.m25);return geoFiltered(rows||[],geo)}
+function aiCompleted(program,rows){return program==='klic'?completedMonthIndices(rows):completedEventIndices(rows)}
+
+function aiMscitEventMentions(q){
+  const defs=[
+    {i:6,a:['february 2027','feb 2027','event 7','cycle 7']},
+    {i:0,a:['april','apr','event 1','cycle 1']},
+    {i:1,a:['june','jun','event 2','cycle 2']},
+    {i:2,a:['july','jul','event 3','cycle 3']},
+    {i:3,a:['august','aug','event 4','cycle 4']},
+    {i:4,a:['october','oct','event 5','cycle 5']},
+    {i:5,a:['december','dec','event 6','cycle 6']}
+  ];
+  const hits=[];
+  for(const d of defs){if(d.a.some(a=>new RegExp(`(?:^|\\b)${a.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')}(?:\\b|$)`,'i').test(q)))hits.push(d.i)}
+  return [...new Set(hits)];
+}
+function aiKlicMonthMentions(q){
+  const hits=[];
+  MONTH_LONG.forEach((m,i)=>{const ab=MONTHS[i].toLowerCase();const aliases=[m.toLowerCase(),ab];if(i===8)aliases.push('sept');if(aliases.some(a=>new RegExp(`(?:^|\\b)${a}(?:\\b|$)`,'i').test(q)))hits.push(i)});
+  return [...new Set(hits)];
+}
+function aiMscitPeriod(q,useActive=true){
+  if(/\bsummer\b/.test(q))return{indices:[...SUMMER_INDICES],label:'Summer · June + July + August 2026',kind:'season',explicit:true};
+  if(/\bmonsoon\b/.test(q))return{indices:[...MONSOON_INDICES],label:'Monsoon · October + December 2026',kind:'season',explicit:true};
+  const hits=aiMscitEventMentions(q);if(hits.length)return{indices:[hits[0]],label:`${MSCIT26[hits[0]].label} 2026`,kind:'event',explicit:true};
+  if(/\ball events?\b|\bfull 2026\b|\b2026 total\b/.test(q))return{indices:[...ALL_EVENT_INDICES],label:'All 2026 events',kind:'all',explicit:true};
+  if(useActive&&CF.event!==null)return{indices:[CF.event],label:`${MSCIT26[CF.event].label} 2026 · active filter`,kind:'event',explicit:false};
+  return{indices:[...ALL_EVENT_INDICES],label:'All recorded 2026 events',kind:'all',explicit:false};
+}
+function aiKlicPeriod(q,useActive=true){
+  const hits=aiKlicMonthMentions(q);if(hits.length)return{indices:[hits[0]],label:`${MONTH_LONG[hits[0]]} 2026`,kind:'month',explicit:true};
+  if(/\ball months?\b|\bfull 2026\b|\b2026 total\b/.test(q))return{indices:[...ALL_MONTH_INDICES],label:'All 2026 KLiC months',kind:'all',explicit:true};
+  if(useActive&&KCF.batch!==null)return{indices:[KCF.batch],label:`${MONTH_LONG[KCF.batch]} 2026 · active filter`,kind:'month',explicit:false};
+  return{indices:[...ALL_MONTH_INDICES],label:'All recorded 2026 KLiC months',kind:'all',explicit:false};
+}
+function aiPeriod(program,q,useActive=true){return program==='klic'?aiKlicPeriod(q,useActive):aiMscitPeriod(q,useActive)}
+function aiLabels(program){return program==='klic'?MONTH_LONG:MSCIT26.map(e=>e.label)}
+function aiField(program){return program==='klic'?'months':'events'}
+function aiHasYearCompare(q){return(/\b2025\b/.test(q)&&/\b2026\b/.test(q))||/\byoy\b|year[ -]?on[ -]?year|year over year|growth|variance|versus last year|vs last year|change from 2025|compared (?:with|to) 2025/.test(q)}
+function aiHasCompare(q){return aiHasYearCompare(q)||/\bcompare\b|\bcomparison\b|\bversus\b|\bvs\b|difference between/.test(q)}
+function aiIsRanking(q){return/\btop\b|\bbottom\b|\bbest\b|\bworst\b|\bhighest\b|\blowest\b|\bleading\b|\bweakest\b|\brank(?:ing)?\b/.test(q)}
+function aiEntity(q){if(/\bdcus?\b|\bdistricts?\b/.test(q))return'dcu';if(/\brcus?\b|\bregions?\b/.test(q))return'rcu';if(/\bcentres?\b|\bcenters?\b|\balcs?\b/.test(q))return'centre';return null}
+function aiTopN(q,def=5){const m=q.match(/\b(?:top|bottom|best|worst|first|last)\s+(\d{1,2})\b/)||q.match(/\b(\d{1,2})\s+(?:rcus?|dcus?|centres?|centers?|alcs?)\b/);return Math.max(1,Math.min(10,m?Number(m[1]):def))}
+function aiAscending(q){return/\bbottom\b|\bworst\b|\blowest\b|\bweakest\b|\bdeclin(?:e|ed|ing)\b|\bdrag\b/.test(q)}
+function aiFullYearRequested(q){return/\bfull[ -]?year\b|\bentire 2025\b|\ball 2025 events\b/.test(q)}
+function aiAttentionIntent(q){return/need attention|\battention\b|\bfocus\b|\brisk\b|underperform|\bweak\b|\bimprov|actionable|priority|priorit/.test(q)}
+function aiInactiveIntent(q){return/zero admission|no admission|inactive centre|inactive center|non[ -]?participat|not participat|\bpending\b/.test(q)}
+function aiBreakdownIntent(q){return/\btrend\b|breakdown|event[ -]?wise|month[ -]?wise|by event|by month|peak event|best event|highest event|best month|highest month|pending/.test(q)}
+function aiFilterIntent(q){return/active filter|current filter|what.*filter|scope.*filter/.test(q)}
+function aiHelpIntent(q){return/^(hi|hello|hey)\b|\bhelp\b|what can (?:you|i) (?:ask|do)|examples?/.test(q)}
+function aiSingularCentreIntent(q){return/\b(?:centre|center|alc)\b/.test(q)&&!/\b(?:centres|centers|alcs)\b/.test(q)&&!aiIsRanking(q)}
+
+function aiStat(label,value,meta='',tone=''){return{label,value,meta,tone}}
+function aiList(label,value,meta='',tone=''){return{label,value,meta,tone}}
+function aiResponse({title,lead,stats=[],rows=[],section='',table=null,notes=[],grounding='',actions=[]}){
+  let h=`<div class="ai-answer-title">${aiEscape(title)}</div><div class="ai-answer-lead">${lead}</div>`;
+  if(stats.length)h+=`<div class="ai-stat-grid">${stats.map(s=>`<div class="ai-stat ${s.tone||''}"><div class="ai-stat-label">${aiEscape(s.label)}</div><div class="ai-stat-value">${aiEscape(s.value)}</div>${s.meta?`<div class="ai-stat-meta">${aiEscape(s.meta)}</div>`:''}</div>`).join('')}</div>`;
+  if(rows.length){h+=`<div class="ai-section-label">${aiEscape(section||'Key findings')}</div><div class="ai-list">${rows.map(r=>`<div class="ai-list-row"><div><div class="ai-list-label">${r.label}</div>${r.meta?`<div class="ai-list-meta">${r.meta}</div>`:''}</div><div class="ai-list-value ${r.tone||''}">${r.value}</div></div>`).join('')}</div>`}
+  if(table?.headers?.length){h+=`<div class="ai-section-label">${aiEscape(table.title||'Detail')}</div><div class="ai-mini-table-wrap"><table class="ai-mini-table"><thead><tr>${table.headers.map((x,i)=>`<th class="${i?'num':''}">${aiEscape(x)}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row=>`<tr>${row.map((x,i)=>`<td class="${i?'num':''}">${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
+  if(notes.length)h+=`<ul class="ai-notes">${notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+  if(actions.length)h+=`<div class="ai-actions">${actions.map(a=>`<button class="ai-action" type="button" onclick="${a.onclick}">${aiEscape(a.label)}</button>`).join('')}</div>`;
+  h+=`<div class="ai-grounding"><span class="ai-grounding-dot"></span><span>${grounding}</span></div>`;
+  return h;
+}
+function aiGrounding(program,geo,period,extra=''){
+  const mode=state.mode==='demo'?'Demo dataset':'Loaded live dataset';
+  const label=program==='klic'?'KLiC':'MS-CIT';
+  return`${mode} · ${label} · ${aiEscape(aiScopeLabel(geo))} · ${aiEscape(period.label)}${extra?` · ${extra}`:''}`;
+}
+function aiEmpty(program,message){const p={label:program==='klic'?'KLiC':'MS-CIT'};return aiResponse({title:`${p.label} data unavailable`,lead:`<div class="ai-empty-answer">${aiEscape(message)}</div>`,grounding:'No calculation was made because the required rows are unavailable.',actions:[{label:'Open data configuration',onclick:"toggleAiPanel(false);showSetup()"}]})}
+
+function aiBestEntries(a){
+  const rcu=Object.entries(a.rcu).map(([name,v])=>({name,...v})).sort((x,y)=>y.total-x.total)[0]||null;
+  const dcu=Object.entries(a.dcu).map(([name,v])=>({name,...v})).sort((x,y)=>y.total-x.total)[0]||null;
+  const centre=a.items.find(x=>x.metric>0)||a.items[0]||null;
+  return{rcu,dcu,centre};
+}
+function aiMscitContext(q){const geo=aiResolveGeo('mscit',q),period=aiMscitPeriod(q),rows26=aiRows('mscit',2026,geo),rows25=aiRows('mscit',2025,geo),a26=aggregate(rows26,period.indices,'events');return{program:'mscit',geo,period,rows26,rows25,a26}}
+function aiKlicContext(q){const geo=aiResolveGeo('klic',q),period=aiKlicPeriod(q),rows26=aiRows('klic',2026,geo),rows25=aiRows('klic',2025,geo),a26=aggregate(rows26,period.indices,'months');return{program:'klic',geo,period,rows26,rows25,a26}}
+
+function aiSummary(ctx){
+  const {program,geo,period,rows26,a26}=ctx;if(!rows26.length)return aiEmpty(program,`No 2026 rows match ${aiScopeLabel(geo)}.`);
+  const labels=aiLabels(program),field=aiField(program),all=aggregate(rows26,program==='klic'?ALL_MONTH_INDICES:ALL_EVENT_INDICES,field),best=aiBestEntries(a26),inactive=a26.centres-a26.active,rate=a26.centres?a26.participated/a26.centres*100:0;
+  const completed=aiCompleted(program,rows26),matchedIndices=period.explicit?period.indices:completed,a25=aggregate(ctx.rows25,matchedIndices,field),a26m=aggregate(rows26,matchedIndices,field),d=a26m.total-a25.total,yp=aiDeltaPct(a26m.total,a25.total);
+  const peak=all.eventTotals.map((v,i)=>({i,v})).filter(x=>x.v>0).sort((x,y)=>y.v-x.v)[0];
+  const lead=`For <strong>${aiEscape(aiScopeLabel(geo))}</strong>, ${aiEscape(period.label)} records <strong>${fmt(a26.total)} admissions</strong> across <strong>${fmt(a26.active)} active centres</strong>.`;
+  const rows=[];
+  if(best.rcu)rows.push(aiList('Leading RCU',fmt(best.rcu.total),`${aiEscape(best.rcu.name)} · ${pct(best.rcu.total,a26.total)} of the selected metric`));
+  if(best.dcu)rows.push(aiList('Leading DCU',fmt(best.dcu.total),`${aiEscape(best.dcu.name)} · ${fmt(best.dcu.active)} active centres`));
+  if(best.centre)rows.push(aiList('Top centre',fmt(best.centre.metric),`${aiEscape(best.centre.name)} · ${aiEscape(best.centre.dcu)}`));
+  if(peak)rows.push(aiList(`Peak ${program==='klic'?'month':'event'}`,fmt(peak.v),`${aiEscape(labels[peak.i])} · ${pct(peak.v,all.total)} of recorded admissions`));
+  if(a25.total>0)rows.push(aiList('Matched-period YoY',`${aiSigned(d)} · ${aiPctText(yp)}`,`${matchedIndices.length} comparable ${program==='klic'?'month':'event'}${matchedIndices.length===1?'':'s'}`,aiTone(d)));
+  return aiResponse({title:`${program==='klic'?'KLiC':'MS-CIT'} performance summary`,lead,stats:[aiStat('Admissions',fmt(a26.total),period.label),aiStat('Active centres',fmt(a26.active),`${fmt(a26.centres)} in scope`),aiStat('Average / active',fmt(a26.avg),'Admissions per active centre'),aiStat('Participation',`${rate.toFixed(1)}%`,`${fmt(a26.participated)} participating`)],rows,section:'Performance leaders',notes:inactive?[`${fmt(inactive)} centre${inactive===1?' is':'s are'} inactive for the selected metric.`]:['Every centre in the selected scope has recorded admissions for this metric.'],grounding:aiGrounding(program,geo,period),actions:[{label:program==='klic'?'Open KLiC analytics':'Open overview',onclick:`toggleAiPanel(false);goPage('${program==='klic'?'pKlic':'pOverview'}')`}]});
+}
+
+function aiCompare(ctx,q){
+  const {program,geo,period,rows26,rows25}=ctx;if(!rows26.length)return aiEmpty(program,`No 2026 rows match ${aiScopeLabel(geo)}.`);if(!rows25.length)return aiEmpty(program,`No 2025 rows match ${aiScopeLabel(geo)}.`);
+  const field=aiField(program),labels26=program==='klic'?MONTH_LONG:MSCIT26.map(e=>e.label),labels25=program==='klic'?MONTH_LONG:MSCIT25.map(e=>e.label);
+  let indices;if(aiFullYearRequested(q))indices=program==='klic'?ALL_MONTH_INDICES:ALL_EVENT_INDICES;else if(period.explicit)indices=period.indices;else indices=aiCompleted(program,rows26);
+  const a26=aggregate(rows26,indices,field),a25=aggregate(rows25,indices,field),delta=a26.total-a25.total,yp=aiDeltaPct(a26.total,a25.total),activeDelta=a26.active-a25.active;
+  const rcuRows=RO.map(r=>{const x26=a26.rcu[r]?.total||0,x25=a25.rcu[r]?.total||0;return{name:r,v25:x25,v26:x26,d:x26-x25,p:aiDeltaPct(x26,x25)}}).filter(x=>x.v25||x.v26).sort((a,b)=>b.d-a.d);
+  const positiveDriver=rcuRows.find(x=>x.d>0)||null,negativeDriver=[...rcuRows].sort((a,b)=>a.d-b.d).find(x=>x.d<0)||null,smallestGain=!negativeDriver?[...rcuRows].filter(x=>x.d>=0).sort((a,b)=>a.d-b.d)[0]||null:null,leastNegative=!positiveDriver?rcuRows[0]||null:null;
+  const eventRows=indices.map(i=>({i,v25:a25.eventTotals[i]||0,v26:a26.eventTotals[i]||0,d:(a26.eventTotals[i]||0)-(a25.eventTotals[i]||0)})).sort((a,b)=>b.d-a.d),bestEvent=eventRows[0];
+  const coverage=indices.length;
+  const fullWarning=aiFullYearRequested(q)&&a26.eventTotals.some((v,i)=>indices.includes(i)&&v===0);
+  const lead=program==='klic'?`The comparison uses <strong>${coverage} matched month${coverage===1?'':'s'}</strong> for ${aiEscape(aiScopeLabel(geo))}.`:`The comparison uses <strong>${coverage} matched admission-cycle position${coverage===1?'':'s'}</strong> for ${aiEscape(aiScopeLabel(geo))}, avoiding a partial-2026 versus full-2025 distortion.`;
+  const rows=[];
+  if(positiveDriver)rows.push(aiList('Largest positive RCU driver',aiSigned(positiveDriver.d),`${aiEscape(positiveDriver.name)} · ${aiPctText(positiveDriver.p)}`,aiTone(positiveDriver.d)));
+  else if(leastNegative)rows.push(aiList('Least negative RCU movement',aiSigned(leastNegative.d),`${aiEscape(leastNegative.name)} · ${aiPctText(leastNegative.p)}`,aiTone(leastNegative.d)));
+  if(negativeDriver)rows.push(aiList('Largest RCU drag',aiSigned(negativeDriver.d),`${aiEscape(negativeDriver.name)} · ${aiPctText(negativeDriver.p)}`,aiTone(negativeDriver.d)));
+  else if(smallestGain&&smallestGain!==positiveDriver)rows.push(aiList('Smallest RCU gain',aiSigned(smallestGain.d),`${aiEscape(smallestGain.name)} · ${aiPctText(smallestGain.p)}`,aiTone(smallestGain.d)));
+  if(bestEvent)rows.push(aiList(bestEvent.d>=0?`Strongest ${program==='klic'?'month':'event-pair'} contribution`:`Least negative ${program==='klic'?'month':'event pair'}`,aiSigned(bestEvent.d),`${aiEscape(labels25[bestEvent.i])} 2025 → ${aiEscape(labels26[bestEvent.i])} 2026`,aiTone(bestEvent.d)));
+  const table={title:program==='klic'?'Matched months':'Matched event pairs',headers:[program==='klic'?'Month':'Pair','2025','2026','Change'],rows:indices.slice(0,7).map(i=>{const x25=a25.eventTotals[i]||0,x26=a26.eventTotals[i]||0,d=x26-x25;return[program==='klic'?aiEscape(labels26[i]):`E${i+1}: ${aiEscape(labels25[i])}→${aiEscape(labels26[i])}`,fmt(x25),fmt(x26),`<span class="${aiTone(d)}">${aiSigned(d)}</span>`]})};
+  const notes=[];if(fullWarning)notes.push('Some selected 2026 periods have no recorded admissions, so the requested full-year view includes pending periods.');
+  return aiResponse({title:`2025 vs 2026 · ${program==='klic'?'KLiC':'MS-CIT'}`,lead,stats:[aiStat('2026 comparable',fmt(a26.total),`${coverage} matched ${program==='klic'?'month':'event'}${coverage===1?'':'s'}`),aiStat('2025 comparable',fmt(a25.total),'Same comparison positions'),aiStat('Admissions variance',aiSigned(delta),aiPctText(yp),aiTone(delta)),aiStat('Active-centre variance',aiSigned(activeDelta),`${fmt(a25.active)} → ${fmt(a26.active)}`,aiTone(activeDelta))],rows,section:'Primary drivers',table,notes,grounding:aiGrounding(program,geo,{label:`${coverage} matched ${program==='klic'?'months':'cycle positions'}`},'Coverage-aware comparison'),actions:[{label:program==='klic'?'Open KLiC analytics':'Open comparison page',onclick:`toggleAiPanel(false);goPage('${program==='klic'?'pKlic':'pCompare'}')`}]});
+}
+
+function aiCompareRanking(ctx,q,entity){
+  const {program,geo,period,rows26,rows25}=ctx,field=aiField(program),indices=period.explicit?period.indices:aiCompleted(program,rows26),a26=aggregate(rows26,indices,field),a25=aggregate(rows25,indices,field),n=aiTopN(q),asc=aiAscending(q),byRate=/percent|percentage|rate/.test(q);
+  let entries=[];
+  if(entity==='centre'){
+    const key=c=>clean(c.code)||aiNorm(c.name);const p25=new Map(rows25.map(c=>[key(c),c]));entries=rows26.map(c=>{const v26=sum(indices.map(i=>(c[field]||[])[i]||0)),old=p25.get(key(c)),v25=old?sum(indices.map(i=>(old[field]||[])[i]||0)):0,d=v26-v25,p=aiDeltaPct(v26,v25);return{name:c.name,meta:`${c.dcu} · ${c.rcu}`,v25,v26,d,p}})
+  }else{
+    const names=[...new Set([...Object.keys(a26[entity]),...Object.keys(a25[entity])])];entries=names.map(name=>{const v26=a26[entity][name]?.total||0,v25=a25[entity][name]?.total||0,d=v26-v25,p=aiDeltaPct(v26,v25),meta=entity==='dcu'?(a26.dcu[name]?.rcu||a25.dcu[name]?.rcu||D2R[name]||''):'';return{name,meta,v25,v26,d,p}})
+  }
+  if(/declin|negative|drag|loss/.test(q))entries=entries.filter(x=>x.d<0);if(/growth|positive|improv|gain/.test(q)&&!/declin|negative|drag|loss/.test(q))entries=entries.filter(x=>x.d>0);
+  entries.sort((a,b)=>{const av=byRate?(a.p??-Infinity):a.d,bv=byRate?(b.p??-Infinity):b.d;return asc?av-bv:bv-av});entries=entries.slice(0,n);
+  const title=`${asc?'Lowest':'Highest'} ${entity==='centre'?'centre':entity.toUpperCase()} YoY movement`;
+  return aiResponse({title,lead:`Ranked on ${byRate?'percentage growth':'absolute admissions change'} across <strong>${indices.length} matched ${program==='klic'?'month':'event'}${indices.length===1?'':'s'}</strong> in ${aiEscape(aiScopeLabel(geo))}.`,table:{title:'YoY ranking',headers:[aiTitle(entity),'2025','2026','Change','YoY'],rows:entries.map(x=>[`${aiEscape(x.name)}${x.meta?`<div class="ai-list-meta">${aiEscape(x.meta)}</div>`:''}`,fmt(x.v25),fmt(x.v26),`<span class="${aiTone(x.d)}">${aiSigned(x.d)}</span>`,`<span class="${aiTone(x.d)}">${aiPctText(x.p)}</span>`])},notes:entries.length?[]:['No entities meet the requested growth/decline condition.'],grounding:aiGrounding(program,geo,{label:`${indices.length} matched periods`}),actions:[{label:program==='klic'?'Open KLiC analytics':'Open comparison page',onclick:`toggleAiPanel(false);goPage('${program==='klic'?'pKlic':'pCompare'}')`}]});
+}
+
+function aiRanking(ctx,q,entity){
+  const {program,geo,period,rows26,a26}=ctx;if(!rows26.length)return aiEmpty(program,`No rows match ${aiScopeLabel(geo)}.`);const n=aiTopN(q),asc=aiAscending(q);let entries=[];
+  if(entity==='rcu')entries=Object.entries(a26.rcu).map(([name,v])=>({name,value:v.total,meta:`${fmt(v.active)} active · ${pct(v.total,a26.total)} of scope`}));
+  else if(entity==='dcu')entries=Object.entries(a26.dcu).map(([name,v])=>({name,value:v.total,meta:`${v.rcu||D2R[name]||''} · ${fmt(v.active)} active`}));
+  else entries=a26.items.map(c=>({name:c.name,value:c.metric,meta:`${c.dcu} · ${c.rcu}`}));
+  entries.sort((a,b)=>asc?a.value-b.value:b.value-a.value);entries=entries.slice(0,n);
+  const best=entries[0];
+  return aiResponse({title:`${asc?'Bottom':'Top'} ${n} ${entity==='centre'?'centres':entity.toUpperCase()+'s'}`,lead:`Ranking for <strong>${aiEscape(period.label)}</strong> in <strong>${aiEscape(aiScopeLabel(geo))}</strong>.`,stats:best?[aiStat('Rank 1',fmt(best.value),best.name),aiStat('Selected total',fmt(a26.total),`${fmt(a26.active)} active centres`)]:[],rows:entries.map((x,i)=>aiList(`${i+1}. ${aiEscape(x.name)}`,fmt(x.value),aiEscape(x.meta))),section:`${asc?'Lowest':'Highest'} admissions`,grounding:aiGrounding(program,geo,period),actions:[{label:entity==='centre'&&program==='mscit'?'Open all centres':program==='klic'?'Open KLiC analytics':'Open overview',onclick:`toggleAiPanel(false);goPage('${entity==='centre'&&program==='mscit'?'pCentres':program==='klic'?'pKlic':'pOverview'}')`}]});
+}
+
+function aiBreakdown(ctx){
+  const {program,geo,period,rows26}=ctx;if(!rows26.length)return aiEmpty(program,`No rows match ${aiScopeLabel(geo)}.`);const field=aiField(program),allIndices=program==='klic'?ALL_MONTH_INDICES:ALL_EVENT_INDICES,labels=aiLabels(program),a=aggregate(rows26,allIndices,field),selected=new Set(period.explicit?period.indices:allIndices),rows=labels.map((name,i)=>({name,value:a.eventTotals[i]||0,i})).filter(x=>selected.has(x.i)),positive=rows.filter(x=>x.value>0),peak=[...positive].sort((x,y)=>y.value-x.value)[0],low=[...positive].sort((x,y)=>x.value-y.value)[0],pending=rows.filter(x=>x.value===0);
+  return aiResponse({title:`${program==='klic'?'Month':'Event'}-wise admissions`,lead:`Recorded pattern for <strong>${aiEscape(aiScopeLabel(geo))}</strong>. Values are shown in chronological order.`,stats:[aiStat('Recorded total',fmt(sum(rows.map(x=>x.value))),`${positive.length} completed ${program==='klic'?'months':'events'}`),aiStat('Peak period',peak?peak.name:'—',peak?fmt(peak.value):'No recorded admissions'),aiStat('Lowest completed',low?low.name:'—',low?fmt(low.value):'No recorded admissions'),aiStat('Pending / zero',fmt(pending.length),pending.map(x=>x.name).join(', ')||'None')],rows:rows.map(x=>aiList(aiEscape(x.name),x.value?fmt(x.value):'Pending',x.value?pct(x.value,a.total):'No 2026 admissions recorded')),section:'Chronological breakdown',grounding:aiGrounding(program,geo,{label:period.explicit?period.label:`All ${program==='klic'?'months':'events'}`}),actions:[{label:program==='klic'?'Open KLiC trend':'Open overview trend',onclick:`toggleAiPanel(false);goPage('${program==='klic'?'pKlic':'pOverview'}')`}]});
+}
+
+function aiInactive(ctx,q){
+  const {program,geo,period,rows26,a26}=ctx;if(!rows26.length)return aiEmpty(program,`No rows match ${aiScopeLabel(geo)}.`);const field=aiField(program),nonPart=/non[ -]?participat|not participat/.test(q),pending=/pending/.test(q);
+  if(pending){const labels=aiLabels(program),all=aggregate(rows26,program==='klic'?ALL_MONTH_INDICES:ALL_EVENT_INDICES,field),rows=labels.map((name,i)=>({name,value:all.eventTotals[i]})).filter(x=>x.value===0);return aiResponse({title:`Pending ${program==='klic'?'months':'events'}`,lead:`${rows.length?`${rows.length} period${rows.length===1?' has':'s have'} no recorded 2026 admissions.`:'Every configured period has recorded admissions.'}`,rows:rows.map(x=>aiList(aiEscape(x.name),'Pending','Zero admissions in the loaded 2026 data')),section:'Pending periods',grounding:aiGrounding(program,geo,{label:`All ${program==='klic'?'months':'events'}`})})}
+  let items;if(nonPart)items=rows26.filter(c=>!isParticipated(c.participation));else items=a26.items.filter(c=>c.metric<=0);
+  const grouped={};items.forEach(c=>{grouped[c.dcu]=(grouped[c.dcu]||0)+1});const groups=Object.entries(grouped).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  return aiResponse({title:nonPart?'Non-participating centres':'Centres with zero admissions',lead:`<strong>${fmt(items.length)}</strong> centre${items.length===1?'':'s'} meet the condition in ${aiEscape(aiScopeLabel(geo))}.`,stats:[aiStat('Affected centres',fmt(items.length),`${pct(items.length,rows26.length)} of scope`),aiStat('Scope population',fmt(rows26.length),period.label),aiStat('Most affected DCU',groups[0]?.[0]||'—',groups[0]?`${fmt(groups[0][1])} centres`:'No affected DCU')],rows:items.slice(0,8).map((c,i)=>aiList(`${i+1}. ${aiEscape(c.name)}`,nonPart?'Not participating':'0',`${aiEscape(c.dcu)} · ${aiEscape(c.rcu)}`)),section:'Review queue',notes:items.length>8?[`Showing 8 of ${fmt(items.length)} affected centres.`]:[],grounding:aiGrounding(program,geo,period),actions:[{label:program==='mscit'?'Open all centres':'Open KLiC analytics',onclick:`toggleAiPanel(false);goPage('${program==='mscit'?'pCentres':'pKlic'}')`}]});
+}
+
+function aiAttention(ctx){
+  const {program,geo,period,rows26,rows25,a26}=ctx;if(!rows26.length)return aiEmpty(program,`No rows match ${aiScopeLabel(geo)}.`);const field=aiField(program),indices=period.explicit?period.indices:aiCompleted(program,rows26),c26=aggregate(rows26,indices,field),c25=aggregate(rows25,indices,field),inactive=a26.items.filter(c=>c.metric<=0);
+  const names=[...new Set([...Object.keys(c26.dcu),...Object.keys(c25.dcu)])],dcus=names.map(name=>{const v26=c26.dcu[name]?.total||0,v25=c25.dcu[name]?.total||0,d=v26-v25;return{name,rcu:c26.dcu[name]?.rcu||c25.dcu[name]?.rcu||D2R[name],v25,v26,d,p:aiDeltaPct(v26,v25)}}).sort((a,b)=>a.d-b.d),declining=dcus.filter(x=>x.d<0).slice(0,6),weakRcu=RO.map(name=>({name,value:a26.rcu[name]?.total||0,active:a26.rcu[name]?.active||0})).sort((a,b)=>a.value-b.value)[0],delta=c26.total-c25.total;
+  const rows=declining.length?declining.map(x=>aiList(aiEscape(x.name),aiSigned(x.d),`${aiEscape(x.rcu||'')} · ${aiPctText(x.p)} YoY`,aiTone(x.d))):inactive.slice(0,6).map(x=>aiList(aiEscape(x.name),'0',`${aiEscape(x.dcu)} · no admissions for selected metric`));
+  return aiResponse({title:'Priority attention areas',lead:`The review queue combines matched-period decline and current inactivity for <strong>${aiEscape(aiScopeLabel(geo))}</strong>.`,stats:[aiStat('Matched admissions change',aiSigned(delta),`${indices.length} comparable periods`,aiTone(delta)),aiStat('Declining DCUs',fmt(dcus.filter(x=>x.d<0).length),'Negative matched-period change',dcus.some(x=>x.d<0)?'negative':''),aiStat('Inactive centres',fmt(inactive.length),period.label,inactive.length?'negative':''),aiStat('Lowest RCU',weakRcu?.name||'—',weakRcu?`${fmt(weakRcu.value)} admissions`:'No data')],rows,section:declining.length?'Largest DCU declines':'Inactive-centre review',notes:[declining.length?'Start with the largest absolute declines, then review inactive centres inside those DCUs.':'No DCU has a negative matched-period variance; focus on centres with zero admissions.',inactive.length?`${fmt(inactive.length)} centre${inactive.length===1?'':'s'} currently have zero admissions for the selected metric.`:'No centres are inactive for the selected metric.'],grounding:aiGrounding(program,geo,period,'Priority model: decline + inactivity'),actions:[{label:program==='klic'?'Open KLiC analytics':'Open comparison page',onclick:`toggleAiPanel(false);goPage('${program==='klic'?'pKlic':'pCompare'}')`},{label:program==='mscit'?'Review centres':'Open dashboard',onclick:`toggleAiPanel(false);goPage('${program==='mscit'?'pCentres':'pKlic'}')`}]});
+}
+
+function aiFindCentreMatches(ctx,q){
+  const scoped=ctx.rows26,globalRows=ctx.program==='klic'?state.k26:state.m26,nq=aiNorm(q);
+  const code=(nq.match(/\b(?:code\s*)?([a-z]*\d{3,})\b/i)||[])[1];
+  if(code&&!['2025','2026','2027'].includes(code)){
+    const exactScoped=scoped.filter(c=>aiNorm(c.code)===aiNorm(code));if(exactScoped.length)return{matches:exactScoped.slice(0,5),usedGlobal:false};
+    const exactGlobal=globalRows.filter(c=>aiNorm(c.code)===aiNorm(code));if(exactGlobal.length)return{matches:exactGlobal.slice(0,5),usedGlobal:true};
+  }
+  const tokens=nq.split(' ').filter(t=>t.length>2&&!AI_STOPWORDS.has(t)&&!MONTH_LONG.map(aiNorm).includes(t)&&!RO.map(aiNorm).includes(t));
+  const scoreRows=rows=>rows.map(c=>{const hay=aiNorm(`${c.name} ${c.code} ${c.dcu} ${c.taluka||''}`),nameTokens=aiNorm(c.name).split(' ').filter(t=>t.length>2),score=tokens.reduce((s,t)=>s+(hay.includes(t)?1:0),0)+(nq.includes(aiNorm(c.name))?10:0);return{c,score,threshold:Math.max(1,Math.min(3,Math.ceil(nameTokens.length*.35)))}}).filter(x=>x.score>=x.threshold).sort((a,b)=>b.score-a.score).slice(0,5).map(x=>x.c);
+  const scopedMatches=scoreRows(scoped);if(scopedMatches.length)return{matches:scopedMatches,usedGlobal:false};
+  const globalMatches=scoped.length===globalRows.length?[]:scoreRows(globalRows);return{matches:globalMatches,usedGlobal:globalMatches.length>0};
+}
+function aiCentreLookup(ctx,q){
+  const result=aiFindCentreMatches(ctx,q),matches=result.matches;if(!matches.length)return aiResponse({title:'Centre not identified',lead:'Include a centre code or a distinctive part of the centre name. Example: <strong>“Show centre code 1042”</strong>.',grounding:aiGrounding(ctx.program,ctx.geo,ctx.period)});
+  const field=aiField(ctx.program),indices=ctx.period.indices,key=c=>clean(c.code)||aiNorm(c.name),comparisonRows=result.usedGlobal?(ctx.program==='klic'?state.k25:state.m25):ctx.rows25,oldMap=new Map(comparisonRows.map(c=>[key(c),c]));
+  const table={title:'Matched centres',headers:['Centre','2025','2026','Change'],rows:matches.map(c=>{const v26=sum(indices.map(i=>(c[field]||[])[i]||0)),old=oldMap.get(key(c)),v25=old?sum(indices.map(i=>(old[field]||[])[i]||0)):0,d=v26-v25;return[`${aiEscape(c.name)}<div class="ai-list-meta">${aiEscape(c.code)} · ${aiEscape(c.dcu)}</div>`,fmt(v25),fmt(v26),`<span class="${aiTone(d)}">${aiSigned(d)}</span>`]})};
+  const first=matches[0],v=sum(indices.map(i=>(first[field]||[])[i]||0)),foundScope=result.usedGlobal?'Central Zone centre register':aiScopeLabel(ctx.geo);
+  return aiResponse({title:matches.length===1?'Centre performance':'Centre matches',lead:`Found <strong>${matches.length}</strong> matching centre${matches.length===1?'':'s'} in ${aiEscape(foundScope)}.${result.usedGlobal?' The centre was outside the active geographic filter, so the lookup searched the full programme register.':''}`,stats:[aiStat('Selected metric',fmt(v),ctx.period.label),aiStat('2026 all periods',fmt(first.total),first.name),aiStat('RCU',first.rcu,first.dcu)],table,grounding:`${state.mode==='demo'?'Demo dataset':'Loaded live dataset'} · ${ctx.program==='klic'?'KLiC':'MS-CIT'} · Centre lookup · ${aiEscape(ctx.period.label)}`,actions:ctx.program==='mscit'?[{label:'Open all centres',onclick:"toggleAiPanel(false);goPage('pCentres')"}]:[{label:'Open KLiC analytics',onclick:"toggleAiPanel(false);goPage('pKlic')"}]});
+}
+
+function aiEntityCompare(program,q,entity,names){
+  const period=aiPeriod(program,q,false),field=aiField(program),yearCompare=aiHasYearCompare(q),global26=program==='klic'?state.k26:state.m26,baseCompleted=aiCompleted(program,global26),indices=period.explicit?period.indices:(yearCompare?baseCompleted:period.indices);
+  const rows=names.map(name=>{const geo=entity==='dcu'?{rcu:D2R[name]||null,dcu:name}:{rcu:name,dcu:null},r26=aiRows(program,2026,geo),r25=aiRows(program,2025,geo),a26=aggregate(r26,indices,field),a25=aggregate(r25,indices,field),d=a26.total-a25.total;return{name,geo,v26:a26.total,v25:a25.total,d,p:aiDeltaPct(a26.total,a25.total),active:a26.active,avg:a26.avg}}).sort((a,b)=>b.v26-a.v26),winner=rows[0],runner=rows[1],gap=winner&&runner?winner.v26-runner.v26:0;
+  const table=yearCompare?{title:'Entity comparison',headers:[aiTitle(entity),'2025','2026','Change','YoY'],rows:rows.map(x=>[aiEscape(x.name),fmt(x.v25),fmt(x.v26),`<span class="${aiTone(x.d)}">${aiSigned(x.d)}</span>`,`<span class="${aiTone(x.d)}">${aiPctText(x.p)}</span>`])}:{title:'Entity comparison',headers:[aiTitle(entity),'Admissions','Active','Average'],rows:rows.map(x=>[aiEscape(x.name),fmt(x.v26),fmt(x.active),fmt(x.avg)])};
+  return aiResponse({title:`${names.map(aiEscape).join(' vs ')}`,lead:`For <strong>${aiEscape(period.label)}</strong>, <strong>${aiEscape(winner?.name||'—')}</strong> leads by ${fmt(gap)} admissions over the next listed ${entity.toUpperCase()}.`,stats:winner?[aiStat('Leader',winner.name,`${fmt(winner.v26)} admissions`),aiStat('Lead gap',fmt(gap),runner?`versus ${runner.name}`:'Only one entity'),aiStat('Leader active centres',fmt(winner.active),`Average ${fmt(winner.avg)}`)]:[],table,grounding:`${state.mode==='demo'?'Demo dataset':'Loaded live dataset'} · ${program==='klic'?'KLiC':'MS-CIT'} · ${aiEscape(period.label)} · Explicit ${entity.toUpperCase()} comparison`});
+}
+function aiPeriodCompare(program,q,indices){
+  const geo=aiResolveGeo(program,q),field=aiField(program),rows=aiRows(program,2026,geo),labels=aiLabels(program),results=indices.map(i=>{const a=aggregate(rows,[i],field);return{i,name:labels[i],total:a.total,active:a.active,avg:a.avg}}).sort((a,b)=>b.total-a.total),winner=results[0],other=results[1];
+  return aiResponse({title:`${results.map(x=>aiEscape(x.name)).join(' vs ')}`,lead:`In <strong>${aiEscape(aiScopeLabel(geo))}</strong>, <strong>${aiEscape(winner.name)}</strong> leads by ${fmt(winner.total-(other?.total||0))} admissions.`,table:{title:'Period comparison',headers:[program==='klic'?'Month':'Event','Admissions','Active','Average'],rows:results.map(x=>[aiEscape(x.name),fmt(x.total),fmt(x.active),fmt(x.avg)])},grounding:aiGrounding(program,geo,{label:'Explicit period comparison'})});
+}
+
+function aiFilters(program){
+  const f=program==='klic'?KCF:CF,period=program==='klic'?(KCF.batch!==null?MONTH_LONG[KCF.batch]:'All recorded months'):(CF.event!==null?MSCIT26[CF.event].label:'All recorded events'),rows=program==='klic'?geoFiltered(state.k26,f):geoFiltered(state.m26,f),pills=[f.rcu&&`RCU: ${f.rcu}`,f.dcu&&`DCU: ${f.dcu}`,program==='klic'&&f.batch!==null&&`Month: ${MONTH_LONG[f.batch]}`,program==='mscit'&&f.event!==null&&`Event: ${MSCIT26[f.event].label}`].filter(Boolean);
+  return aiResponse({title:'Current dashboard scope',lead:pills.length?`The assistant is inheriting <strong>${pills.map(aiEscape).join(' · ')}</strong> unless your question explicitly names another scope or says “overall”.`:'No cross-filters are active. Questions default to Central Zone.',stats:[aiStat('Programme',program==='klic'?'KLiC':'MS-CIT',state.page),aiStat('Centres in scope',fmt(rows.length),aiScopeLabel(f)),aiStat('Active period',period,'Inherited when not specified')],grounding:`${state.mode==='demo'?'Demo dataset':'Loaded live dataset'} · Filter state read directly from the dashboard`});
+}
+function aiHelp(){return aiResponse({title:'Questions this analyst understands',lead:'Ask in normal language. It calculates answers from the same centre-level data used by the dashboard.',rows:[aiList('Performance summary','“How is Pune performing?”','Uses named geography or active filters'),aiList('Matched YoY','“Compare 2025 vs 2026 for completed events”','Coverage-aware, like-for-like calculation'),aiList('Rankings','“Top 5 DCUs by July admissions”','RCU, DCU or centre rankings'),aiList('Attention areas','“Which centres need attention?”','Decline plus inactivity review'),aiList('KLiC','“KLiC June performance in Solapur”','Independent KLiC filters and months')],section:'Example questions',grounding:'Local analytical query engine · No external API key required'});}
+
+function aiAnswer(raw){
+  const q=aiNorm(raw),program=aiProgram(q);if(!q)return aiHelp();if(aiHelpIntent(q))return aiHelp();if(aiFilterIntent(q))return aiFilters(program);
+  if(program==='klic'&&state.klicLoading)return aiEmpty('klic','KLiC data is still loading. Ask again after the KLiC page finishes loading.');
+  if(program==='klic'&&!state.k26.length)return aiEmpty('klic','KLiC 2026 data is not loaded. Add the KLiC CSV URL in Config or use Demo Mode.');
+  if(program==='mscit'&&!state.m26.length)return aiEmpty('mscit','MS-CIT 2026 data is not loaded. Add the CSV URLs in Config or use Demo Mode.');
+  const dcuNames=aiFindAllDcus(q),rcuNames=aiFindAllRcus(q),yearCompare=aiHasYearCompare(q),compare=aiHasCompare(q),eventMentions=program==='klic'?aiKlicMonthMentions(q):aiMscitEventMentions(q);
+  if(compare&&dcuNames.length>=2)return aiEntityCompare(program,q,'dcu',dcuNames);
+  if(compare&&rcuNames.length>=2)return aiEntityCompare(program,q,'rcu',rcuNames);
+  if(compare&&!yearCompare&&eventMentions.length>=2)return aiPeriodCompare(program,q,eventMentions.slice(0,4));
+  const ctx=program==='klic'?aiKlicContext(q):aiMscitContext(q),entity=aiEntity(q);
+  if(aiSingularCentreIntent(q))return aiCentreLookup(ctx,q);
+  if(aiAttentionIntent(q))return aiAttention(ctx);
+  if(aiInactiveIntent(q))return aiInactive(ctx,q);
+  if(yearCompare){if(aiIsRanking(q)&&entity)return aiCompareRanking(ctx,q,entity);return aiCompare(ctx,q)}
+  if(aiIsRanking(q)&&entity)return aiRanking(ctx,q,entity);
+  if(aiBreakdownIntent(q))return aiBreakdown(ctx);
+  return aiSummary(ctx);
+}
+
+function aiAddUser(text){const wrap=document.createElement('div');wrap.className='ai-message user';const bubble=document.createElement('div');bubble.className='ai-bubble';bubble.textContent=text;wrap.appendChild(bubble);$('aiMessages').appendChild(wrap);aiScroll()}
+function aiAddAssistant(html,typing=false){const wrap=document.createElement('div');wrap.className='ai-message assistant';const avatar=document.createElement('div');avatar.className='ai-avatar';avatar.textContent='AI';const bubble=document.createElement('div');bubble.className='ai-bubble';if(typing){wrap.id='aiTyping';bubble.innerHTML='<div class="ai-typing"><span></span><span></span><span></span></div>'}else{bubble.innerHTML=html;AI_STATE.lastText=bubble.innerText.trim()}wrap.append(avatar,bubble);$('aiMessages').appendChild(wrap);aiScroll();return wrap}
+function aiScroll(){requestAnimationFrame(()=>{const m=$('aiMessages');if(m)m.scrollTop=m.scrollHeight})}
+function aiSetSuggestions(items=AI_SUGGESTIONS){const box=$('aiSuggestions');box.innerHTML='';items.forEach(q=>{const b=document.createElement('button');b.type='button';b.className='ai-chip';b.textContent=q;b.addEventListener('click',()=>{const input=$('aiInput');input.value=q;submitAiQuestion()});box.appendChild(b)})}
+function aiWelcome(){if(AI_STATE.welcomed)return;AI_STATE.welcomed=true;aiAddAssistant(aiResponse({title:'Ask questions about your dashboard',lead:'I answer from the currently loaded MS-CIT and KLiC rows. Active filters are inherited unless you name another RCU/DCU or say <strong>“overall”</strong>.',rows:[aiList('Matched comparisons','Coverage-aware','No partial-year versus full-year distortion'),aiList('Cross-filter context','Automatic','Reads current RCU, DCU, event and KLiC filters'),aiList('Privacy','Local','No dashboard data is sent to an external AI service')],section:'How answers are grounded',grounding:'Ready · Ask a question or choose a suggestion below.'}));aiSetSuggestions()}
+
+window.toggleAiPanel=function(force){const panel=$('aiPanel'),fab=$('aiFab');if(!panel||!fab)return;const open=typeof force==='boolean'?force:!panel.classList.contains('open');panel.classList.toggle('open',open);document.body.classList.toggle('ai-panel-open',open);panel.setAttribute('aria-hidden',String(!open));fab.setAttribute('aria-expanded',String(open));if(open){aiWelcome();setTimeout(()=>$('aiInput')?.focus(),80)}};
+window.submitAiQuestion=function(){const input=$('aiInput');if(!input||AI_STATE.busy)return;const text=clean(input.value);if(!text)return;AI_STATE.busy=true;AI_STATE.lastQuery=text;input.value='';input.style.height='auto';$('aiSend').disabled=true;aiAddUser(text);aiAddAssistant('',true);setTimeout(()=>{try{const answer=aiAnswer(text);$('aiTyping')?.remove();aiAddAssistant(answer)}catch(err){console.error('AI analyst error',err);$('aiTyping')?.remove();aiAddAssistant(aiResponse({title:'I could not calculate that answer',lead:'The query could not be resolved against the loaded dashboard data. Try naming the programme, period and entity more explicitly.',notes:[`Technical detail: ${aiEscape(err.message||'Unknown error')}`],grounding:'No dashboard values were changed.'}))}finally{AI_STATE.busy=false;$('aiSend').disabled=false;$('aiInput')?.focus()}},180)};
+window.clearAiChat=function(){const m=$('aiMessages');if(m)m.innerHTML='';AI_STATE.welcomed=false;AI_STATE.lastText='';aiWelcome()};
+window.copyAiAnswer=async function(){if(!AI_STATE.lastText){showToast('No AI answer to copy');return}try{await navigator.clipboard.writeText(AI_STATE.lastText);showToast('AI answer copied')}catch(_e){const ta=document.createElement('textarea');ta.value=AI_STATE.lastText;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('AI answer copied')}};
+
+function aiInit(){const input=$('aiInput');if(!input)return;input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitAiQuestion()}else if(e.key==='Escape'){toggleAiPanel(false)}});input.addEventListener('input',()=>{input.style.height='auto';input.style.height=`${Math.min(input.scrollHeight,94)}px`});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('aiPanel')?.classList.contains('open'))toggleAiPanel(false)});aiSetSuggestions()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',aiInit);else aiInit();
+})();
+</script>
+
 </body>
 </html>
