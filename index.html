@@ -97,16 +97,25 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
 .season-table table{min-width:1120px}
 .compare-centre-table table{min-width:980px}
 .pending-cell{display:inline-flex;align-items:center;border-radius:999px;padding:2px 7px;background:var(--surface-3);color:var(--faint);font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+/* Consistent alignment: numeric columns and their headers centered; first (name) column left */
+.table-wrap thead th{text-align:center;vertical-align:middle}
+.table-wrap tbody td{vertical-align:middle}
+.table-wrap thead th:first-child,.table-wrap tbody td:first-child{text-align:left}
+.table-wrap .num{text-align:center}
 .cmp-table table{font-size:12.5px}
-.cmp-table thead th{font-size:10px;padding:11px 13px}
-.cmp-table tbody td{padding:11px 13px;font-size:12.5px}
+.cmp-table thead th{font-size:10px;padding:11px 13px;text-align:center;vertical-align:middle}
+.cmp-table tbody td{padding:11px 13px;font-size:12.5px;text-align:center;vertical-align:middle}
+.cmp-table thead th:first-child,.cmp-table tbody td:first-child,.cmp-table tfoot td:first-child{text-align:left}
+.cmp-table thead tr:first-child th{top:0}
+.cmp-table thead tr:nth-child(2) th{top:38px;z-index:1}
+.cmp-table thead tr:first-child th[rowspan]{z-index:3}
 .cmp-table th.grp,.cmp-table td.grp{border-left:2px solid var(--border)}
 .cmp-table th.y25,.cmp-table td.y25{background:rgba(124,141,166,.06)}
 .cmp-table th.y26,.cmp-table td.y26{background:rgba(53,99,233,.06)}
 .cmp-table .yr-head{text-align:center;font-size:11px;font-weight:800;letter-spacing:.04em;padding:9px 13px 5px}
 .cmp-table .yr-head.y25{color:var(--muted)}
 .cmp-table .yr-head.y26{color:var(--primary-dark)}
-.cmp-table tfoot td{padding:12px 13px;font-weight:800;color:var(--ink);background:#f8fafc;border-top:2px solid var(--border);position:sticky;bottom:0}
+.cmp-table tfoot td{padding:12px 13px;font-weight:800;color:var(--ink);background:#f8fafc;border-top:2px solid var(--border);position:sticky;bottom:0;text-align:center}
 .chg-pill{display:inline-flex;align-items:center;gap:4px;font-weight:800;font-family:'JetBrains Mono',monospace;font-size:11.5px}
 .chg-pill .arw{font-size:12px}
 .chg-pos{color:var(--success)}.chg-neg{color:#b5475d}.chg-flat{color:var(--faint)}
@@ -117,6 +126,12 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
 .cmp-table th.yr-pair{text-align:center;border-left:2px solid var(--border)}
 .cmp-table td.grp,.cmp-table th.grp{border-left:2px solid var(--border)}
 .cmp-table th.y26,.cmp-table td.y26{border-right:1px solid #eef1f5}
+/* Matrix tables (per-event / per-month) — keep columns from compressing into each other */
+.matrix-table table{font-size:12px}
+.matrix-table thead th,.matrix-table tbody td,.matrix-table tfoot td{padding:9px 10px}
+.matrix-table td.y25,.matrix-table td.y26,.matrix-table th.y25,.matrix-table th.y26{min-width:56px;font-family:'JetBrains Mono',monospace}
+.matrix-table tbody td:first-child,.matrix-table thead th:first-child{min-width:130px}
+.matrix-table .yr-pair{min-width:112px}
 .compare-insights{grid-template-columns:repeat(4,minmax(0,1fr))}
 .compare-page .analysis-note{background:linear-gradient(135deg,#f2f5ff,#fff);border-color:#d5dfff}
 .compare-page .analysis-note .icon{background:#eaf0ff;color:var(--primary)}
@@ -203,8 +218,8 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by RCU</div><div class="panel-sub">Completed events only. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareRcuBody"></tbody><tfoot id="compareRcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by DCU</div><div class="panel-sub">Completed events only. Ranked by 2026 admissions. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">DCU</th><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareDcuBody"></tbody><tfoot id="compareDcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Top centres</div><div class="panel-sub" id="compareTopSub"></div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">Centre</th><th rowspan="2">RCU</th><th rowspan="2">DCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareTopBody"></tbody></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed exam event, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="compareRcuEventTable"><thead><tr id="compareRcuEventHead"></tr></thead><tbody id="compareRcuEventBody"></tbody><tfoot id="compareRcuEventFoot"></tfoot></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed exam event, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="compareDcuEventTable"><thead><tr id="compareDcuEventHead"></tr></thead><tbody id="compareDcuEventBody"></tbody><tfoot id="compareDcuEventFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed exam event, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table matrix-table"><table id="compareRcuEventTable"><thead><tr id="compareRcuEventHead"></tr></thead><tbody id="compareRcuEventBody"></tbody><tfoot id="compareRcuEventFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed exam event, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table matrix-table"><table id="compareDcuEventTable"><thead><tr id="compareDcuEventHead"></tr></thead><tbody id="compareDcuEventBody"></tbody><tfoot id="compareDcuEventFoot"></tfoot></table></div></div>
 </section>
 
 
@@ -231,8 +246,8 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by RCU</div><div class="panel-sub">Completed months only. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpRcuBody"></tbody><tfoot id="kCmpRcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by DCU</div><div class="panel-sub">Completed months only. Ranked by 2026 admissions. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">DCU</th><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpDcuBody"></tbody><tfoot id="kCmpDcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Top centres</div><div class="panel-sub" id="kCmpTopSub"></div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">Centre</th><th rowspan="2">RCU</th><th rowspan="2">DCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpTopBody"></tbody></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed month, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpRcuMonthTable"><thead><tr id="kCmpRcuMonthHead"></tr></thead><tbody id="kCmpRcuMonthBody"></tbody><tfoot id="kCmpRcuMonthFoot"></tfoot></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed month, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpDcuMonthTable"><thead><tr id="kCmpDcuMonthHead"></tr></thead><tbody id="kCmpDcuMonthBody"></tbody><tfoot id="kCmpDcuMonthFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed month, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table matrix-table"><table id="kCmpRcuMonthTable"><thead><tr id="kCmpRcuMonthHead"></tr></thead><tbody id="kCmpRcuMonthBody"></tbody><tfoot id="kCmpRcuMonthFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed month, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table matrix-table"><table id="kCmpDcuMonthTable"><thead><tr id="kCmpDcuMonthHead"></tr></thead><tbody id="kCmpDcuMonthBody"></tbody><tfoot id="kCmpDcuMonthFoot"></tfoot></table></div></div>
   </div>
 </section>
 
@@ -618,6 +633,7 @@ function renderCompare(){
   }
 }
 
+function ztag(z){const c=ZONE_COLOR[z]||'#64748b',bg=ZONE_SOFT[z]||'rgba(100,116,139,.12)';return `<span class="tag" style="background:${bg};color:${c}">${esc(String(z).replace(/ Zone$/,''))}</span>`}
 function renderZones(){
   const all26=state.all26&&state.all26.length?state.all26:state.m26,all25=state.all25&&state.all25.length?state.all25:state.m25;
   const completed=completedEventIndices(all26),indices=completed,coverage=indices.length,completedSet=new Set(completed);
