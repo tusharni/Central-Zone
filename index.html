@@ -114,6 +114,9 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
 .cmp-table tbody tr.row-active td.y25{background:rgba(53,99,233,.12)}
 .cmp-table tbody tr.row-active td.y26{background:rgba(53,99,233,.16)}
 .cmp-table th.pending-col{color:var(--faint);opacity:.7}
+.cmp-table th.yr-pair{text-align:center;border-left:2px solid var(--border)}
+.cmp-table td.grp,.cmp-table th.grp{border-left:2px solid var(--border)}
+.cmp-table th.y26,.cmp-table td.y26{border-right:1px solid #eef1f5}
 .compare-insights{grid-template-columns:repeat(4,minmax(0,1fr))}
 .compare-page .analysis-note{background:linear-gradient(135deg,#f2f5ff,#fff);border-color:#d5dfff}
 .compare-page .analysis-note .icon{background:#eaf0ff;color:var(--primary)}
@@ -200,8 +203,8 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by RCU</div><div class="panel-sub">Completed events only. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareRcuBody"></tbody><tfoot id="compareRcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by DCU</div><div class="panel-sub">Completed events only. Ranked by 2026 admissions. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">DCU</th><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareDcuBody"></tbody><tfoot id="compareDcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Top centres</div><div class="panel-sub" id="compareTopSub"></div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">Centre</th><th rowspan="2">RCU</th><th rowspan="2">DCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="compareTopBody"></tbody></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU admissions per event · 2026</div><div class="panel-sub">Each RCU's 2026 admissions broken down by exam event. Upcoming events are blank.</div></div></div><div class="table-wrap cmp-table"><table id="compareRcuEventTable"><thead><tr id="compareRcuEventHead"></tr></thead><tbody id="compareRcuEventBody"></tbody><tfoot id="compareRcuEventFoot"></tfoot></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU admissions per event · 2026</div><div class="panel-sub">Each DCU's 2026 admissions broken down by exam event. Ranked by 2026 total. Upcoming events are blank.</div></div></div><div class="table-wrap cmp-table"><table id="compareDcuEventTable"><thead><tr id="compareDcuEventHead"></tr></thead><tbody id="compareDcuEventBody"></tbody><tfoot id="compareDcuEventFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed exam event, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="compareRcuEventTable"><thead><tr id="compareRcuEventHead"></tr></thead><tbody id="compareRcuEventBody"></tbody><tfoot id="compareRcuEventFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · event-by-event, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed exam event, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="compareDcuEventTable"><thead><tr id="compareDcuEventHead"></tr></thead><tbody id="compareDcuEventBody"></tbody><tfoot id="compareDcuEventFoot"></tfoot></table></div></div>
 </section>
 
 
@@ -228,8 +231,8 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by RCU</div><div class="panel-sub">Completed months only. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpRcuBody"></tbody><tfoot id="kCmpRcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Admissions by DCU</div><div class="panel-sub">Completed months only. Ranked by 2026 admissions. Click a row to filter the page.</div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">DCU</th><th rowspan="2">RCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpDcuBody"></tbody><tfoot id="kCmpDcuFoot"></tfoot></table></div></div>
   <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">Top centres</div><div class="panel-sub" id="kCmpTopSub"></div></div></div><div class="table-wrap cmp-table"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">Centre</th><th rowspan="2">RCU</th><th rowspan="2">DCU</th><th class="num y25 grp yr-head">2025</th><th class="num y26 grp yr-head">2026</th><th class="num" rowspan="2">Change</th></tr><tr><th class="num y25 grp">Admissions</th><th class="num y26 grp">Admissions</th></tr></thead><tbody id="kCmpTopBody"></tbody></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU admissions per month · 2026</div><div class="panel-sub">Each RCU's 2026 admissions broken down by month. Upcoming months are blank.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpRcuMonthTable"><thead><tr id="kCmpRcuMonthHead"></tr></thead><tbody id="kCmpRcuMonthBody"></tbody><tfoot id="kCmpRcuMonthFoot"></tfoot></table></div></div>
-  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU admissions per month · 2026</div><div class="panel-sub">Each DCU's 2026 admissions broken down by month. Ranked by 2026 total. Upcoming months are blank.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpDcuMonthTable"><thead><tr id="kCmpDcuMonthHead"></tr></thead><tbody id="kCmpDcuMonthBody"></tbody><tfoot id="kCmpDcuMonthFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">RCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each RCU across every completed month, last year next to this year. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpRcuMonthTable"><thead><tr id="kCmpRcuMonthHead"></tr></thead><tbody id="kCmpRcuMonthBody"></tbody><tfoot id="kCmpRcuMonthFoot"></tfoot></table></div></div>
+  <div class="panel" style="margin-top:16px"><div class="panel-head"><div><div class="panel-title">DCU · month-by-month, 2025 vs 2026</div><div class="panel-sub">Each DCU across every completed month, last year next to this year. Ranked by 2026 total. Click a row to filter.</div></div></div><div class="table-wrap cmp-table"><table id="kCmpDcuMonthTable"><thead><tr id="kCmpDcuMonthHead"></tr></thead><tbody id="kCmpDcuMonthBody"></tbody><tfoot id="kCmpDcuMonthFoot"></tfoot></table></div></div>
   </div>
 </section>
 
@@ -552,16 +555,21 @@ function chgCell(v26,v25,pending){
   const d=v26-v25,p=yoyPct(v26,v25),cls=d>0?'chg-pos':d<0?'chg-neg':'chg-flat',arw=d>0?'▲':d<0?'▼':'–';
   return `<td class="num"><span class="chg-pill ${cls}"><span class="arw">${arw}</span>${signed(d)}${p===null?'':` · ${p>=0?'+':''}${p.toFixed(0)}%`}</span></td>`;
 }
-// Renders a group×period matrix (2026 recorded admissions per event/month) into head/body/foot elements.
-function renderPeriodMatrix(prefix,kind,groups,labels,completedSet,periodTotals,grandTotal,firstColSpan,onclickFn){
-  const cols=labels.length;
-  $(prefix+'Head').innerHTML=`<th${firstColSpan>1?` colspan="${firstColSpan}"`:''}>${kind}</th>`+labels.map((lb,i)=>`<th class="num${completedSet.has(i)?'':' pending-col'}">${esc(lb)}</th>`).join('')+`<th class="num grp">2026 total</th>`;
+// Renders a group×period matrix with a 2025|2026 pair per completed event/month.
+// groups: [{label, rcu?, rank?, active, e26:[...], e25:[...], t26, t25}]
+function renderPeriodMatrix(prefix,kind,groups,labels,shownIdx,firstColSpan,onclickFn,periodT26,periodT25,grand26,grand25){
+  const leadCols=firstColSpan;
+  const head1=`<th rowspan="2"${leadCols>1?` colspan="${leadCols}"`:''}>${kind}</th>`+shownIdx.map(i=>`<th class="num grp yr-pair" colspan="2">${esc(labels[i])}</th>`).join('')+`<th class="num grp yr-pair" colspan="2">2026 total</th>`;
+  const head2=shownIdx.map(()=>`<th class="num y25 grp">’25</th><th class="num y26">’26</th>`).join('')+`<th class="num y25 grp">’25</th><th class="num y26">’26</th>`;
+  $(prefix+'Head').innerHTML=`<tr>${head1}</tr><tr>${head2}</tr>`;
+  const pairCells=(e26,e25)=>shownIdx.map(i=>{const v26=e26[i]||0,v25=e25[i]||0,cls=v26>v25?'chg-pos':v26<v25?'chg-neg':'';return`<td class="num y25 grp">${fmt(v25)}</td><td class="num y26 ${cls}">${fmt(v26)}</td>`}).join('');
   $(prefix+'Body').innerHTML=groups.length?groups.map((g,ri)=>{
-    const cells=labels.map((_,i)=>completedSet.has(i)?`<td class="num">${fmt(g.eventTotals[i]||0)}</td>`:'<td class="num"><span class="pending-cell">—</span></td>').join('');
     const lead=g.rank!==undefined?`<td class="rank">${ri+1}</td><td class="strong">${esc(g.label)}</td><td>${tag(g.rcu)}</td>`:`<td>${tag(g.label)}</td>`;
-    return `<tr style="cursor:pointer" onclick="${onclickFn(g)}"${g.active?' class="row-active"':''}>${lead}${cells}<td class="num grp strong">${fmt(g.total)}</td></tr>`;
-  }).join(''):`<tr><td colspan="${firstColSpan+cols+1}">No admissions in the current scope.</td></tr>`;
-  $(prefix+'Foot').innerHTML=`<tr><td${firstColSpan>1?` colspan="${firstColSpan}"`:''}>Total</td>`+labels.map((_,i)=>`<td class="num">${completedSet.has(i)?fmt(periodTotals[i]||0):'—'}</td>`).join('')+`<td class="num grp">${fmt(grandTotal)}</td></tr>`;
+    const totCls=g.t26>g.t25?'chg-pos':g.t26<g.t25?'chg-neg':'';
+    return `<tr style="cursor:pointer" onclick="${onclickFn(g)}"${g.active?' class="row-active"':''}>${lead}${pairCells(g.e26,g.e25)}<td class="num y25 grp">${fmt(g.t25)}</td><td class="num y26 strong ${totCls}">${fmt(g.t26)}</td></tr>`;
+  }).join(''):`<tr><td colspan="${leadCols+shownIdx.length*2+2}">No admissions in the current scope.</td></tr>`;
+  const footPairs=shownIdx.map(i=>`<td class="num y25 grp">${fmt(periodT25[i]||0)}</td><td class="num y26">${fmt(periodT26[i]||0)}</td>`).join('');
+  $(prefix+'Foot').innerHTML=`<tr><td${leadCols>1?` colspan="${leadCols}"`:''}>Total</td>${footPairs}<td class="num y25 grp">${fmt(grand25)}</td><td class="num y26">${fmt(grand26)}</td></tr>`;
 }
 function renderCompare(){
   const c=comparisonContext(),{rows26,rows25,completed,focus,indices,a26,a25,all25,all26}=c,coverage=indices.length,totalDelta=a26.total-a25.total,totalPct=yoyPct(a26.total,a25.total),scope=scopeText(CF),completedSet=new Set(completed),focusIndex=focus?CF.event:null;
@@ -595,12 +603,19 @@ function renderCompare(){
   $('compareTopSub').textContent=focus?`${MSCIT25[focusIndex].label} 2025 vs ${MSCIT26[focusIndex].label} 2026 · top 25`:`${coverage} completed event${coverage===1?'':'s'} · top 25 by 2026 admissions`;
   $('compareTopBody').innerHTML=centreRows.slice(0,25).map((x,i)=>{const hasBase=!!x.match25;return`<tr><td class="rank">${i+1}</td><td class="strong">${esc(x.name)}</td><td>${tag(x.rcu)}</td><td>${esc(x.dcu)}</td><td class="num y25 grp">${hasBase?fmt(x.v25):'—'}</td><td class="num y26 grp strong">${fmt(x.v26)}</td>${hasBase?chgCell(x.v26,x.v25,false):'<td class="num chg-flat">new</td>'}</tr>`}).join('')||'<tr><td colspan="7">No 2026 centre admissions to compare in this scope.</td></tr>';
 
-  // Event-wise matrices (2026 recorded admissions per event)
-  const evLabels=MSCIT26.map(e=>e.label);
-  const rcuMat=RO.map(r=>({label:r,eventTotals:all26.rcu[r]?.eventTotals||Array(7).fill(0),total:all26.rcu[r]?.total||0,active:CF.rcu===r})).sort((x,y)=>y.total-x.total);
-  renderPeriodMatrix('compareRcuEvent','RCU',rcuMat,evLabels,completedSet,all26.eventTotals,all26.total,1,g=>`setMsFilter('rcu','${esc(g.label)}')`);
-  const dcuMat=Object.entries(all26.dcu).map(([d,v])=>({label:d,rcu:v.rcu,eventTotals:v.eventTotals,total:v.total,rank:0,active:CF.dcu===d})).sort((x,y)=>y.total-x.total);
-  renderPeriodMatrix('compareDcuEvent','DCU',dcuMat,evLabels,completedSet,all26.eventTotals,all26.total,3,g=>`setMsFilter('dcu','${esc(g.label)}')`);
+  // Event-wise 2025 vs 2026 matrices (completed events)
+  const shownEv=completed.length?completed:[];
+  const rcuMat=RO.map(r=>{const g26=all26.rcu[r],g25=all25.rcu[r];const e26=g26?.eventTotals||Array(7).fill(0),e25=g25?.eventTotals||Array(7).fill(0);return{label:r,e26,e25,t26:shownEv.reduce((s,i)=>s+(e26[i]||0),0),t25:shownEv.reduce((s,i)=>s+(e25[i]||0),0),active:CF.rcu===r}}).sort((x,y)=>y.t26-x.t26);
+  const evT26=i=>rcuMat.reduce((s,g)=>s+(g.e26[i]||0),0),evT25=i=>rcuMat.reduce((s,g)=>s+(g.e25[i]||0),0);
+  const pT26=Array(7).fill(0).map((_,i)=>evT26(i)),pT25=Array(7).fill(0).map((_,i)=>evT25(i));
+  const grand26=shownEv.reduce((s,i)=>s+pT26[i],0),grand25=shownEv.reduce((s,i)=>s+pT25[i],0);
+  if(!shownEv.length){$('compareRcuEventHead').innerHTML='';$('compareRcuEventBody').innerHTML='<tr><td>No completed 2026 event yet.</td></tr>';$('compareRcuEventFoot').innerHTML='';$('compareDcuEventHead').innerHTML='';$('compareDcuEventBody').innerHTML='<tr><td>No completed 2026 event yet.</td></tr>';$('compareDcuEventFoot').innerHTML='';}
+  else{
+    renderPeriodMatrix('compareRcuEvent','RCU',rcuMat,MSCIT26.map(e=>e.label),shownEv,1,g=>`setMsFilter('rcu','${esc(g.label)}')`,pT26,pT25,grand26,grand25);
+    const dcuNames=[...new Set([...Object.keys(all26.dcu),...Object.keys(all25.dcu)])];
+    const dcuMat=dcuNames.map(d=>{const g26=all26.dcu[d],g25=all25.dcu[d];const e26=g26?.eventTotals||Array(7).fill(0),e25=g25?.eventTotals||Array(7).fill(0);return{label:d,rcu:g26?.rcu||g25?.rcu||D2R[d],rank:0,e26,e25,t26:shownEv.reduce((s,i)=>s+(e26[i]||0),0),t25:shownEv.reduce((s,i)=>s+(e25[i]||0),0),active:CF.dcu===d}}).sort((x,y)=>y.t26-x.t26);
+    renderPeriodMatrix('compareDcuEvent','DCU',dcuMat,MSCIT26.map(e=>e.label),shownEv,3,g=>`setMsFilter('dcu','${esc(g.label)}')`,pT26,pT25,grand26,grand25);
+  }
 }
 
 function renderZones(){
@@ -710,12 +725,18 @@ function renderKlicCompare(){
   $('kCmpTopSub').textContent=focus?`${MONTH_LONG[focusIndex]} 2025 vs ${MONTH_LONG[focusIndex]} 2026 · top 25`:`${coverage} completed month${coverage===1?'':'s'} · top 25 by 2026 admissions`;
   $('kCmpTopBody').innerHTML=centreRows.slice(0,25).map((x,i)=>{const hasBase=!!x.match25;return`<tr><td class="rank">${i+1}</td><td class="strong">${esc(x.name)}</td><td>${tag(x.rcu)}</td><td>${esc(x.dcu)}</td><td class="num y25 grp">${hasBase?fmt(x.v25):'—'}</td><td class="num y26 grp strong">${fmt(x.v26)}</td>${hasBase?chgCell(x.v26,x.v25,false):'<td class="num chg-flat">new</td>'}</tr>`}).join('')||'<tr><td colspan="7">No 2026 centre admissions to compare in this selection.</td></tr>';
 
-  // Month-wise matrices (2026 recorded admissions per month)
-  const moLabels=MONTHS;
-  const rcuMat=RO.map(r=>({label:r,eventTotals:all26.rcu[r]?.eventTotals||Array(12).fill(0),total:all26.rcu[r]?.total||0,active:KCF.rcu===r})).sort((x,y)=>y.total-x.total);
-  renderPeriodMatrix('kCmpRcuMonth','RCU',rcuMat,moLabels,completedSet,all26.eventTotals,all26.total,1,g=>`setKlicFilter('rcu','${esc(g.label)}')`);
-  const dcuMat=Object.entries(all26.dcu).map(([d,v])=>({label:d,rcu:v.rcu,eventTotals:v.eventTotals,total:v.total,rank:0,active:KCF.dcu===d})).sort((x,y)=>y.total-x.total);
-  renderPeriodMatrix('kCmpDcuMonth','DCU',dcuMat,moLabels,completedSet,all26.eventTotals,all26.total,3,g=>`setKlicFilter('dcu','${esc(g.label)}')`);
+  // Month-wise 2025 vs 2026 matrices (completed months)
+  const shownMo=completed.length?completed:[];
+  const kRcuMat=RO.map(r=>{const g26=all26.rcu[r],g25=all25.rcu[r];const e26=g26?.eventTotals||Array(12).fill(0),e25=g25?.eventTotals||Array(12).fill(0);return{label:r,e26,e25,t26:shownMo.reduce((s,i)=>s+(e26[i]||0),0),t25:shownMo.reduce((s,i)=>s+(e25[i]||0),0),active:KCF.rcu===r}}).sort((x,y)=>y.t26-x.t26);
+  const kpT26=Array(12).fill(0).map((_,i)=>kRcuMat.reduce((s,g)=>s+(g.e26[i]||0),0)),kpT25=Array(12).fill(0).map((_,i)=>kRcuMat.reduce((s,g)=>s+(g.e25[i]||0),0));
+  const kGrand26=shownMo.reduce((s,i)=>s+kpT26[i],0),kGrand25=shownMo.reduce((s,i)=>s+kpT25[i],0);
+  if(!shownMo.length){$('kCmpRcuMonthHead').innerHTML='';$('kCmpRcuMonthBody').innerHTML='<tr><td>No completed 2026 month yet.</td></tr>';$('kCmpRcuMonthFoot').innerHTML='';$('kCmpDcuMonthHead').innerHTML='';$('kCmpDcuMonthBody').innerHTML='<tr><td>No completed 2026 month yet.</td></tr>';$('kCmpDcuMonthFoot').innerHTML='';}
+  else{
+    renderPeriodMatrix('kCmpRcuMonth','RCU',kRcuMat,MONTHS,shownMo,1,g=>`setKlicFilter('rcu','${esc(g.label)}')`,kpT26,kpT25,kGrand26,kGrand25);
+    const kDcuNames=[...new Set([...Object.keys(all26.dcu),...Object.keys(all25.dcu)])];
+    const kDcuMat=kDcuNames.map(d=>{const g26=all26.dcu[d],g25=all25.dcu[d];const e26=g26?.eventTotals||Array(12).fill(0),e25=g25?.eventTotals||Array(12).fill(0);return{label:d,rcu:g26?.rcu||g25?.rcu||D2R[d],rank:0,e26,e25,t26:shownMo.reduce((s,i)=>s+(e26[i]||0),0),t25:shownMo.reduce((s,i)=>s+(e25[i]||0),0),active:KCF.dcu===d}}).sort((x,y)=>y.t26-x.t26);
+    renderPeriodMatrix('kCmpDcuMonth','DCU',kDcuMat,MONTHS,shownMo,3,g=>`setKlicFilter('dcu','${esc(g.label)}')`,kpT26,kpT25,kGrand26,kGrand25);
+  }
 }
 
 function renderKlic(){
