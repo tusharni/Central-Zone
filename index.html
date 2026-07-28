@@ -103,15 +103,17 @@ html{overflow-x:hidden}.page,.grid,.panel,.table-wrap{min-width:0;max-width:100%
 .table-wrap thead th:first-child,.table-wrap tbody td:first-child{text-align:left}
 .table-wrap .num{text-align:center}
 .cmp-table table{font-size:12.5px}
-.cmp-table thead th{font-size:10px;padding:11px 13px;text-align:center;vertical-align:middle}
+.cmp-table thead th{font-size:10px;padding:11px 13px;text-align:center;vertical-align:middle;background:#f8fafc}
 .cmp-table tbody td{padding:11px 13px;font-size:12.5px;text-align:center;vertical-align:middle}
 .cmp-table thead th:first-child,.cmp-table tbody td:first-child,.cmp-table tfoot td:first-child{text-align:left}
-.cmp-table thead tr:first-child th{top:0}
-.cmp-table thead tr:nth-child(2) th{top:38px;z-index:1}
+.cmp-table thead tr:first-child th{top:0;z-index:2}
+.cmp-table thead tr:nth-child(2) th{z-index:2}
 .cmp-table thead tr:first-child th[rowspan]{z-index:3}
 .cmp-table th.grp,.cmp-table td.grp{border-left:2px solid var(--border)}
-.cmp-table th.y25,.cmp-table td.y25{background:rgba(124,141,166,.06)}
-.cmp-table th.y26,.cmp-table td.y26{background:rgba(53,99,233,.06)}
+.cmp-table th.y25{background:#eef0f3}
+.cmp-table td.y25{background:rgba(124,141,166,.06)}
+.cmp-table th.y26{background:#e7edfb}
+.cmp-table td.y26{background:rgba(53,99,233,.06)}
 .cmp-table .yr-head{text-align:center;font-size:11px;font-weight:800;letter-spacing:.04em;padding:9px 13px 5px}
 .cmp-table .yr-head.y25{color:var(--muted)}
 .cmp-table .yr-head.y26{color:var(--primary-dark)}
@@ -565,6 +567,17 @@ function comparisonContext(){
   const rows26=geoFiltered(state.m26,CF),rows25=geoFiltered(state.m25,CF),completed=completedEventIndices(state.m26),focus=CF.event!==null&&completed.includes(CF.event),indices=focus?[CF.event]:completed;
   return{rows26,rows25,completed,focus,indices,a26:aggregate(rows26,indices),a25:aggregate(rows25,indices),all25:aggregate(rows25,ALL_EVENT_INDICES),all26:aggregate(rows26,ALL_EVENT_INDICES)};
 }
+function syncStickyHeaders(root){
+  const scope=root?$(root):document;
+  const tables=scope&&scope.querySelectorAll?scope.querySelectorAll('.cmp-table table'):[];
+  tables.forEach(t=>{
+    const rows=t.querySelectorAll('thead tr');
+    if(rows.length<2)return;
+    const h=Math.round(rows[0].getBoundingClientRect().height);
+    if(!h)return;
+    rows[1].querySelectorAll('th').forEach(th=>{th.style.top=h+'px'});
+  });
+}
 function chgCell(v26,v25,pending){
   if(pending)return '<td class="num"><span class="pending-cell">Upcoming</span></td>';
   const d=v26-v25,p=yoyPct(v26,v25),cls=d>0?'chg-pos':d<0?'chg-neg':'chg-flat',arw=d>0?'▲':d<0?'▼':'–';
@@ -631,6 +644,7 @@ function renderCompare(){
     const dcuMat=dcuNames.map(d=>{const g26=all26.dcu[d],g25=all25.dcu[d];const e26=g26?.eventTotals||Array(7).fill(0),e25=g25?.eventTotals||Array(7).fill(0);return{label:d,rcu:g26?.rcu||g25?.rcu||D2R[d],rank:0,e26,e25,t26:shownEv.reduce((s,i)=>s+(e26[i]||0),0),t25:shownEv.reduce((s,i)=>s+(e25[i]||0),0),active:CF.dcu===d}}).sort((x,y)=>y.t26-x.t26);
     renderPeriodMatrix('compareDcuEvent','DCU',dcuMat,MSCIT26.map(e=>e.label),shownEv,3,g=>`setMsFilter('dcu','${esc(g.label)}')`,pT26,pT25,grand26,grand25);
   }
+  requestAnimationFrame(()=>syncStickyHeaders('pCompare'));
 }
 
 function ztag(z){const c=ZONE_COLOR[z]||'#64748b',bg=ZONE_SOFT[z]||'rgba(100,116,139,.12)';return `<span class="tag" style="background:${bg};color:${c}">${esc(String(z).replace(/ Zone$/,''))}</span>`}
@@ -753,6 +767,7 @@ function renderKlicCompare(){
     const kDcuMat=kDcuNames.map(d=>{const g26=all26.dcu[d],g25=all25.dcu[d];const e26=g26?.eventTotals||Array(12).fill(0),e25=g25?.eventTotals||Array(12).fill(0);return{label:d,rcu:g26?.rcu||g25?.rcu||D2R[d],rank:0,e26,e25,t26:shownMo.reduce((s,i)=>s+(e26[i]||0),0),t25:shownMo.reduce((s,i)=>s+(e25[i]||0),0),active:KCF.dcu===d}}).sort((x,y)=>y.t26-x.t26);
     renderPeriodMatrix('kCmpDcuMonth','DCU',kDcuMat,MONTHS,shownMo,3,g=>`setKlicFilter('dcu','${esc(g.label)}')`,kpT26,kpT25,kGrand26,kGrand25);
   }
+  requestAnimationFrame(()=>syncStickyHeaders('pKlicCompare'));
 }
 
 function renderKlic(){
@@ -806,6 +821,7 @@ function init(){
   setInterval(()=>{if(state.mode==='live'&&!state.loading&&CFG.url26&&CFG.url25)loadData()},10*60*1000);
 }
 window.addEventListener('load',init);
+window.addEventListener('resize',()=>{if(state.page==='pCompare'||state.page==='pKlicCompare')syncStickyHeaders(state.page)});
 </script>
 <script>
 (() => {
