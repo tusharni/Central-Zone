@@ -629,7 +629,7 @@ function renderCompare(){
   $('compareNote').innerHTML=`<div class="icon">↔</div><div><h3>${focus?`Showing ${esc(MSCIT26[focusIndex].label)} only`:'2025 vs 2026, side by side'}</h3><p>${focus?`Every table below shows ${esc(MSCIT25[focusIndex].label)} 2025 next to ${esc(MSCIT26[focusIndex].label)} 2026 for ${esc(scope)}.`:`Each 2026 number is placed next to the same period in 2025 so you can read the change directly. Events that have not happened yet in 2026 are marked “Upcoming” and never counted as a drop.`}</p></div>`;
   $('compareKpis').innerHTML=[
     kpi('2026 so far',coverage?fmt(a26.total):'—',`${coverage} completed event${coverage===1?'':'s'} · ${esc(scope)}`,Y26),
-    kpi('2025 same period',coverage?fmt(a25.total):'—',coverage?`Only ${completed.map(i=>MSCIT25[i].label).join(', ')} (not full year)`:'2026 not started yet',Y25),
+    kpi('2025 same period',coverage?fmt(completed.reduce((s,i)=>s+(all25.eventTotals[i]||0),0)):'—',coverage?`Only ${completed.map(i=>MSCIT25[i].label).join(', ')} (not full year)`:'2026 not started yet',Y25),
     kpi('Change vs 2025',coverage?signed(totalDelta):'—',coverage&&totalPct!==null?`${totalPct>=0?'+':''}${totalPct.toFixed(1)}% vs 2025`:'—',coverage?(totalDelta>=0?'#16825d':'#b5475d'):'#94a3b8',coverage?clsDelta(totalDelta):'neutral'),
     kpi('Active centres',coverage?fmt(a26.active):'—',`${fmt(a26.centres)} in scope · ${fmt(a25.active)} in 2025`,'#247a70'),
     kpi('Avg per active centre',coverage?fmt(a26.avg):'—','Completed 2026 events','#c78324')
@@ -796,7 +796,7 @@ function renderKlicCompare(){
   $('kCmpNote').innerHTML=`<div class="icon">↔</div><div><h3>${focus?`Showing ${esc(MONTH_LONG[focusIndex])} only`:'2025 vs 2026, side by side'}</h3><p>${focus?`Every table below shows ${esc(MONTH_LONG[focusIndex])} 2025 next to ${esc(MONTH_LONG[focusIndex])} 2026 for ${esc(scope)}.`:`Each 2026 number is placed next to the same month in 2025 so you can read the change directly. Months that have not happened yet in 2026 are marked “Upcoming” and never counted as a drop.`}</p></div>`;
   $('kCmpKpis').innerHTML=[
     kpi('2026 so far',coverage?fmt(a26.total):'—',`${coverage} completed month${coverage===1?'':'s'} · ${esc(scope)}`,'#5a48a7'),
-    kpi('2025 same period',coverage?fmt(a25.total):'—',coverage?`Only ${completed.map(i=>MONTHS[i]).join(', ')} (not full year)`:'2026 not started yet',Y25),
+    kpi('2025 same period',coverage?fmt(completed.reduce((s,i)=>s+(all25.eventTotals[i]||0),0)):'—',coverage?`Only ${completed.map(i=>MONTHS[i]).join(', ')} (not full year)`:'2026 not started yet',Y25),
     kpi('Change vs 2025',coverage?signed(totalDelta):'—',coverage&&totalPct!==null?`${totalPct>=0?'+':''}${totalPct.toFixed(1)}% vs 2025`:'—',coverage?(totalDelta>=0?'#16825d':'#b5475d'):'#94a3b8',coverage?clsDelta(totalDelta):'neutral'),
     kpi('Active centres',coverage?fmt(a26.active):'—',`${fmt(a26.centres)} in scope · ${fmt(a25.active)} in 2025`,'#247a70'),
     kpi('Avg per active centre',coverage?fmt(a26.avg):'—','Completed 2026 months','#c78324')
