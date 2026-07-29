@@ -637,7 +637,7 @@ function renderCompare(){
 
   // Events table (all 7, upcoming marked)
   $('compareEventBody').innerHTML=ALL_EVENT_INDICES.map(i=>{const rec=completedSet.has(i),v26=all26.eventTotals[i]||0,v25=all25.eventTotals[i]||0,foc=focusIndex===i;return`<tr${rec?` style="cursor:pointer" onclick="setMsFilter('event',${i})"`:''}${foc?' class="row-active"':''}><td class="strong">${esc(MSCIT26[i].label)}</td><td class="num y25 grp">${fmt(v25)}</td><td class="num y26 grp strong">${rec?fmt(v26):'<span class="pending-cell">Upcoming</span>'}</td>${chgCell(v26,v25,!rec)}</tr>`}).join('');
-  $('compareEventFoot').innerHTML=`<tr><td>Total (completed events)</td><td class="num y25 grp">${fmt(a25.total)}</td><td class="num y26 grp">${coverage?fmt(a26.total):'—'}</td>${coverage?chgCell(a26.total,a25.total,false):'<td class="num">—</td>'}</tr>`;
+  $('compareEventFoot').innerHTML=`<tr><td>Total</td><td class="num y25 grp">${fmt(all25.total)}</td><td class="num y26 grp">${coverage?fmt(a26.total):'—'}</td><td class="num">—</td></tr>`;
 
   // RCU table
   const source25=coverage?a25:all25,rcuRows=RO.map(r=>({r,v25:source25.rcu[r]?.total||0,v26:a26.rcu[r]?.total||0})).sort((x,y)=>(coverage?y.v26-x.v26:y.v25-x.v25));
@@ -804,7 +804,7 @@ function renderKlicCompare(){
 
   // Months table (all 12)
   $('kCmpMonthBody').innerHTML=ALL_MONTH_INDICES.map(i=>{const rec=completedSet.has(i),v26=all26.eventTotals[i]||0,v25=all25.eventTotals[i]||0,foc=focusIndex===i;return`<tr${rec?` style="cursor:pointer" onclick="setKlicFilter('batch',${i})"`:''}${foc?' class="row-active"':''}><td class="strong">${esc(MONTH_LONG[i])}</td><td class="num y25 grp">${fmt(v25)}</td><td class="num y26 grp strong">${rec?fmt(v26):'<span class="pending-cell">Upcoming</span>'}</td>${chgCell(v26,v25,!rec)}</tr>`}).join('');
-  $('kCmpMonthFoot').innerHTML=`<tr><td>Total (completed months)</td><td class="num y25 grp">${fmt(a25.total)}</td><td class="num y26 grp">${coverage?fmt(a26.total):'—'}</td>${coverage?chgCell(a26.total,a25.total,false):'<td class="num">—</td>'}</tr>`;
+  $('kCmpMonthFoot').innerHTML=`<tr><td>Total</td><td class="num y25 grp">${fmt(all25.total)}</td><td class="num y26 grp">${coverage?fmt(a26.total):'—'}</td><td class="num">—</td></tr>`;
 
   // RCU table
   const source25=coverage?a25:all25,rcuRows=RO.map(r=>({r,v25:source25.rcu[r]?.total||0,v26:a26.rcu[r]?.total||0})).sort((x,y)=>(coverage?y.v26-x.v26:y.v25-x.v25));
